@@ -1,0 +1,9 @@
+{
+  "brand": {
+    "stepUp": "Step Up"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  }
+}
