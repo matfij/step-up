@@ -3,6 +3,8 @@
     "stepUp": "Step Up"
   },
   "auth": {
+    "email": "Email",
+    "authCode": "Kod autentykacji",
     "signIn": "Zaloguj",
     "signUp": "Zerejestruj"
   }
