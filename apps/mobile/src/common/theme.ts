@@ -74,19 +74,25 @@ export const themeComposable = {
       fontSize: 32,
       fontWeight: 700,
       lineHeight: 40,
-      letterSpacing: -0.5,
+      letterSpacing: 0.5,
     },
     h2: {
       fontSize: 24,
       fontWeight: 700,
       lineHeight: 32,
-      letterSpacing: -0.3,
+      letterSpacing: 0.2,
     },
     body: {
       fontSize: 16,
       fontWeight: 400,
       lineHeight: 24,
       letterSpacing: 0,
+    },
+    bodyBold: {
+      fontSize: 16,
+      fontWeight: 700,
+      lineHeight: 24,
+      letterSpacing: 0.1,
     },
     bodyLarge: {
       fontSize: 18,
@@ -137,12 +143,53 @@ export const themeComposable = {
       shadowRadius: 16,
       elevation: 12,
     },
-    glow: {
+    primaryMd: {
       shadowColor: theme.colors.primary[500],
       shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.5,
       shadowRadius: 12,
       elevation: 8,
+    },
+    primaryLg: {
+      shadowColor: theme.colors.primary[500],
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.7,
+      shadowRadius: 16,
+      elevation: 8,
+    },
+    secondaryMd: {
+      shadowColor: theme.colors.secondary[500],
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.5,
+      shadowRadius: 12,
+      elevation: 8,
+    },
+  },
+  textShadows: {
+    md: {
+      textShadowColor: theme.colors.dark[500],
+      textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 4,
+    },
+    lg: {
+      textShadowColor: theme.colors.dark[500],
+      textShadowOffset: { width: 0, height: 3 },
+      textShadowRadius: 6,
+    },
+    primaryMd: {
+      textShadowColor: theme.colors.primary[500],
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 8,
+    },
+    primaryLg: {
+      textShadowColor: theme.colors.primary[500],
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 12,
+    },
+    secondaryMd: {
+      textShadowColor: theme.colors.secondary[500],
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 8,
     },
   },
 } as const;

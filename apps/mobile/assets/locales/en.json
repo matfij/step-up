@@ -6,6 +6,8 @@
     "email": "Email",
     "authCode": "Auth code",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "newAccount": "Don't have an account? Sign up.",
+    "checkInbox": "check you email inbox"
   }
 }
