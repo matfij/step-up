@@ -5,17 +5,39 @@ import { StyleSheet, Text, View } from "react-native";
 import { AppAction } from "../common/components/app-action";
 import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
+import { appConfig } from "../common/config";
 import { theme, themeComposable } from "../common/theme";
+import { isValidEmail, isValidUsername } from "../common/utils";
 
 export default function SignUp() {
   const router = useRouter();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [showAuthCode, setShowAuthCode] = useState(false);
   const [authCode, setAuthCode] = useState("");
 
   const onSignUp = () => {
+    setEmailError("");
+    setUsernameError("");
+
+    if (!isValidEmail(email)) {
+      setEmailError(t("auth.emailInvalid"));
+      return;
+    } else if (!isValidUsername(username)) {
+      setUsernameError(
+        t("auth.usernameInvalid", {
+          min: appConfig.validation.usernameLengthMin,
+          max: appConfig.validation.usernameLengthMax,
+        })
+      );
+      return;
+    }
+
+    // TODO - call API
+
     if (!showAuthCode) {
       setShowAuthCode(true);
       return;
@@ -25,11 +47,26 @@ export default function SignUp() {
   return (
     <View style={styles.mainWrapper}>
       <Text style={styles.title}>{t("auth.signUpTitle")}</Text>
-      <AppInput label={t("auth.email")} style={{ width: "70%" }} />
-      <AppInput label={t("auth.username")} style={{ width: "70%" }} />
+      <AppInput
+        label={t("auth.email")}
+        value={email}
+        error={emailError}
+        onChange={setEmail}
+        style={{ width: "70%" }}
+      />
+      <AppInput
+        label={t("auth.username")}
+        value={username}
+        error={usernameError}
+        onChange={setUsername}
+        style={{ width: "70%" }}
+      />
       {showAuthCode && (
         <AppInput
+          keyboard="number-pad"
           label={t("auth.authCodeCheckInbox")}
+          value={authCode}
+          onChange={setAuthCode}
           style={{ width: "70%" }}
         />
       )}

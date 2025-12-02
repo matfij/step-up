@@ -10,6 +10,8 @@
     "signUp": "Sign up",
     "newAccount": "Don't have an account? Sign up.",
     "existingAccount": "Already have an account? Sign in.",
-    "signUpTitle": "Create a new account"
+    "signUpTitle": "Create a new account",
+    "emailInvalid": "Provided email is invalid",
+    "usernameInvalid": "Username must be between {{min}} and {{max}} characters"
   }
 }

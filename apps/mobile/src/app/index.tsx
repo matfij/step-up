@@ -6,16 +6,27 @@ import { AppAction } from "../common/components/app-action";
 import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
 import { theme, themeComposable } from "../common/theme";
+import { isValidEmail } from "../common/utils";
 
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [showAuthCode, setShowAuthCode] = useState(false);
   const [authCode, setAuthCode] = useState("");
 
   const onSignIn = () => {
+    setEmailError("");
+
+    if (!isValidEmail(email)) {
+      setEmailError(t("auth.emailInvalid"));
+      setShowAuthCode(false);
+      return;
+    }
+
+    // TODO - call API
+
     if (!showAuthCode) {
       setShowAuthCode(true);
       return;
@@ -31,10 +42,19 @@ export default function Index() {
         />
         <Text style={styles.title}>{t("brand.title")}</Text>
       </View>
-      <AppInput label={t("auth.email")} style={{ width: "70%" }} />
+      <AppInput
+        label={t("auth.email")}
+        value={email}
+        error={emailError}
+        onChange={setEmail}
+        style={{ width: "70%" }}
+      />
       {showAuthCode && (
         <AppInput
+          keyboard="number-pad"
           label={t("auth.authCodeCheckInbox")}
+          value={authCode}
+          onChange={setAuthCode}
           style={{ width: "70%" }}
         />
       )}
