@@ -4,10 +4,12 @@
   },
   "auth": {
     "email": "Email",
-    "authCode": "Auth code",
+    "username": "Username",
+    "authCodeCheckInbox": "Auth code (check you email inbox)",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "newAccount": "Don't have an account? Sign up.",
-    "checkInbox": "check you email inbox"
+    "existingAccount": "Already have an account? Sign in.",
+    "signUpTitle": "Create a new account"
   }
 }

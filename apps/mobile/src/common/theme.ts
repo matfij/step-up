@@ -192,4 +192,12 @@ export const themeComposable = {
       textShadowRadius: 8,
     },
   },
+  borders: {
+    primaryMd: {
+      borderWidth: 2,
+      borderRadius: theme.borderRadius.md,
+      borderColor: theme.colors.primary[600],
+      backgroundColor: theme.colors.dark[300],
+    },
+  },
 } as const;

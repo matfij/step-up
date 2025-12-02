@@ -1,13 +1,13 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { AppAction } from "../common/components/app-action";
 import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
 import { theme, themeComposable } from "../common/theme";
 
-export default function Index() {
+export default function SignUp() {
   const router = useRouter();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ export default function Index() {
   const [showAuthCode, setShowAuthCode] = useState(false);
   const [authCode, setAuthCode] = useState("");
 
-  const onSignIn = () => {
+  const onSignUp = () => {
     if (!showAuthCode) {
       setShowAuthCode(true);
       return;
@@ -24,14 +24,9 @@ export default function Index() {
 
   return (
     <View style={styles.mainWrapper}>
-      <View style={styles.brandWrapper}>
-        <Image
-          style={styles.brandImage}
-          source={require("@assets/images/icon.png")}
-        />
-        <Text style={styles.title}>{t("brand.title")}</Text>
-      </View>
+      <Text style={styles.title}>{t("auth.signUpTitle")}</Text>
       <AppInput label={t("auth.email")} style={{ width: "70%" }} />
+      <AppInput label={t("auth.username")} style={{ width: "70%" }} />
       {showAuthCode && (
         <AppInput
           label={t("auth.authCodeCheckInbox")}
@@ -39,13 +34,13 @@ export default function Index() {
         />
       )}
       <AppButton
-        label={t("auth.signIn")}
-        onClick={onSignIn}
+        label={t("auth.signUp")}
+        onClick={onSignUp}
         style={{ width: "70%", marginTop: theme.spacing.md }}
       />
       <AppAction
-        label={t("auth.newAccount")}
-        onClick={() => router.push("/sign-up")}
+        label={t("auth.existingAccount")}
+        onClick={() => router.push("/")}
         style={{ marginTop: theme.spacing.lg }}
       />
     </View>
@@ -62,17 +57,11 @@ const styles = StyleSheet.create({
     gap: theme.spacing.md,
     backgroundColor: theme.colors.dark[500],
   },
-  brandWrapper: {
-    marginBottom: theme.spacing.lg,
-  },
   title: {
     ...themeComposable.typography.h1,
-    ...themeComposable.textShadows.md,
-    width: "80%",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: "-50%" }, { translateY: "-50%" }],
+    ...themeComposable.textShadows.lg,
+    width: "70%",
+    textAlign: "center",
     color: theme.colors.primary[600],
   },
   brandImage: {
