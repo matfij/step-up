@@ -1,0 +1,11 @@
+@StepUpServer_HostAddress = http://localhost:5047
+
+GET {{StepUpServer_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{StepUpServer_HostAddress}}/todos/1
+Accept: application/json
+
+###
