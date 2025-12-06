@@ -1,4 +1,7 @@
-﻿namespace StepUpServer.Users;
+using System.Text.RegularExpressions;
+using StepUpServer.Common;
+
+namespace StepUpServer.Users;
 
 public interface IUserService
 {
@@ -6,12 +9,16 @@ public interface IUserService
     Task<User> CompleteRegister(string email, string username);
 }
 
-public class UserService(IUserRepository repository) : IUserService
+public partial class UserService(IUserRepository repository, IUserValidator validator)
+    : IUserService
 {
     private readonly IUserRepository _repository = repository;
+    private readonly IUserValidator _validator = validator;
 
     public async Task<User> StartRegister(string email, string username)
     {
+        await _validator.ValidateEmail(email);
+        await _validator.ValidateUsername(username);
         var authToken = Random.Shared.NextInt64(100000, 999999).ToString();
         var user = new User
         {
@@ -19,21 +26,21 @@ public class UserService(IUserRepository repository) : IUserService
             Email = email,
             Username = username,
             IsConfirmed = false,
-            AuthToken = authToken
+            AuthToken = authToken,
         };
         await _repository.Create(user);
-
         // TODO: Send authToken to user's email
-
         return user;
     }
 
     public async Task<User> CompleteRegister(string email, string authCode)
     {
-        var user = await _repository.GetByEmail(email) ?? throw new Exception("User not found");
-        if(user.AuthToken != authCode)
+        var user =
+            await _repository.GetByEmail(email)
+            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+        if (user.AuthToken != authCode)
         {
-            throw new Exception("Invalid auth code");
+            throw new ApiException("Invalid auth code", ApiErrorCode.InvalidAuthCode);
         }
         user.AuthToken = null;
         user.ApiToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());

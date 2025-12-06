@@ -1,6 +1,7 @@
-using MongoDB.Driver;
-using StepUpServer.Users;
 using System.Text.Json.Serialization.Metadata;
+using MongoDB.Driver;
+using StepUpServer.Common;
+using StepUpServer.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +24,12 @@ builder.Services.AddSingleton(provider =>
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapUserEndpoints();
 

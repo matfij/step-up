@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using StepUpServer.Common;
 
 namespace StepUpServer.Users;
 
@@ -7,6 +8,7 @@ public interface IUserRepository
     Task<User> Create(User user);
     Task<User?> GetById(string id);
     Task<User?> GetByEmail(string email);
+    Task<User?> GetByUsername(string username);
     Task<User> Update(User user);
 }
 
@@ -17,6 +19,22 @@ public class UserRepository : IUserRepository
     public UserRepository(IMongoDatabase database)
     {
         _users = database.GetCollection<User>("Users");
+
+        var emailIndex = Builders<User>.IndexKeys.Ascending(u => u.Email);
+        var usernameIndex = Builders<User>.IndexKeys.Ascending(u => u.Username);
+
+        _users.Indexes.CreateOneAsync(
+            new CreateIndexModel<User>(
+                emailIndex,
+                new CreateIndexOptions { Unique = true, Background = true }
+            )
+        );
+        _users.Indexes.CreateOneAsync(
+            new CreateIndexModel<User>(
+                usernameIndex,
+                new CreateIndexOptions { Unique = true, Background = true }
+            )
+        );
     }
 
     public async Task<User> Create(User user)
@@ -25,18 +43,28 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public Task<User?> GetById(string id)
+    public async Task<User?> GetById(string id)
     {
-        throw new NotImplementedException();
+        return await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
     }
 
-    public Task<User?> GetByEmail(string email)
+    public async Task<User?> GetByEmail(string email)
     {
-        throw new NotImplementedException();
+        return await _users.Find(u => u.Email == email).FirstOrDefaultAsync();
     }
 
-    public Task<User> Update(User user)
+    public async Task<User?> GetByUsername(string username)
     {
-        throw new NotImplementedException();
+        return await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
+    }
+
+    public async Task<User> Update(User user)
+    {
+        var result = await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
+        if (result.MatchedCount == 0)
+        {
+            throw new ApiException("User not found", ApiErrorCode.NotFound);
+        }
+        return user;
     }
 }
