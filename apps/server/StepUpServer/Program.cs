@@ -30,6 +30,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<AuthMiddleware>();
 
 app.MapUserEndpoints();
 

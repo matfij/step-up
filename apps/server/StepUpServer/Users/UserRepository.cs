@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+using MongoDB.Driver;
 using StepUpServer.Common;
 
 namespace StepUpServer.Users;
@@ -9,6 +9,7 @@ public interface IUserRepository
     Task<User?> GetById(string id);
     Task<User?> GetByEmail(string email);
     Task<User?> GetByUsername(string username);
+    Task<User?> GetByApiToken(string apiToken);
     Task<User> Update(User user);
 }
 
@@ -56,6 +57,13 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByUsername(string username)
     {
         return await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetByApiToken(string apiToken)
+    {
+        return await _users
+            .Find(u => u.ApiToken == apiToken && u.IsConfirmed == true)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<User> Update(User user)

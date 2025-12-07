@@ -1,4 +1,4 @@
-﻿namespace StepUpServer.Common;
+namespace StepUpServer.Common;
 
 public enum ApiErrorCode
 {
@@ -10,17 +10,15 @@ public enum ApiErrorCode
 
     // 2xx - Authentication errors
     Unauthorized = 200,
-    InvalidAuthCode = 201,
+    InvalidAuthToken = 201,
+    NotConfirmed = 202,
 
     // 3xx - Validation errors
     ValidationError = 300,
 }
 
-public class ApiException(
-    string message,
-    ApiErrorCode code,
-    string? field = null
-    ) : Exception(message)
+public class ApiException(string message, ApiErrorCode code, string? field = null)
+    : Exception(message)
 {
     public ApiErrorCode Code { get; } = code;
     public string? Field { get; } = field;

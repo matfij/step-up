@@ -1,12 +1,14 @@
-using System.Text.RegularExpressions;
 using StepUpServer.Common;
 
 namespace StepUpServer.Users;
 
 public interface IUserService
 {
-    Task<User> StartRegister(string email, string username);
-    Task<User> CompleteRegister(string email, string username);
+    Task StartSignUp(string email, string username);
+    Task<User> CompleteSignUp(string email, string authCode);
+    Task StartSignIn(string email);
+    Task<User> CompleteSignIn(string email, string authCode);
+    Task<User> Me(string id);
 }
 
 public partial class UserService(IUserRepository repository, IUserValidator validator)
@@ -15,11 +17,11 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
     private readonly IUserRepository _repository = repository;
     private readonly IUserValidator _validator = validator;
 
-    public async Task<User> StartRegister(string email, string username)
+    public async Task StartSignUp(string email, string username)
     {
         await _validator.ValidateEmail(email);
         await _validator.ValidateUsername(username);
-        var authToken = Random.Shared.NextInt64(100000, 999999).ToString();
+        var authToken = GenerateAuthToken();
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
@@ -30,22 +32,70 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
         };
         await _repository.Create(user);
         // TODO: Send authToken to user's email
-        return user;
     }
 
-    public async Task<User> CompleteRegister(string email, string authCode)
+    public async Task<User> CompleteSignUp(string email, string authToken)
     {
         var user =
             await _repository.GetByEmail(email)
             ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
-        if (user.AuthToken != authCode)
+        if (user.AuthToken != authToken)
         {
-            throw new ApiException("Invalid auth code", ApiErrorCode.InvalidAuthCode);
+            throw new ApiException("Invalid auth token", ApiErrorCode.InvalidAuthToken);
+        }
+        if (user.IsConfirmed)
+        {
+            throw new ApiException("User already confirmed", ApiErrorCode.AlreadyExists);
         }
         user.AuthToken = null;
-        user.ApiToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        user.ApiToken = GenerateApiToken();
         user.IsConfirmed = true;
         await _repository.Update(user);
         return user;
     }
+
+    public async Task StartSignIn(string email)
+    {
+        var user =
+            await _repository.GetByEmail(email)
+            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+        if (!user.IsConfirmed)
+        {
+            throw new ApiException("User not confirmed", ApiErrorCode.NotConfirmed);
+        }
+        var authToken = GenerateAuthToken();
+        user.AuthToken = authToken;
+        await _repository.Update(user);
+    }
+
+    public async Task<User> CompleteSignIn(string email, string authToken)
+    {
+        var user =
+            await _repository.GetByEmail(email)
+            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+        if (!user.IsConfirmed)
+        {
+            throw new ApiException("User not confirmed", ApiErrorCode.NotConfirmed);
+        }
+        if (user.AuthToken != authToken)
+        {
+            throw new ApiException("Invalid auth token", ApiErrorCode.InvalidAuthToken);
+        }
+        user.AuthToken = null;
+        user.ApiToken = GenerateApiToken();
+        await _repository.Update(user);
+        return user;
+    }
+
+    public async Task<User> Me(string id)
+    {
+        var user =
+            await _repository.GetById(id)
+            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+        return user;
+    }
+
+    private static string GenerateAuthToken() => Random.Shared.Next(100_000, 999_999).ToString();
+
+    private static string GenerateApiToken() => Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 }

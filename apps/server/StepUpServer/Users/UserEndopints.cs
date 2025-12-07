@@ -1,34 +1,33 @@
-﻿namespace StepUpServer.Users;
+using StepUpServer.Common;
 
-record StartRegisterStartRequest(string Email, string Username);
+namespace StepUpServer.Users;
 
-record CompleteRegisterRequest(string Email, string AuthCode);
+record SignUpStartRequest(string Email, string Username);
 
-public static class UserEndpints
+record SignUpCompleteRequest(string Email, string AuthToken);
+
+record SignInStartRequest(string Email);
+
+record SignInCompleteRequest(string Email, string AuthToken);
+
+public static class UserEndpoints
 {
     public static void MapUserEndpoints(this WebApplication app)
     {
         app.MapPost(
-            "/users/register/start",
-            async (StartRegisterStartRequest request, IUserService userService) =>
+            "/users/signup/start",
+            async (SignUpStartRequest request, IUserService userService) =>
             {
-                var user = await userService.StartRegister(request.Email, request.Username);
-                return Results.Ok(
-                    new
-                    {
-                        user.Id,
-                        user.Email,
-                        user.Username,
-                    }
-                );
+                await userService.StartSignUp(request.Email, request.Username);
+                return Results.Ok();
             }
         );
 
         app.MapPost(
-            "/users/register/complete",
-            async (CompleteRegisterRequest request, IUserService userService) =>
+            "/users/signup/complete",
+            async (SignUpCompleteRequest request, IUserService userService) =>
             {
-                var user = await userService.CompleteRegister(request.Email, request.AuthCode);
+                var user = await userService.CompleteSignUp(request.Email, request.AuthToken);
                 return Results.Ok(
                     new
                     {
@@ -40,5 +39,50 @@ public static class UserEndpints
                 );
             }
         );
+
+        app.MapPost(
+            "/users/signin/start",
+            async (SignInStartRequest request, IUserService userService) =>
+            {
+                await userService.StartSignIn(request.Email);
+                return Results.Ok();
+            }
+        );
+
+        app.MapPost(
+            "/users/signin/complete",
+            async (SignInCompleteRequest request, IUserService userService) =>
+            {
+                var user = await userService.CompleteSignIn(request.Email, request.AuthToken);
+                return Results.Ok(
+                    new
+                    {
+                        user.Id,
+                        user.Email,
+                        user.Username,
+                        user.ApiToken,
+                    }
+                );
+            }
+        );
+
+        app.MapGet(
+                "/users/me",
+                async (HttpContext context, IUserService userService) =>
+                {
+                    var userId = context.GetUserId();
+                    var user = await userService.Me(userId);
+                    return Results.Ok(
+                        new
+                        {
+                            user.Id,
+                            user.Email,
+                            user.Username,
+                            user.ApiToken,
+                        }
+                    );
+                }
+            )
+            .WithMetadata(new RequireAuthAttribute());
     }
 }
