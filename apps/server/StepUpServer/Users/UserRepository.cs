@@ -23,6 +23,7 @@ public class UserRepository : IUserRepository
 
         var emailIndex = Builders<User>.IndexKeys.Ascending(u => u.Email);
         var usernameIndex = Builders<User>.IndexKeys.Ascending(u => u.Username);
+        var apiTokenIndex = Builders<User>.IndexKeys.Ascending(u => u.ApiToken);
 
         _users.Indexes.CreateOneAsync(
             new CreateIndexModel<User>(
@@ -34,6 +35,12 @@ public class UserRepository : IUserRepository
             new CreateIndexModel<User>(
                 usernameIndex,
                 new CreateIndexOptions { Unique = true, Background = true }
+            )
+        );
+        _users.Indexes.CreateOneAsync(
+            new CreateIndexModel<User>(
+                apiTokenIndex,
+                new CreateIndexOptions { Unique = false, Background = true, Sparse = true }
             )
         );
     }

@@ -24,11 +24,13 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
         var authToken = GenerateAuthToken();
         var user = new User
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Utils.GenerateId(),
             Email = email,
             Username = username,
             IsConfirmed = false,
             AuthToken = authToken,
+            CreatedAt = Utils.GetCurrentTimestamp(),
+            LastSeenAt = 0,
         };
         await _repository.Create(user);
         // TODO: Send authToken to user's email
@@ -83,6 +85,7 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
         }
         user.AuthToken = null;
         user.ApiToken = GenerateApiToken();
+        user.LastSeenAt = Utils.GetCurrentTimestamp();
         await _repository.Update(user);
         return user;
     }
@@ -97,5 +100,6 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
 
     private static string GenerateAuthToken() => Random.Shared.Next(100_000, 999_999).ToString();
 
-    private static string GenerateApiToken() => Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+    private static string GenerateApiToken() =>
+        Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 }

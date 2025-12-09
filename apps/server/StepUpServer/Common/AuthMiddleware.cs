@@ -52,8 +52,10 @@ public class AuthMiddleware(RequestDelegate next)
             return;
         }
 
-        context.Items["User"] = user;
+        user.LastSeenAt = Utils.GetCurrentTimestamp();
+        await userRepository.Update(user);
 
+        context.Items["User"] = user;
         await _next(context);
     }
 }
