@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { AppAction } from "../common/components/app-action";
@@ -8,6 +8,8 @@ import { AppInput } from "../common/components/app-input";
 import { appConfig } from "../common/config";
 import { theme, themeComposable } from "../common/theme";
 import { isValidEmail, isValidUsername } from "../common/utils";
+import { useRequest } from "../common/api/api-hooks";
+import { userClient } from "../common/api/user-client";
 
 export default function SignUp() {
   const router = useRouter();
@@ -16,13 +18,20 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
-  const [showAuthCode, setShowAuthCode] = useState(false);
   const [authCode, setAuthCode] = useState("");
+  const startSignUp = useRequest(userClient.startSignUp);
+
+  useEffect(() => setEmailError(""), [email]);
+
+  useEffect(() => setUsernameError(""), [username]);
+
+  useEffect(() => {
+    if (startSignUp.error) {
+      console.log(startSignUp.error);
+    }
+  }, [startSignUp.error]);
 
   const onSignUp = () => {
-    setEmailError("");
-    setUsernameError("");
-
     if (!isValidEmail(email)) {
       setEmailError(t("auth.emailInvalid"));
       return;
@@ -35,13 +44,7 @@ export default function SignUp() {
       );
       return;
     }
-
-    // TODO - call API
-
-    if (!showAuthCode) {
-      setShowAuthCode(true);
-      return;
-    }
+    startSignUp.call({ email, username });
   };
 
   return (
@@ -61,7 +64,7 @@ export default function SignUp() {
         onChange={setUsername}
         style={{ width: "70%" }}
       />
-      {showAuthCode && (
+      {startSignUp.success && (
         <AppInput
           keyboard="number-pad"
           label={t("auth.authCodeCheckInbox")}
@@ -71,6 +74,7 @@ export default function SignUp() {
         />
       )}
       <AppButton
+        disabled={startSignUp.loading}
         label={t("auth.signUp")}
         onClick={onSignUp}
         style={{ width: "70%", marginTop: theme.spacing.md }}

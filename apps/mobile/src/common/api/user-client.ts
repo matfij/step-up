@@ -1,0 +1,35 @@
+import { ApiClient } from "./api-client";
+import { ApiError } from "./api-definitions";
+
+export class UserClient extends ApiClient {
+  startSignUp = async (params: {
+    email: string;
+    username: string;
+  }): Promise<{ data?: any; error?: ApiError }> => {
+    return this.request("/users/signup/start", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  };
+
+  completeSignUp = async (params: {
+    email: string;
+    authCode: string;
+  }): Promise<{ data?: { apiToken: string }; error?: ApiError }> => {
+    const result = await this.request<{ apiToken: string }>(
+      "/users/signup/complete",
+      {
+        method: "POST",
+        body: JSON.stringify(params),
+      }
+    );
+
+    if (result.data?.apiToken) {
+      await this.setToken(result.data.apiToken);
+    }
+
+    return result;
+  };
+}
+
+export const userClient = new UserClient();

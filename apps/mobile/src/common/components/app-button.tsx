@@ -9,13 +9,18 @@ import { theme, themeComposable } from "../theme";
 
 type AppButtonProps = {
   label: string;
+  disabled?: boolean;
   onClick: () => void;
   style?: StyleProp<ViewStyle>;
 };
 
 export const AppButton = (props: AppButtonProps) => {
   return (
-    <Pressable style={[styles.button, props.style]} onPress={props.onClick}>
+    <Pressable
+      disabled={props.disabled}
+      onPress={props.onClick}
+      style={[styles.button, props.style]}
+    >
       <Text style={styles.label}>{props.label}</Text>
     </Pressable>
   );
