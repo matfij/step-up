@@ -40,14 +40,14 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
     {
         var user =
             await _repository.GetByEmail(email)
-            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+            ?? throw new ApiException("errors.fieldNotFound", nameof(email));
         if (user.AuthToken != authToken)
         {
-            throw new ApiException("Invalid auth token", ApiErrorCode.InvalidAuthToken);
+            throw new ApiException("errors.authTokenNotValid", nameof(authToken));
         }
         if (user.IsConfirmed)
         {
-            throw new ApiException("User already confirmed", ApiErrorCode.AlreadyExists);
+            throw new ApiException("errors.userAlreadyConfirmed");
         }
         user.AuthToken = null;
         user.ApiToken = GenerateApiToken();
@@ -60,10 +60,10 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
     {
         var user =
             await _repository.GetByEmail(email)
-            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+            ?? throw new ApiException("errors.userNotFound", nameof(email));
         if (!user.IsConfirmed)
         {
-            throw new ApiException("User not confirmed", ApiErrorCode.NotConfirmed);
+            throw new ApiException("errors.userNotConfirmed");
         }
         var authToken = GenerateAuthToken();
         user.AuthToken = authToken;
@@ -74,14 +74,14 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
     {
         var user =
             await _repository.GetByEmail(email)
-            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+            ?? throw new ApiException("errors.userNotFound");
         if (!user.IsConfirmed)
         {
-            throw new ApiException("User not confirmed", ApiErrorCode.NotConfirmed);
+            throw new ApiException("errors.userNotConfirmed");
         }
         if (user.AuthToken != authToken)
         {
-            throw new ApiException("Invalid auth token", ApiErrorCode.InvalidAuthToken);
+            throw new ApiException("errors.authTokenNotValid", nameof(authToken));
         }
         user.AuthToken = null;
         user.ApiToken = GenerateApiToken();
@@ -94,7 +94,7 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
     {
         var user =
             await _repository.GetById(id)
-            ?? throw new ApiException("User not found", ApiErrorCode.NotFound);
+            ?? throw new ApiException("errors.userNotFound");
         return user;
     }
 

@@ -24,14 +24,7 @@ public class AuthMiddleware(RequestDelegate next)
         if (authHeader is null)
         {
             await context.Response.WriteAsJsonAsync(
-                new
-                {
-                    error = new
-                    {
-                        code = ApiErrorCode.Unauthorized,
-                        message = "Authentication token missing",
-                    },
-                }
+                new { error = new { key = "errors.unauthorized" } }
             );
             return;
         }
@@ -40,14 +33,7 @@ public class AuthMiddleware(RequestDelegate next)
         if (user is null)
         {
             await context.Response.WriteAsJsonAsync(
-                new
-                {
-                    error = new
-                    {
-                        code = ApiErrorCode.Unauthorized,
-                        message = "Invalid authentication token",
-                    },
-                }
+                new { error = new { key = "errors.unauthorized" } }
             );
             return;
         }

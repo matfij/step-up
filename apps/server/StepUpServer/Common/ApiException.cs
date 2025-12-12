@@ -1,25 +1,8 @@
 namespace StepUpServer.Common;
 
-public enum ApiErrorCode
+public class ApiException(string key, string? field = null)
+    : Exception(String.Empty)
 {
-    Fatal = 0,
-
-    // 1xx - Resource errors
-    NotFound = 100,
-    AlreadyExists = 101,
-
-    // 2xx - Authentication errors
-    Unauthorized = 200,
-    InvalidAuthToken = 201,
-    NotConfirmed = 202,
-
-    // 3xx - Validation errors
-    ValidationError = 300,
-}
-
-public class ApiException(string message, ApiErrorCode code, string? field = null)
-    : Exception(message)
-{
-    public ApiErrorCode Code { get; } = code;
+    public string Key { get; } = key;
     public string? Field { get; } = field;
 }

@@ -385,5 +385,4 @@ temp
 .packages
 /src/Templates/.tempTemplateOutput
 
-./appsettings.json
-**/*appsettings.Development.json
+**/*appsettings*.json

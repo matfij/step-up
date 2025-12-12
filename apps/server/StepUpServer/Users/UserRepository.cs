@@ -78,7 +78,7 @@ public class UserRepository : IUserRepository
         var result = await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
         if (result.MatchedCount == 0)
         {
-            throw new ApiException("User not found", ApiErrorCode.NotFound);
+            throw new ApiException("errors.userNotFound");
         }
         return user;
     }

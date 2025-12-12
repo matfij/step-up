@@ -24,22 +24,14 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
     {
         if (email.Length > EmailMaxLength || !EmailPattern().IsMatch(email))
         {
-            throw new ApiException(
-                $"Invalid {nameof(email)}",
-                ApiErrorCode.ValidationError,
-                nameof(email)
-            );
+            throw new ApiException("errors.emailInvalid", nameof(email));
         }
 
         var userWithSameEmail = await _repository.GetByEmail(email);
 
         if (userWithSameEmail is not null)
         {
-            throw new ApiException(
-                $"Duplicated {nameof(email)}",
-                ApiErrorCode.AlreadyExists,
-                nameof(email)
-            );
+            throw new ApiException("errors.emailNotUnique", nameof(email));
         }
     }
 
@@ -47,22 +39,14 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
     {
         if (username.Length < UsernameMinLength || username.Length > UsernameMaxLength)
         {
-            throw new ApiException(
-                $"Invalid {nameof(username)}",
-                ApiErrorCode.ValidationError,
-                nameof(username)
-            );
+            throw new ApiException("errors.usernameInvalid", nameof(username));
         }
 
         var userWithSameUsername = await _repository.GetByUsername(username);
 
         if (userWithSameUsername is not null)
         {
-            throw new ApiException(
-                $"Duplicated {nameof(username)}",
-                ApiErrorCode.AlreadyExists,
-                nameof(username)
-            );
+            throw new ApiException("errors.emailNotUnique", nameof(username));
         }
     }
 }
