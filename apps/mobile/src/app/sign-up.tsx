@@ -7,27 +7,54 @@ import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
 import { appConfig } from "../common/config";
 import { theme, themeComposable } from "../common/theme";
-import { isValidEmail, isValidUsername } from "../common/utils";
+import {
+  isValidAuthToken,
+  isValidEmail,
+  isValidUsername,
+} from "../common/utils";
 import { useRequest } from "../common/api/api-hooks";
 import { userClient } from "../common/api/user-client";
+import { useUserStore } from "../common/state/user-store";
 
 export default function SignUp() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { signIn } = useUserStore();
+  const startSignUp = useRequest(userClient.startSignUp);
+  const completeSignUp = useRequest(userClient.completeSignUp);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
-  const [authCode, setAuthCode] = useState("");
-  const startSignUp = useRequest(userClient.startSignUp);
+  const [authToken, setAuthToken] = useState("");
+  const [authTokenError, setAuthTokenError] = useState("");
 
   useEffect(() => setEmailError(""), [email]);
 
   useEffect(() => setUsernameError(""), [username]);
 
-  console.log("startSignUp.error", startSignUp.error);
+  useEffect(() => setAuthTokenError(""), [authToken]);
+
+  useEffect(() => {
+    if (completeSignUp.success && completeSignUp.data) {
+      console.log("completeSignUp.success", completeSignUp.data)
+      signIn({
+        id: completeSignUp.data.id,
+        email: completeSignUp.data.email,
+        username: completeSignUp.data.username,
+      });
+    }
+  }, [completeSignUp.success]);
 
   const onSignUp = () => {
+    if (startSignUp.success) {
+      onCompleteSignUp();
+    } else {
+      onStartSignUp();
+    }
+  };
+
+  const onStartSignUp = () => {
     if (!isValidEmail(email)) {
       setEmailError(t("auth.emailInvalid"));
       return;
@@ -41,6 +68,24 @@ export default function SignUp() {
       return;
     }
     startSignUp.call({ email, username });
+  };
+
+  const onCompleteSignUp = () => {
+    if (!isValidEmail(email)) {
+      setEmailError(t("auth.emailInvalid"));
+      return;
+    } else if (!isValidUsername(username)) {
+      setUsernameError(
+        t("auth.usernameInvalid", {
+          min: appConfig.validation.usernameLengthMin,
+          max: appConfig.validation.usernameLengthMax,
+        })
+      );
+      return;
+    } else if (!isValidAuthToken(authToken)) {
+      setAuthTokenError(t("errors.authTokenNotValid"));
+    }
+    completeSignUp.call({ email, authToken });
   };
 
   return (
@@ -64,8 +109,9 @@ export default function SignUp() {
         <AppInput
           keyboard="number-pad"
           label={t("auth.authCodeCheckInbox")}
-          value={authCode}
-          onChange={setAuthCode}
+          value={authToken}
+          error={authTokenError}
+          onChange={setAuthToken}
           style={{ width: "70%" }}
         />
       )}
@@ -77,6 +123,16 @@ export default function SignUp() {
           )}
         </Text>
       )}
+      {completeSignUp.error && (
+        <Text style={styles.error}>
+          {t(
+            completeSignUp.error.key,
+            completeSignUp.error.field
+              ? { field: completeSignUp.error.field }
+              : {}
+          )}
+        </Text>
+      )}
       <AppButton
         disabled={startSignUp.loading}
         label={t("auth.signUp")}
@@ -85,7 +141,7 @@ export default function SignUp() {
       />
       <AppAction
         label={t("auth.existingAccount")}
-        onClick={() => router.push("/")}
+        onClick={() => router.push("/sign-in")}
         style={{ marginTop: theme.spacing.lg }}
       />
     </View>

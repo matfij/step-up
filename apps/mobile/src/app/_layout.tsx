@@ -1,6 +1,21 @@
 import { Stack } from "expo-router";
 import "../common/i18n";
+import { useUserStore } from "../common/state/user-store";
+import { StatusBar } from "react-native";
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  const { username } = useUserStore();
+  return (
+    <Stack>
+      <StatusBar />
+      <Stack.Protected guard={!!username}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!username}>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+      </Stack.Protected>
+    </Stack>
+  );
 }

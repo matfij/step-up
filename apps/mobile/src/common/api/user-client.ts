@@ -14,15 +14,25 @@ export class UserClient extends ApiClient {
 
   completeSignUp = async (params: {
     email: string;
-    authCode: string;
-  }): Promise<{ data?: { apiToken: string }; error?: ApiError }> => {
-    const result = await this.request<{ apiToken: string }>(
-      "/users/signup/complete",
-      {
-        method: "POST",
-        body: JSON.stringify(params),
-      }
-    );
+    authToken: string;
+  }): Promise<{
+    data?: {
+      id: string;
+      email: string;
+      username: string;
+      apiToken: string;
+    };
+    error?: ApiError;
+  }> => {
+    const result = await this.request<{
+      id: string;
+      email: string;
+      username: string;
+      apiToken: string;
+    }>("/users/signup/complete", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
 
     if (result.data?.apiToken) {
       await this.setToken(result.data.apiToken);

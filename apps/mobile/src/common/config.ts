@@ -6,5 +6,6 @@ export const appConfig = {
     emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     usernameLengthMin: 4,
     usernameLengthMax: 16,
+    authTokenLength: 6,
   },
 } as const;

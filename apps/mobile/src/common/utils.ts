@@ -15,3 +15,10 @@ export const isValidUsername = (username: string) => {
     username.trim().length <= appConfig.validation.usernameLengthMax
   );
 };
+
+export const isValidAuthToken = (authToken: string) => {
+  return (
+    !isNaN(Number(authToken)) &&
+    authToken.length === appConfig.validation.authTokenLength
+  );
+};
