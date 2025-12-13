@@ -5,9 +5,17 @@ namespace StepUpServer.Users;
 
 public interface IUserValidator
 {
+    public Task<User> EnsureEmailExists(string email);
+
     public Task ValidateEmail(string email);
 
     public Task ValidateUsername(string username);
+
+    void EnsureIsNotConfirmed(User user);
+
+    void EnsureIsConfirmed(User user);
+
+    void EnsureAuthTokenIsValid(User user, string authToken);
 }
 
 public partial class UserValidator(IUserRepository _repository) : IUserValidator
@@ -19,6 +27,14 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
 
     public const int UsernameMinLength = 4;
     public const int UsernameMaxLength = 16;
+
+    public async Task<User> EnsureEmailExists(string email)
+    {
+        var user =
+             await _repository.GetByEmail(email)
+             ?? throw new ApiException("errors.userNotFound");
+        return user;
+    }
 
     public async Task ValidateEmail(string email)
     {
@@ -46,7 +62,31 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
 
         if (userWithSameUsername is not null)
         {
-            throw new ApiException("errors.emailNotUnique", nameof(username));
+            throw new ApiException("errors.usernameNotUnique", nameof(username));
+        }
+    }
+
+    public void EnsureIsNotConfirmed(User user)
+    {
+        if (user.IsConfirmed)
+        {
+            throw new ApiException("errors.userAlreadyConfirmed");
+        }
+    }
+
+    public void EnsureIsConfirmed(User user)
+    {
+        if (!user.IsConfirmed)
+        {
+            throw new ApiException("errors.userNotConfirmed");
+        }
+    }
+
+    public void EnsureAuthTokenIsValid(User user, string authToken)
+    {
+        if (user.AuthToken != authToken)
+        {
+            throw new ApiException("errors.authTokenNotValid", nameof(authToken));
         }
     }
 }

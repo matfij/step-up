@@ -38,17 +38,9 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
 
     public async Task<User> CompleteSignUp(string email, string authToken)
     {
-        var user =
-            await _repository.GetByEmail(email)
-            ?? throw new ApiException("errors.fieldNotFound", nameof(email));
-        if (user.AuthToken != authToken)
-        {
-            throw new ApiException("errors.authTokenNotValid", nameof(authToken));
-        }
-        if (user.IsConfirmed)
-        {
-            throw new ApiException("errors.userAlreadyConfirmed");
-        }
+        var user = await _validator.EnsureEmailExists(email);
+        _validator.EnsureIsNotConfirmed(user);
+        _validator.EnsureAuthTokenIsValid(user, authToken);
         user.AuthToken = null;
         user.ApiToken = GenerateApiToken();
         user.IsConfirmed = true;
@@ -58,13 +50,8 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
 
     public async Task StartSignIn(string email)
     {
-        var user =
-            await _repository.GetByEmail(email)
-            ?? throw new ApiException("errors.userNotFound", nameof(email));
-        if (!user.IsConfirmed)
-        {
-            throw new ApiException("errors.userNotConfirmed");
-        }
+        var user = await _validator.EnsureEmailExists(email);
+        _validator.EnsureIsConfirmed(user);
         var authToken = GenerateAuthToken();
         user.AuthToken = authToken;
         await _repository.Update(user);
@@ -72,17 +59,9 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
 
     public async Task<User> CompleteSignIn(string email, string authToken)
     {
-        var user =
-            await _repository.GetByEmail(email)
-            ?? throw new ApiException("errors.userNotFound");
-        if (!user.IsConfirmed)
-        {
-            throw new ApiException("errors.userNotConfirmed");
-        }
-        if (user.AuthToken != authToken)
-        {
-            throw new ApiException("errors.authTokenNotValid", nameof(authToken));
-        }
+        var user = await _validator.EnsureEmailExists(email);
+        _validator.EnsureIsConfirmed(user);
+        _validator.EnsureAuthTokenIsValid(user, authToken);
         user.AuthToken = null;
         user.ApiToken = GenerateApiToken();
         user.LastSeenAt = Utils.GetCurrentTimestamp();
