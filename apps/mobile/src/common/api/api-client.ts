@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { appConfig } from "../config";
-import { ApiError, ApiErrorCode } from "./api-definitions";
+import { ApiError } from "./api-definitions";
 
 export abstract class ApiClient {
   private baseUrl = "http://10.0.2.2:8080";
@@ -40,17 +40,16 @@ export abstract class ApiClient {
         headers,
       });
       if (!response.ok) {
-        const error = await response.json();
-        return { error };
+        const errorData = await response.json();
+        return { error: errorData.error };
       }
       const data = await this.safeParse(response);
       return { data };
     } catch (error) {
-      console.log("error", error);
       return {
         error: {
           name: "Unknown Error",
-          code: ApiErrorCode.Unknown,
+          key: "errors.unknown",
           message:
             error instanceof Error
               ? error.message

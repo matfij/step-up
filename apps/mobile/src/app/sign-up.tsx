@@ -25,11 +25,7 @@ export default function SignUp() {
 
   useEffect(() => setUsernameError(""), [username]);
 
-  useEffect(() => {
-    if (startSignUp.error) {
-      console.log(startSignUp.error);
-    }
-  }, [startSignUp.error]);
+  console.log("startSignUp.error", startSignUp.error);
 
   const onSignUp = () => {
     if (!isValidEmail(email)) {
@@ -73,6 +69,14 @@ export default function SignUp() {
           style={{ width: "70%" }}
         />
       )}
+      {startSignUp.error && (
+        <Text style={styles.error}>
+          {t(
+            startSignUp.error.key,
+            startSignUp.error.field ? { field: startSignUp.error.field } : {}
+          )}
+        </Text>
+      )}
       <AppButton
         disabled={startSignUp.loading}
         label={t("auth.signUp")}
@@ -108,5 +112,13 @@ const styles = StyleSheet.create({
   brandImage: {
     height: 200,
     width: 200,
+  },
+  error: {
+    ...themeComposable.typography.bodySmall,
+    ...themeComposable.shadows.md,
+    marginTop: theme.spacing.md,
+    marginBottom: -theme.spacing.lg,
+    fontWeight: 600,
+    color: theme.colors.status.error,
   },
 });

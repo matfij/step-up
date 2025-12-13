@@ -11,7 +11,20 @@
     "newAccount": "Don't have an account? Sign up.",
     "existingAccount": "Already have an account? Sign in.",
     "signUpTitle": "Create a new account",
-    "emailInvalid": "Provided email is invalid",
-    "usernameInvalid": "Username must be between {{min}} and {{max}} characters"
+    "usernameInvalid": "Username must be between {{min}} and {{max}} characters",
+    "emailInvalid": "Provided email is invalid"
+  },
+  "errors": {
+    "fatal": "Fatal error",
+    "unknown": "Unknown error",
+    "unauthorized": "Unauthorized",
+    "fieldNotValid": "Provided '{{field}}' is invalid",
+    "emailNotUnique": "Email must be unique",
+    "usernameNotUnique": "Username must be unique",
+    "fieldNotFound": "'{{field}}' not found",
+    "authTokenNotValid": "Provided auth token is not valid",
+    "userAlreadyConfirmed": "Your account is confirmed",
+    "userNotFound": "User not found",
+    "userNotConfirmed": "Please verify you account first"
   }
 }

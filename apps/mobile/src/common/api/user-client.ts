@@ -5,7 +5,7 @@ export class UserClient extends ApiClient {
   startSignUp = async (params: {
     email: string;
     username: string;
-  }): Promise<{ data?: any; error?: ApiError }> => {
+  }): Promise<{ error?: ApiError }> => {
     return this.request("/users/signup/start", {
       method: "POST",
       body: JSON.stringify(params),
