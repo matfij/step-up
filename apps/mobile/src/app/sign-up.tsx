@@ -15,6 +15,7 @@ import {
 import { useRequest } from "../common/api/api-hooks";
 import { userClient } from "../common/api/user-client";
 import { useUserStore } from "../common/state/user-store";
+import { AppApiError } from "../common/components/app-api-error";
 
 export default function SignUp() {
   const router = useRouter();
@@ -37,7 +38,6 @@ export default function SignUp() {
 
   useEffect(() => {
     if (completeSignUp.success && completeSignUp.data) {
-      console.log("completeSignUp.success", completeSignUp.data)
       signIn({
         id: completeSignUp.data.id,
         email: completeSignUp.data.email,
@@ -84,6 +84,7 @@ export default function SignUp() {
       return;
     } else if (!isValidAuthToken(authToken)) {
       setAuthTokenError(t("errors.authTokenNotValid"));
+      return;
     }
     completeSignUp.call({ email, authToken });
   };
@@ -115,32 +116,17 @@ export default function SignUp() {
           style={{ width: "70%" }}
         />
       )}
-      {startSignUp.error && (
-        <Text style={styles.error}>
-          {t(
-            startSignUp.error.key,
-            startSignUp.error.field ? { field: startSignUp.error.field } : {}
-          )}
-        </Text>
-      )}
-      {completeSignUp.error && (
-        <Text style={styles.error}>
-          {t(
-            completeSignUp.error.key,
-            completeSignUp.error.field
-              ? { field: completeSignUp.error.field }
-              : {}
-          )}
-        </Text>
-      )}
+      <AppApiError error={startSignUp.error} />
+      <AppApiError error={completeSignUp.error} />
       <AppButton
-        disabled={startSignUp.loading}
         label={t("auth.signUp")}
+        disabled={startSignUp.loading || completeSignUp.loading}
         onClick={onSignUp}
         style={{ width: "70%", marginTop: theme.spacing.md }}
       />
       <AppAction
         label={t("auth.existingAccount")}
+        disabled={startSignUp.loading || completeSignUp.loading}
         onClick={() => router.push("/sign-in")}
         style={{ marginTop: theme.spacing.lg }}
       />
@@ -168,13 +154,5 @@ const styles = StyleSheet.create({
   brandImage: {
     height: 200,
     width: 200,
-  },
-  error: {
-    ...themeComposable.typography.bodySmall,
-    ...themeComposable.shadows.md,
-    marginTop: theme.spacing.md,
-    marginBottom: -theme.spacing.lg,
-    fontWeight: 600,
-    color: theme.colors.status.error,
   },
 });

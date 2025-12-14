@@ -19,7 +19,12 @@ export const AppButton = (props: AppButtonProps) => {
     <Pressable
       disabled={props.disabled}
       onPress={props.onClick}
-      style={[styles.button, props.style]}
+      style={({ pressed }) => [
+        styles.button,
+        props.disabled ? styles.disabled : styles.enabled,
+        pressed && !props.disabled && styles.pressed,
+        props.style,
+      ]}
     >
       <Text style={styles.label}>{props.label}</Text>
     </Pressable>
@@ -32,8 +37,19 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     paddingVertical: theme.spacing.sm,
-    backgroundColor: theme.colors.primary[500],
     borderRadius: theme.borderRadius.md,
+  },
+  enabled: {
+    backgroundColor: theme.colors.primary[500],
+  },
+  disabled: {
+    backgroundColor: theme.colors.primary[300],
+    opacity: 0.7,
+    shadowOpacity: 0,
+    elevation: 0,
+  },
+  pressed: {
+    opacity: 0.8,
   },
   label: {
     ...themeComposable.typography.bodyLarge,

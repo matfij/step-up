@@ -1,36 +1,67 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { AppAction } from "../common/components/app-action";
 import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
 import { theme, themeComposable } from "../common/theme";
-import { isValidEmail } from "../common/utils";
+import { isValidAuthToken, isValidEmail } from "../common/utils";
+import { useRequest } from "../common/api/api-hooks";
+import { userClient } from "../common/api/user-client";
+import { useUserStore } from "../common/state/user-store";
+import { AppApiError } from "../common/components/app-api-error";
 
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { signIn } = useUserStore();
+  const startSignIn = useRequest(userClient.startSignIn);
+  const completeSignIn = useRequest(userClient.completeSignIn);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [showAuthCode, setShowAuthCode] = useState(false);
-  const [authCode, setAuthCode] = useState("");
+  const [authToken, setAuthToken] = useState("");
+  const [authTokenError, setAuthTokenError] = useState("");
+
+  useEffect(() => setEmailError(""), [email]);
+
+  useEffect(() => setAuthTokenError(""), [authToken]);
+
+  useEffect(() => {
+    if (completeSignIn.success && completeSignIn.data) {
+      signIn({
+        id: completeSignIn.data.id,
+        email: completeSignIn.data.email,
+        username: completeSignIn.data.username,
+      });
+    }
+  }, [completeSignIn.success]);
 
   const onSignIn = () => {
-    setEmailError("");
+    if (startSignIn.success) {
+      onCompleteSignIn();
+    } else {
+      onStartSignIn();
+    }
+  };
 
+  const onStartSignIn = () => {
     if (!isValidEmail(email)) {
       setEmailError(t("auth.emailInvalid"));
-      setShowAuthCode(false);
       return;
     }
+    startSignIn.call({ email });
+  };
 
-    // TODO - call API
-
-    if (!showAuthCode) {
-      setShowAuthCode(true);
+  const onCompleteSignIn = () => {
+    if (!isValidEmail(email)) {
+      setEmailError(t("auth.emailInvalid"));
+      return;
+    } else if (!isValidAuthToken(authToken)) {
+      setAuthTokenError(t("errors.authTokenNotValid"));
       return;
     }
+    completeSignIn.call({ email, authToken });
   };
 
   return (
@@ -49,22 +80,27 @@ export default function Index() {
         onChange={setEmail}
         style={{ width: "70%" }}
       />
-      {showAuthCode && (
+      {startSignIn.success && (
         <AppInput
           keyboard="number-pad"
           label={t("auth.authCodeCheckInbox")}
-          value={authCode}
-          onChange={setAuthCode}
+          value={authToken}
+          error={authTokenError}
+          onChange={setAuthToken}
           style={{ width: "70%" }}
         />
       )}
+      <AppApiError error={startSignIn.error} />
+      <AppApiError error={completeSignIn.error} />
       <AppButton
         label={t("auth.signIn")}
+        disabled={startSignIn.loading || completeSignIn.loading}
         onClick={onSignIn}
         style={{ width: "70%", marginTop: theme.spacing.md }}
       />
       <AppAction
         label={t("auth.newAccount")}
+        disabled={startSignIn.loading || completeSignIn.loading}
         onClick={() => router.push("/sign-up")}
         style={{ marginTop: theme.spacing.lg }}
       />

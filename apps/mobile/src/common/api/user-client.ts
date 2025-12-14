@@ -40,6 +40,44 @@ export class UserClient extends ApiClient {
 
     return result;
   };
+
+  startSignIn = async (params: {
+    email: string;
+  }): Promise<{ error?: ApiError }> => {
+    return this.request("/users/signin/start", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  };
+
+  completeSignIn = async (params: {
+    email: string;
+    authToken: string;
+  }): Promise<{
+    data?: {
+      id: string;
+      email: string;
+      username: string;
+      apiToken: string;
+    };
+    error?: ApiError;
+  }> => {
+    const result = await this.request<{
+      id: string;
+      email: string;
+      username: string;
+      apiToken: string;
+    }>("/users/signin/complete", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+
+    if (result.data?.apiToken) {
+      await this.setToken(result.data.apiToken);
+    }
+
+    return result;
+  };
 }
 
 export const userClient = new UserClient();
