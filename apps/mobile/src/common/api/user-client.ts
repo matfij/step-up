@@ -1,5 +1,5 @@
 import { ApiClient } from "./api-client";
-import { ApiError } from "./api-definitions";
+import { ApiError, User } from "./api-definitions";
 
 export class UserClient extends ApiClient {
   startSignUp = async (params: {
@@ -16,28 +16,13 @@ export class UserClient extends ApiClient {
     email: string;
     authToken: string;
   }): Promise<{
-    data?: {
-      id: string;
-      email: string;
-      username: string;
-      apiToken: string;
-    };
+    data?: User;
     error?: ApiError;
   }> => {
-    const result = await this.request<{
-      id: string;
-      email: string;
-      username: string;
-      apiToken: string;
-    }>("/users/signup/complete", {
+    const result = await this.request<User>("/users/signup/complete", {
       method: "POST",
       body: JSON.stringify(params),
     });
-
-    if (result.data?.apiToken) {
-      await this.setToken(result.data.apiToken);
-    }
-
     return result;
   };
 
@@ -54,28 +39,13 @@ export class UserClient extends ApiClient {
     email: string;
     authToken: string;
   }): Promise<{
-    data?: {
-      id: string;
-      email: string;
-      username: string;
-      apiToken: string;
-    };
+    data?: User;
     error?: ApiError;
   }> => {
-    const result = await this.request<{
-      id: string;
-      email: string;
-      username: string;
-      apiToken: string;
-    }>("/users/signin/complete", {
+    const result = await this.request<User>("/users/signin/complete", {
       method: "POST",
       body: JSON.stringify(params),
     });
-
-    if (result.data?.apiToken) {
-      await this.setToken(result.data.apiToken);
-    }
-
     return result;
   };
 }

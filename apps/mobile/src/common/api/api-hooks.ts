@@ -15,15 +15,22 @@ export const useRequest = <TArgs, TData>(
     setLoading(true);
     setSuccess(false);
 
-    const result = await apiCall(args);
-
-    if (result.data) {
-      setData(result.data);
-    }
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setSuccess(true);
+    try {
+      const result = await apiCall(args);
+      if (result.data) {
+        setData(result.data);
+      }
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setSuccess(true);
+      }
+    } catch (err) {
+      setError({
+        name: "Unknown",
+        message: "Unknown error",
+        key: "errors.unknown",
+      });
     }
 
     setLoading(false);

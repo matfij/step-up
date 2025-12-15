@@ -42,6 +42,7 @@ export default function SignUp() {
         id: completeSignUp.data.id,
         email: completeSignUp.data.email,
         username: completeSignUp.data.username,
+        apiToken: completeSignUp.data.apiToken,
       });
     }
   }, [completeSignUp.success]);

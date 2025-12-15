@@ -33,6 +33,7 @@ export default function Index() {
         id: completeSignIn.data.id,
         email: completeSignIn.data.email,
         username: completeSignIn.data.username,
+        apiToken: completeSignIn.data.apiToken,
       });
     }
   }, [completeSignIn.success]);
