@@ -16,6 +16,7 @@ import { useRequest } from "../common/api/api-hooks";
 import { userClient } from "../common/api/user-client";
 import { useUserStore } from "../common/state/user-store";
 import { AppApiError } from "../common/components/app-api-error";
+import { AppWrapper } from "../common/components/app-wrapper";
 
 export default function SignUp() {
   const router = useRouter();
@@ -91,7 +92,7 @@ export default function SignUp() {
   };
 
   return (
-    <View style={styles.mainWrapper}>
+    <AppWrapper>
       <Text style={styles.title}>{t("auth.signUpTitle")}</Text>
       <AppInput
         label={t("auth.email")}
@@ -131,20 +132,11 @@ export default function SignUp() {
         onClick={() => router.push("/sign-in")}
         style={{ marginTop: theme.spacing.lg }}
       />
-    </View>
+    </AppWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  mainWrapper: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: theme.spacing.md,
-    backgroundColor: theme.colors.dark[500],
-  },
   title: {
     ...themeComposable.typography.h1,
     ...themeComposable.textShadows.lg,

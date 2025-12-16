@@ -1,10 +1,10 @@
 import { Text } from "react-native";
 import { AppWrapper } from "../../common/components/app-wrapper";
 
-export default function Index() {
+export default function Activity() {
   return (
     <AppWrapper>
-      <Text>Index</Text>
+      <Text>Activity</Text>
     </AppWrapper>
   );
 }

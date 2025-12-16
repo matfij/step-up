@@ -11,6 +11,7 @@ import { useRequest } from "../common/api/api-hooks";
 import { userClient } from "../common/api/user-client";
 import { useUserStore } from "../common/state/user-store";
 import { AppApiError } from "../common/components/app-api-error";
+import { AppWrapper } from "../common/components/app-wrapper";
 
 export default function Index() {
   const router = useRouter();
@@ -66,7 +67,7 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.mainWrapper}>
+    <AppWrapper>
       <View style={styles.brandWrapper}>
         <Image
           style={styles.brandImage}
@@ -105,20 +106,11 @@ export default function Index() {
         onClick={() => router.push("/sign-up")}
         style={{ marginTop: theme.spacing.lg }}
       />
-    </View>
+    </AppWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  mainWrapper: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: theme.spacing.md,
-    backgroundColor: theme.colors.dark[500],
-  },
   brandWrapper: {
     marginBottom: theme.spacing.lg,
   },

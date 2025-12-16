@@ -26,5 +26,11 @@
     "userAlreadyConfirmed": "Your account is confirmed",
     "userNotFound": "User not found",
     "userNotConfirmed": "Please verify you account first"
+  },
+  "index": {
+    "title": "Index"
+  },
+  "activity": {
+    "title": "Activity"
   }
 }
