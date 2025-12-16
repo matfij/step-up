@@ -1,6 +1,10 @@
 export const appConfig = {
+  taskNames: {
+    backgroundLocation: "sup-background-location-task",
+  },
   storageKeys: {
-    apiToken: "api-key",
+    apiToken: "sup-api-key",
+    activityLocation: "sup-activity-location",
   },
   validation: {
     emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
