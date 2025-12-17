@@ -11,11 +11,13 @@ import { startLocationTracking } from "./location-manager";
 
 const REFRESH_TIME_MS = 1000;
 
-export const useLocation = () => {
+export const useActivity = () => {
   const appState = useRef(AppState.currentState);
   const [isTracking, setIsTracking] = useState(false);
+  const [isStopped, setIsStopped] = useState(false);
   const [distance, setDistance] = useState(0);
   const [speed, setSpeed] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [activityReport, setActivityReport] = useState<ActivityReport>();
 
   useEffect(() => {
@@ -43,6 +45,8 @@ export const useLocation = () => {
 
         const newSpeed = Math.round(getCurrentSpeed(locations));
         setSpeed(newSpeed);
+        const newDuration = Math.round(getActivityDuration(locations));
+        setDuration(newDuration);
       } catch (err) {
         console.warn(err);
       }
@@ -58,6 +62,7 @@ export const useLocation = () => {
     }
     await startLocationTracking();
     setIsTracking(true);
+    setIsStopped(false);
   };
 
   const stop = async () => {
@@ -68,7 +73,7 @@ export const useLocation = () => {
       await Location.stopLocationUpdatesAsync(
         appConfig.taskNames.backgroundLocation
       );
-      setIsTracking(false);
+      setIsStopped(true);
     }
   };
 
@@ -88,9 +93,12 @@ export const useLocation = () => {
       route: locations.map((location) => location.coords),
     };
 
+    setIsTracking(false);
+    setIsStopped(false);
     setActivityReport(newActivityReport);
     setDistance(0);
     setSpeed(0);
+    setDuration(0);
 
     await setAsyncStorageItem("activityLocation", []);
   };
@@ -103,5 +111,6 @@ export const useLocation = () => {
     start,
     stop,
     complete,
+    duration,
   };
 };

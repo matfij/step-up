@@ -31,6 +31,10 @@
     "title": "Index"
   },
   "activity": {
-    "title": "Activity"
+    "title": "Activity",
+    "record": "Record activity",
+    "distance": "Distance: {{value}}m",
+    "speed": "Distance: {{value}}m/min",
+    "duration": "Duration: {{value}}"
   }
 }
