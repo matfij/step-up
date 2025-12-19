@@ -13,6 +13,10 @@ export const formatDuration = (duration: number) => {
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
+  if (hours === 0) {
+    return `${padStart(minutes)}:${padStart(seconds)}`;
+  }
+
   return `${hours}:${padStart(minutes)}:${padStart(seconds)}`;
 };
 

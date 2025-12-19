@@ -33,8 +33,11 @@
   "activity": {
     "title": "Activity",
     "record": "Record activity",
-    "distance": "Distance: {{value}}m",
-    "speed": "Distance: {{value}}m/min",
-    "duration": "Duration: {{value}}"
+    "distance": "Distance [m]",
+    "speed": "Speed [m/min]",
+    "duration": "Duration",
+    "start": "Start",
+    "stop": "Stop",
+    "complete": "Complete"
   }
 }
