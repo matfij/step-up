@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
+import MapView, { Marker, Polyline, Region } from "react-native-maps";
+import { useEffect, useRef, useState } from "react";
 import { theme, themeComposable } from "../../common/theme";
 import { AppButton } from "../../common/components/app-button";
 import { useActivity } from "./use-activity";
@@ -9,9 +11,29 @@ import { formatDuration } from "./time-manager";
 export const ActivityComponent = () => {
   const { t } = useTranslation();
   const activity = useActivity();
+  const mapRef = useRef<MapView | null>(null);
+  const [region, setRegion] = useState<Region | undefined>();
 
   return (
     <AppWrapper>
+      <MapView
+        ref={mapRef}
+        style={{ height: "100%", width: "100%" }}
+        initialRegion={region}
+        showsUserLocation
+        onUserLocationChange={(e) => {
+          if (e.nativeEvent.coordinate && mapRef.current) {
+            const newRegion: Region = {
+              latitude: e.nativeEvent.coordinate?.latitude,
+              longitude: e.nativeEvent.coordinate?.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            };
+            setRegion(newRegion);
+            mapRef.current.animateToRegion(newRegion, 300);
+          }
+        }}
+      />
       {activity.isTracking && (
         <View>
           <Text style={styles.label}>
