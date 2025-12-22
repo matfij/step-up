@@ -20,7 +20,7 @@ public class Activity
     public required float AverageSpeed { get; set; } // meters per minute
     public required float TopSpeed { get; set; } // meters per minute
 
-    public required Coordinate[] route { get; set; }
+    public required Coordinate[] Route { get; set; }
 }
 
 public record struct Coordinate(double Latitude, double Longitude);
