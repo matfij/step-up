@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization.Metadata;
 using MongoDB.Driver;
+using StepUpServer.Activity;
 using StepUpServer.Common;
 using StepUpServer.Users;
 
@@ -27,11 +28,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<AuthMiddleware>();
 
 app.MapUserEndpoints();
+app.MapActivityEndpoints();
 
 app.Run();

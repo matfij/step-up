@@ -4,22 +4,22 @@ namespace StepUpServer.Activity
 {
     public interface IActivityService
     {
-        Task<Activity> Create(CreateActivityRequest request);
+        Task<Activity> Create(string userId, CreateActivityRequest request);
         Task<Activity?> GetById(string id);
-        Task<Activity[]> GetByUserId(string userId, int? skip = null, int? take = null);
-        Task<Activity> Update(string userId, string id, string name, string? description = null);
+        Task<Activity[]> GetByUserId(string userId, int skip, int take);
+        Task<Activity> Update(string userId, UpdateActivityRequest request);
     }
 
     public class ActivityService(IActivityRepository repository) : IActivityService
     {
         private readonly IActivityRepository _repository = repository;
 
-        public async Task<Activity> Create(CreateActivityRequest request)
+        public async Task<Activity> Create(string userId, CreateActivityRequest request)
         {
             var activity = new Activity
             {
                 Id = Utils.GenerateId(),
-                UserId = request.UserId,
+                UserId = userId,
                 Name = request.Name,
                 Description = request.Description,
                 StartTime = request.StartTime,
@@ -32,9 +32,9 @@ namespace StepUpServer.Activity
             return await _repository.Create(activity);
         }
 
-        public async Task<Activity[]> GetByUserId(string userId, int? skip = null, int? take = null)
+        public async Task<Activity[]> GetByUserId(string userId, int skip, int take)
         {
-            return await _repository.GetByUserId(userId, skip ?? 0, Math.Min(take ?? 10, 100));
+            return await _repository.GetByUserId(userId, skip, Math.Min(take, 100));
         }
 
         public async Task<Activity?> GetById(string id)
@@ -42,15 +42,15 @@ namespace StepUpServer.Activity
             return await _repository.GetById(id);
         }
 
-        public async Task<Activity> Update(string userId, string id, string name, string? description = null)
+        public async Task<Activity> Update(string userId, UpdateActivityRequest request)
         {
-            var activity = await _repository.GetById(id) ?? throw new ApiException("errors.activityNotFound");
+            var activity = await _repository.GetById(request.Id) ?? throw new ApiException("errors.activityNotFound");
             if (activity.UserId != userId)
             {
                 throw new ApiException("errors.activityNotFound");
             }
-            activity.Name = name;
-            activity.Description = description;
+            activity.Name = request.Name;
+            activity.Description = request.Description;
             return await _repository.Update(activity);
         }
     }
