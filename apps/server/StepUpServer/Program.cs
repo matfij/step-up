@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization.Metadata;
 using MongoDB.Driver;
-using StepUpServer.Activity;
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
-using StepUpServer.Users;
+using StepUpServer.Domains.Activity;
+using StepUpServer.Domains.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

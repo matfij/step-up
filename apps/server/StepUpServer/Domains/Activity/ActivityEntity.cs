@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace StepUpServer.Activity;
+namespace StepUpServer.Domains.Activity;
 
 public class Activity
 {

@@ -1,7 +1,7 @@
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
 
-namespace StepUpServer.Activity
+namespace StepUpServer.Domains.Activity
 {
     public interface IActivityService
     {

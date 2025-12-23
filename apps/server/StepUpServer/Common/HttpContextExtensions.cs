@@ -1,4 +1,4 @@
-using StepUpServer.Users;
+using StepUpServer.Domains.User;
 
 namespace StepUpServer.Common;
 

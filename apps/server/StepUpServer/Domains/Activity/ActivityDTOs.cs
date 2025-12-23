@@ -1,4 +1,4 @@
-namespace StepUpServer.Activity;
+namespace StepUpServer.Domains.Activity;
 
 public readonly record struct CreateActivityRequest(
     string Name,

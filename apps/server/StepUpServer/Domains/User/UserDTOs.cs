@@ -1,4 +1,4 @@
-namespace StepUpServer.Users;
+namespace StepUpServer.Domains.User;
 
 public readonly record struct SignUpStartRequest(string Email, string Username);
 

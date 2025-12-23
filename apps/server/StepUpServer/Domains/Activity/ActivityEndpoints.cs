@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StepUpServer.Common;
 
-namespace StepUpServer.Activity;
+namespace StepUpServer.Domains.Activity;
 
 public static class ActivityEndpoints
 {

@@ -1,6 +1,6 @@
 using StepUpServer.Common;
 
-namespace StepUpServer.Users;
+namespace StepUpServer.Domains.User;
 
 public interface IUserService
 {

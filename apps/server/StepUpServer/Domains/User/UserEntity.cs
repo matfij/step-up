@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace StepUpServer.Users;
+namespace StepUpServer.Domains.User;
 
 public class User
 {
