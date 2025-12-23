@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using StepUpServer.Common;
 
@@ -13,7 +12,8 @@ public static class ActivityEndpoints
                 async (
                     HttpContext context,
                     CreateActivityRequest request,
-                    IActivityService activityService) =>
+                    IActivityService activityService
+                ) =>
                 {
                     var userId = context.GetUserId();
                     var activity = await activityService.Create(userId, request);
@@ -42,7 +42,8 @@ public static class ActivityEndpoints
                     string userId,
                     IActivityService activityService,
                     [FromQuery] int skip = 0,
-                    [FromQuery] int take = 10) =>
+                    [FromQuery] int take = 10
+                ) =>
                 {
                     var activities = await activityService.GetByUserId(userId, skip, take);
                     return Results.Ok(activities);
@@ -51,18 +52,18 @@ public static class ActivityEndpoints
             .WithMetadata(new RequireAuthAttribute());
 
         app.MapPut(
-            "/activities",
-            async (
-                HttpContext context,
-                UpdateActivityRequest request,
-                IActivityService activityService
-            ) =>
-            {
-                var userId = context.GetUserId();
-                var activity = await activityService.Update(userId, request);
-                return Results.Ok(activity);
-            }
-        )
-             .WithMetadata(new RequireAuthAttribute());
+                "/activities",
+                async (
+                    HttpContext context,
+                    UpdateActivityRequest request,
+                    IActivityService activityService
+                ) =>
+                {
+                    var userId = context.GetUserId();
+                    var activity = await activityService.Update(userId, request);
+                    return Results.Ok(activity);
+                }
+            )
+            .WithMetadata(new RequireAuthAttribute());
     }
 }

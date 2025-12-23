@@ -40,7 +40,12 @@ public class UserRepository : IUserRepository
         _users.Indexes.CreateOneAsync(
             new CreateIndexModel<User>(
                 apiTokenIndex,
-                new CreateIndexOptions { Unique = false, Background = true, Sparse = true }
+                new CreateIndexOptions
+                {
+                    Unique = false,
+                    Background = true,
+                    Sparse = true,
+                }
             )
         );
     }

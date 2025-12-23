@@ -10,9 +10,10 @@ namespace StepUpServer.Activity
         Task<Activity> Update(string userId, UpdateActivityRequest request);
     }
 
-    public class ActivityService(IActivityRepository repository) : IActivityService
+    public class ActivityService(IActivityRepository repository, IActivityValidator validator) : IActivityService
     {
         private readonly IActivityRepository _repository = repository;
+        private readonly IActivityValidator _validator = validator;
 
         public async Task<Activity> Create(string userId, CreateActivityRequest request)
         {
@@ -29,6 +30,9 @@ namespace StepUpServer.Activity
                 TopSpeed = request.TopSpeed,
                 Route = request.Route,
             };
+
+            _validator.ValidateAll(activity);
+
             return await _repository.Create(activity);
         }
 
@@ -44,13 +48,18 @@ namespace StepUpServer.Activity
 
         public async Task<Activity> Update(string userId, UpdateActivityRequest request)
         {
-            var activity = await _repository.GetById(request.Id) ?? throw new ApiException("errors.activityNotFound");
-            if (activity.UserId != userId)
+            var activity = await _repository.GetById(request.Id);
+            if (activity is null || activity.UserId != userId)
             {
                 throw new ApiException("errors.activityNotFound");
             }
+
+            _validator.ValidateName(request.Name);
+            _validator.ValidateDescription(request.Description);
+
             activity.Name = request.Name;
             activity.Description = request.Description;
+
             return await _repository.Update(activity);
         }
     }

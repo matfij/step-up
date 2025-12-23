@@ -2,14 +2,6 @@ using StepUpServer.Common;
 
 namespace StepUpServer.Users;
 
-record SignUpStartRequest(string Email, string Username);
-
-record SignUpCompleteRequest(string Email, string AuthToken);
-
-record SignInStartRequest(string Email);
-
-record SignInCompleteRequest(string Email, string AuthToken);
-
 public static class UserEndpoints
 {
     public static void MapUserEndpoints(this WebApplication app)

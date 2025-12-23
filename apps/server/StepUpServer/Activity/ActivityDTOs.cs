@@ -1,22 +1,18 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace StepUpServer.Activity;
 
-public record struct CreateActivityRequest
-{
-    public required string Name { get; init; }
-    public string? Description { get; init; }
-    public required ulong StartTime { get; init; }
-    public required ulong Duration { get; init; }
-    public required ulong Distance { get; init; }
-    public required float AverageSpeed { get; init; }
-    public required float TopSpeed { get; init; }
-    public required Coordinate[] Route { get; init; }
-}
+public readonly record struct CreateActivityRequest(
+    string Name,
+    string? Description,
+    ulong StartTime,
+    ulong Duration,
+    ulong Distance,
+    float AverageSpeed,
+    float TopSpeed,
+    Coordinate[] Route
+);
 
-public record struct UpdateActivityRequest
-{
-    public required string Id { get; init; }
-    public required string Name { get; init; }
-    public string? Description { get; init; }
-}
+public readonly record struct UpdateActivityRequest(
+    string Id,
+    string Name,
+    string? Description
+);

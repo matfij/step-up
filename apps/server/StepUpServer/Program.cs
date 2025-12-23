@@ -29,6 +29,7 @@ builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityValidator, ActivityValidator>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 
 var app = builder.Build();

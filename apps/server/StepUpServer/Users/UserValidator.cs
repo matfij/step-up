@@ -20,7 +20,7 @@ public interface IUserValidator
 
 public partial class UserValidator(IUserRepository _repository) : IUserValidator
 {
-    public const int EmailMaxLength = 255;
+    private const int _emailMaxLength = 255;
 
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     private static partial Regex EmailPattern();
@@ -38,7 +38,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
 
     public async Task ValidateEmail(string email)
     {
-        if (email.Length > EmailMaxLength || !EmailPattern().IsMatch(email))
+        if (email.Length > _emailMaxLength || !EmailPattern().IsMatch(email))
         {
             throw new ApiException("errors.emailInvalid", nameof(email));
         }
