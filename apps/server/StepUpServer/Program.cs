@@ -2,6 +2,7 @@ using System.Text.Json.Serialization.Metadata;
 using MongoDB.Driver;
 using StepUpServer.Activity;
 using StepUpServer.Common;
+using StepUpServer.Common.Events;
 using StepUpServer.Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ builder.Services.AddSingleton(provider =>
     var databaseName = builder.Configuration.GetValue<string>("DatabaseName");
     return client.GetDatabase(databaseName);
 });
+
+builder.Services.AddSingleton<IEventPublisher, EventPublisher>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();

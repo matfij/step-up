@@ -1,4 +1,5 @@
 using StepUpServer.Common;
+using StepUpServer.Common.Events;
 
 namespace StepUpServer.Activity
 {
@@ -10,14 +11,15 @@ namespace StepUpServer.Activity
         Task<Activity> Update(string userId, UpdateActivityRequest request);
     }
 
-    public class ActivityService(IActivityRepository repository, IActivityValidator validator) : IActivityService
+    public class ActivityService(IActivityRepository repository, IActivityValidator validator, IEventPublisher publisher) : IActivityService
     {
         private readonly IActivityRepository _repository = repository;
         private readonly IActivityValidator _validator = validator;
+        private readonly IEventPublisher _publisher = publisher;
 
         public async Task<Activity> Create(string userId, CreateActivityRequest request)
         {
-            var activity = new Activity
+            var newActivity = new Activity
             {
                 Id = Utils.GenerateId(),
                 UserId = userId,
@@ -31,9 +33,20 @@ namespace StepUpServer.Activity
                 Route = request.Route,
             };
 
-            _validator.ValidateAll(activity);
+            _validator.ValidateAll(newActivity);
 
-            return await _repository.Create(activity);
+            var activity = await _repository.Create(newActivity);
+
+            await _publisher.PublishAsync(new ActivityCreatedEvent
+            {
+                ActivityId = activity.Id,
+                UserId = activity.UserId,
+                Distance = activity.Distance,
+                Duration = activity.Duration,
+                AverageSpeed = activity.AverageSpeed,
+            });
+
+            return activity;
         }
 
         public async Task<Activity[]> GetByUserId(string userId, int skip, int take)
