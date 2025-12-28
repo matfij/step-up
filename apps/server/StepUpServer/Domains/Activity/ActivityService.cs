@@ -11,7 +11,11 @@ namespace StepUpServer.Domains.Activity
         Task<Activity> Update(string userId, UpdateActivityRequest request);
     }
 
-    public class ActivityService(IActivityRepository repository, IActivityValidator validator, IEventPublisher publisher) : IActivityService
+    public class ActivityService(
+        IActivityRepository repository,
+        IActivityValidator validator,
+        IEventPublisher publisher
+    ) : IActivityService
     {
         private readonly IActivityRepository _repository = repository;
         private readonly IActivityValidator _validator = validator;
@@ -37,14 +41,16 @@ namespace StepUpServer.Domains.Activity
 
             var activity = await _repository.Create(newActivity);
 
-            await _publisher.PublishAsync(new ActivityCreatedEvent
-            {
-                ActivityId = activity.Id,
-                UserId = activity.UserId,
-                Distance = activity.Distance,
-                Duration = activity.Duration,
-                AverageSpeed = activity.AverageSpeed,
-            });
+            await _publisher.PublishAsync(
+                new ActivityCreatedEvent
+                {
+                    ActivityId = activity.Id,
+                    UserId = activity.UserId,
+                    Distance = activity.Distance,
+                    Duration = activity.Duration,
+                    AverageSpeed = activity.AverageSpeed,
+                }
+            );
 
             return activity;
         }

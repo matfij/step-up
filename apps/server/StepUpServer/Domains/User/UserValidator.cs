@@ -31,8 +31,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
     public async Task<User> EnsureEmailExists(string email)
     {
         var user =
-             await _repository.GetByEmail(email)
-             ?? throw new ApiException("errors.userNotFound");
+            await _repository.GetByEmail(email) ?? throw new ApiException("errors.userNotFound");
         return user;
     }
 

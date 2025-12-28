@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
 using StepUpServer.Domains.Activity;
+using StepUpServer.Domains.Progress;
 using StepUpServer.Domains.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,7 @@ builder.Services.AddSingleton(provider =>
     return client.GetDatabase(databaseName);
 });
 
-builder.Services.AddSingleton<IEventPublisher, EventPublisher>();
+builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
@@ -34,6 +35,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 builder.Services.AddScoped<IActivityValidator, ActivityValidator>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
+
+builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
+builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
 
 var app = builder.Build();
 

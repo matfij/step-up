@@ -1,4 +1,5 @@
 using StepUpServer.Common;
+using StepUpServer.Common.Events;
 
 namespace StepUpServer.Domains.User;
 
@@ -11,11 +12,15 @@ public interface IUserService
     Task<User> Me(string id);
 }
 
-public partial class UserService(IUserRepository repository, IUserValidator validator)
-    : IUserService
+public partial class UserService(
+    IUserRepository repository,
+    IUserValidator validator,
+    IEventPublisher eventPublisher
+) : IUserService
 {
     private readonly IUserRepository _repository = repository;
     private readonly IUserValidator _validator = validator;
+    private readonly IEventPublisher _eventPublisher = eventPublisher;
 
     public async Task StartSignUp(string email, string username)
     {
@@ -45,6 +50,7 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
         user.ApiToken = GenerateApiToken();
         user.IsConfirmed = true;
         await _repository.Update(user);
+        await _eventPublisher.PublishAsync(new UserCreatedEvent { UserId = user.Id });
         return user;
     }
 
@@ -71,9 +77,7 @@ public partial class UserService(IUserRepository repository, IUserValidator vali
 
     public async Task<User> Me(string id)
     {
-        var user =
-            await _repository.GetById(id)
-            ?? throw new ApiException("errors.userNotFound");
+        var user = await _repository.GetById(id) ?? throw new ApiException("errors.userNotFound");
         return user;
     }
 

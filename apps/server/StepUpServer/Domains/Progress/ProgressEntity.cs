@@ -10,10 +10,10 @@ public class Progress
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public required uint Level { get; set; } = 1;
-    public required ulong Experience { get; set; } = 0;
+    public uint Level { get; set; } = 1;
+    public ulong Experience { get; set; } = 0;
 
-    public required ulong TotalActivities { get; set; } = 0;
-    public required ulong TotalDuration { get; set; } = 0;
-    public required ulong TotalDistance { get; set; } = 0;
+    public ulong TotalActivities { get; set; } = 0;
+    public ulong TotalDuration { get; set; } = 0;
+    public ulong TotalDistance { get; set; } = 0;
 }
