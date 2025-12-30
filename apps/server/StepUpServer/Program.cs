@@ -38,6 +38,7 @@ builder.Services.AddScoped<IActivityService, ActivityService>();
 
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
+builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressService>();
 
 var app = builder.Build();
 

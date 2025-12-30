@@ -10,14 +10,48 @@ public interface IProgressService
 
 public class ProgressService(IProgressRepository repository)
     : IProgressService,
-        IEventHandler<UserCreatedEvent>
+        IEventHandler<UserCreatedEvent>,
+        IEventHandler<ActivityCreatedEvent>
 {
     private readonly IProgressRepository _repository = repository;
+    private const ulong _nextLevelExpGain = 100;
 
-    public async Task HandleAsync(UserCreatedEvent @event)
+    public async Task HandleAsync(UserCreatedEvent userEvent)
     {
-        var progress = new Progress { Id = Utils.GenerateId(), UserId = @event.UserId };
+        var progress = new Progress { Id = Utils.GenerateId(), UserId = userEvent.UserId };
 
         await _repository.Create(progress);
+    }
+
+    public async Task HandleAsync(ActivityCreatedEvent activityEvent)
+    {
+        var progress =
+            await _repository.GetByUserId(activityEvent.UserId)
+            ?? throw new ApiException("errors.progressNotFound");
+
+        progress.TotalActivities += 1;
+        progress.TotalDuration += activityEvent.Duration;
+        progress.TotalDistance += activityEvent.Distance;
+
+        var expGain = (ulong)(activityEvent.Duration / 60_000f + activityEvent.Distance / 100f);
+        progress.Experience += expGain;
+        progress.Level = CalculateLevel(progress.Experience);
+
+        await _repository.Update(progress);
+    }
+
+    private uint CalculateLevel(ulong experience)
+    {
+        var level = 1u;
+        ulong nextLevelExp = _nextLevelExpGain;
+
+        while (experience >= nextLevelExp)
+        {
+            level++;
+            experience -= nextLevelExp;
+            nextLevelExp += _nextLevelExpGain;
+        }
+
+        return level;
     }
 }

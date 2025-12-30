@@ -14,6 +14,6 @@ public class Progress
     public ulong Experience { get; set; } = 0;
 
     public ulong TotalActivities { get; set; } = 0;
-    public ulong TotalDuration { get; set; } = 0;
-    public ulong TotalDistance { get; set; } = 0;
+    public ulong TotalDuration { get; set; } = 0; // ms
+    public ulong TotalDistance { get; set; } = 0; // m
 }
