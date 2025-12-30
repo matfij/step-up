@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
-import MapView, { Marker, Polyline, Region } from "react-native-maps";
-import { useEffect, useRef, useState } from "react";
+import MapView, { Region } from "react-native-maps";
+import { useRef, useState } from "react";
 import { theme, themeComposable } from "../../common/theme";
 import { AppButton } from "../../common/components/app-button";
 import { useActivity } from "./use-activity";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { formatDuration } from "./time-manager";
+import { withAlpha } from "../../common/utils";
 
 export const ActivityComponent = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const ActivityComponent = () => {
 
   return (
     <AppWrapper>
-      <View style={styles.container}>
+      <View style={styles.mainWrapper}>
         <MapView
           ref={mapRef}
           style={styles.map}
@@ -36,9 +37,9 @@ export const ActivityComponent = () => {
           }}
         />
 
-        <View style={styles.glassContainer}>
+        <View style={styles.controlsWrapper}>
           {activity.isTracking && (
-            <View style={styles.statsRow}>
+            <View style={styles.statsWrapper}>
               <View style={styles.statItem}>
                 <Text style={styles.statValue}>{activity.distance}</Text>
                 <Text style={styles.statLabel}>{t("activity.distance")}</Text>
@@ -64,19 +65,26 @@ export const ActivityComponent = () => {
                 style={styles.button}
               />
             )}
+            {activity.isPaused && (
+              <AppButton
+                label={t("activity.resume")}
+                onClick={activity.resume}
+                style={styles.button}
+              />
+            )}
+            {activity.isTracking && !activity.isPaused && (
+              <AppButton
+                label={t("activity.stop")}
+                onClick={activity.pause}
+                style={styles.button}
+              />
+            )}
             {activity.isTracking && (
-              <>
-                <AppButton
-                  label={t("activity.stop")}
-                  onClick={activity.stop}
-                  style={styles.button}
-                />
-                <AppButton
-                  label={t("activity.complete")}
-                  onClick={activity.complete}
-                  style={styles.button}
-                />
-              </>
+              <AppButton
+                label={t("activity.complete")}
+                onClick={activity.complete}
+                style={styles.button}
+              />
             )}
           </View>
         </View>
@@ -86,7 +94,7 @@ export const ActivityComponent = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainWrapper: {
     flex: 1,
     width: "100%",
     position: "relative",
@@ -95,13 +103,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  glassContainer: {
+  controlsWrapper: {
     ...themeComposable.shadows.xl,
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(30, 30, 30, 0.85)",
+    backgroundColor: withAlpha(theme.colors.dark[500], theme.opacity.glass),
     borderTopLeftRadius: theme.borderRadius.xl,
     borderTopRightRadius: theme.borderRadius.xl,
     paddingHorizontal: theme.spacing.lg,
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.spacing.xl,
     gap: theme.spacing.lg,
   },
-  statsRow: {
+  statsWrapper: {
     flexDirection: "row",
     justifyContent: "space-around",
     paddingBottom: theme.spacing.md,

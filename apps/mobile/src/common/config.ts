@@ -4,6 +4,8 @@ export const appConfig = {
   },
   storageKeys: {
     apiToken: "sup-api-key",
+    activityStartTime: "sup-activity-start-time",
+    activityIsPaused: "sup-activity-is-paused",
     activityLocation: "sup-activity-location",
   },
   validation: {

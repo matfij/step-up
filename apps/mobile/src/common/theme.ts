@@ -57,6 +57,10 @@ export const theme = {
     xxl: 48,
     xxxl: 64,
   },
+  opacity: {
+    solid: 1,
+    glass: 0.84,
+  },
   borderRadius: {
     none: 0,
     sm: 4,

@@ -38,6 +38,7 @@
     "duration": "Duration",
     "start": "Start",
     "stop": "Stop",
-    "complete": "Complete"
+    "resume": "Resume",
+    "complete": "Finish"
   }
 }

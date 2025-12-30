@@ -36,9 +36,14 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
       console.error("Location task error:", error);
       return;
     }
-    const locations =
-      (await getAsyncStorageItem<LocationObject[]>("activityLocation")) ?? [];
-    locations.push(...data.locations);
-    await setAsyncStorageItem("activityLocation", locations);
+    const isPaused = await getAsyncStorageItem("activityIsPaused", false);
+    if (!isPaused) {
+      const locations = await getAsyncStorageItem<LocationObject[]>(
+        "activityLocation",
+        []
+      );
+      locations.push(...data.locations);
+      await setAsyncStorageItem("activityLocation", locations);
+    }
   }
 );

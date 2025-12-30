@@ -25,11 +25,12 @@ export const isValidAuthToken = (authToken: string) => {
 };
 
 export const getAsyncStorageItem = async <T>(
-  key: keyof typeof appConfig.storageKeys
+  key: keyof typeof appConfig.storageKeys,
+  defaultValue: T
 ) => {
   const data = await AsyncStorage.getItem(appConfig.storageKeys[key]);
   if (data === null || data === undefined) {
-    return undefined;
+    return defaultValue;
   }
   return JSON.parse(data) as T;
 };
@@ -39,4 +40,12 @@ export const setAsyncStorageItem = async (
   item: unknown
 ) => {
   await AsyncStorage.setItem(appConfig.storageKeys[key], JSON.stringify(item));
+};
+
+export const withAlpha = (hexColor: string, alpha: number): string => {
+  const hex = hexColor.replace("#", "");
+  const alphaHex = Math.round(alpha * 255)
+    .toString(16)
+    .padStart(2, "0");
+  return `#${hex}${alphaHex}`;
 };
