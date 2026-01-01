@@ -5,12 +5,11 @@ export class UserClient extends ApiClient {
   startSignUp = async (params: {
     email: string;
     username: string;
-  }): Promise<{ error?: ApiError }> => {
-    return this.request("/users/signup/start", {
+  }): Promise<{ error?: ApiError }> =>
+    this.request("/users/signup/start", {
       method: "POST",
       body: JSON.stringify(params),
     });
-  };
 
   completeSignUp = async (params: {
     email: string;
@@ -18,22 +17,19 @@ export class UserClient extends ApiClient {
   }): Promise<{
     data?: User;
     error?: ApiError;
-  }> => {
-    const result = await this.request<User>("/users/signup/complete", {
+  }> =>
+    this.request<User>("/users/signup/complete", {
       method: "POST",
       body: JSON.stringify(params),
     });
-    return result;
-  };
 
   startSignIn = async (params: {
     email: string;
-  }): Promise<{ error?: ApiError }> => {
-    return this.request("/users/signin/start", {
+  }): Promise<{ error?: ApiError }> =>
+    this.request("/users/signin/start", {
       method: "POST",
       body: JSON.stringify(params),
     });
-  };
 
   completeSignIn = async (params: {
     email: string;
@@ -41,13 +37,11 @@ export class UserClient extends ApiClient {
   }): Promise<{
     data?: User;
     error?: ApiError;
-  }> => {
-    const result = await this.request<User>("/users/signin/complete", {
+  }> =>
+    this.request<User>("/users/signin/complete", {
       method: "POST",
       body: JSON.stringify(params),
     });
-    return result;
-  };
 }
 
 export const userClient = new UserClient();

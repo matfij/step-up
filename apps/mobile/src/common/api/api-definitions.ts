@@ -10,3 +10,16 @@ export interface User {
   username: string;
   apiToken: string;
 }
+
+export interface Activity {
+  id: string;
+  userId: string;
+  name: string;
+  description?: string;
+  startTime: number;
+  duration: number;
+  distance: number;
+  averageSpeed: number;
+  topSpeed: number;
+  route: { latitude: number; longitude: number }[];
+}
