@@ -2,6 +2,11 @@
   "brand": {
     "title": "Step Up"
   },
+  "common": {
+    "save": "Save",
+    "discard": "Discard",
+    "close": "Close"
+  },
   "auth": {
     "email": "Email",
     "username": "Username",
@@ -35,10 +40,19 @@
     "record": "Record activity",
     "distance": "Distance [m]",
     "speed": "Speed [m/min]",
+    "averageSpeed": "Average speed [m/min]",
+    "topSpeed": "Top speed [m/min]",
     "duration": "Duration",
     "start": "Start",
     "stop": "Stop",
     "resume": "Resume",
-    "complete": "Finish"
+    "complete": "Finish",
+    "completed": "Activity finished",
+    "completedHint": {
+      "0": "It is a step forward!"
+    },
+    "activityDetails": "Activity details",
+    "name": "Name",
+    "description": "Description"
   }
 }

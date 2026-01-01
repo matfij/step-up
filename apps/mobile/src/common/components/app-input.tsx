@@ -12,6 +12,7 @@ import { theme, themeComposable } from "../theme";
 type AppInputProps = {
   label: string;
   value: string;
+  placeholder?: string;
   error?: string;
   onChange: (newValue: string) => void;
   keyboard?: KeyboardTypeOptions;
@@ -24,11 +25,33 @@ export const AppInput = (props: AppInputProps) => {
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         value={props.value}
+        placeholder={props.placeholder}
         onChangeText={props.onChange}
         style={styles.input}
         keyboardType={props.keyboard ?? "default"}
         cursorColor={theme.colors.primary[700]}
         selectionColor={theme.colors.primary[700]}
+        placeholderTextColor={theme.colors.dark[300]}
+      />
+      {props.error && <Text style={styles.error}>{props.error}</Text>}
+    </View>
+  );
+};
+
+export const AppInputLight = (props: AppInputProps) => {
+  return (
+    <View style={[styles.wrapper, props.style]}>
+      <Text style={{ ...styles.label, color: theme.colors.dark[500] }}>
+        {props.label}
+      </Text>
+      <TextInput
+        value={props.value}
+        placeholder={props.placeholder}
+        onChangeText={props.onChange}
+        style={styles.inputLight}
+        keyboardType={props.keyboard ?? "default"}
+        cursorColor={theme.colors.dark[700]}
+        selectionColor={theme.colors.dark[700]}
         placeholderTextColor={theme.colors.dark[300]}
       />
       {props.error && <Text style={styles.error}>{props.error}</Text>}
@@ -53,6 +76,16 @@ const styles = StyleSheet.create({
     padding: theme.spacing.xs,
     paddingVertical: 2,
     color: theme.colors.primary[500],
+  },
+  inputLight: {
+    ...themeComposable.shadows.primaryMd,
+    ...themeComposable.borders.primaryMd,
+    backgroundColor: theme.colors.light[100],
+    marginTop: theme.spacing.xs,
+    fontSize: 18,
+    padding: theme.spacing.xs,
+    paddingVertical: 2,
+    color: theme.colors.dark[500],
   },
   error: {
     ...themeComposable.typography.bodySmall,

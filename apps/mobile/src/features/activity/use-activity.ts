@@ -5,7 +5,6 @@ import { ActivityReport } from "./definitions";
 import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
 import { calculateRouteLength } from "./distance-manager";
 import { getAverageSpeed, getCurrentSpeed, getTopSpeed } from "./speed-manager";
-import { getActivityDuration } from "./time-manager";
 import { appConfig } from "../../common/config";
 import { startLocationTracking } from "./location-manager";
 
@@ -172,8 +171,8 @@ export const useActivity = () => {
     const newActivityReport: ActivityReport = {
       duration: duration,
       distance: Math.round(calculateRouteLength(locations)),
-      averageSpeed: getAverageSpeed(locations),
-      topSpeed: getTopSpeed(locations),
+      averageSpeed: Math.round(getAverageSpeed(locations)),
+      topSpeed: Math.round(getTopSpeed(locations)),
       route: locations.map((location) => location.coords),
     };
 

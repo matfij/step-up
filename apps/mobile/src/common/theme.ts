@@ -60,6 +60,8 @@ export const theme = {
   opacity: {
     solid: 1,
     glass: 0.84,
+    liquid: 0.24,
+    mist: 0.12,
   },
   borderRadius: {
     none: 0,
@@ -200,6 +202,13 @@ export const themeComposable = {
     primaryMd: {
       borderWidth: 2,
       borderRadius: theme.borderRadius.md,
+      borderColor: theme.colors.primary[600],
+      backgroundColor: theme.colors.dark[300],
+    },
+    primaryBottom: {
+      borderWidth: 0,
+      borderBottomWidth: 2,
+      // borderRadius: theme.borderRadius.md,
       borderColor: theme.colors.primary[600],
       backgroundColor: theme.colors.dark[300],
     },

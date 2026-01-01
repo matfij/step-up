@@ -1,19 +1,27 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Region } from "react-native-maps";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { theme, themeComposable } from "../../common/theme";
 import { AppButton } from "../../common/components/app-button";
 import { useActivity } from "./use-activity";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { formatDuration } from "./time-manager";
 import { withAlpha } from "../../common/utils";
+import { ActivityReportModal } from "./activity-report-modal";
 
 export const ActivityComponent = () => {
   const { t } = useTranslation();
   const activity = useActivity();
   const mapRef = useRef<MapView | null>(null);
   const [region, setRegion] = useState<Region | undefined>();
+  const [showReport, setShowReport] = useState(false);
+
+  useEffect(() => {
+    if (activity.activityReport) {
+      setShowReport(true);
+    }
+  }, [activity.activityReport]);
 
   return (
     <AppWrapper>
@@ -89,6 +97,13 @@ export const ActivityComponent = () => {
           </View>
         </View>
       </View>
+      {showReport && activity.activityReport && (
+        <ActivityReportModal
+          visible={showReport}
+          report={activity.activityReport}
+          onDiscard={() => setShowReport(false)}
+        />
+      )}
     </AppWrapper>
   );
 };
