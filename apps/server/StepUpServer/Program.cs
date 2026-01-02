@@ -37,6 +37,7 @@ builder.Services.AddScoped<IActivityValidator, ActivityValidator>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
+builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
 builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressService>();
 
@@ -47,5 +48,6 @@ app.UseMiddleware<AuthMiddleware>();
 
 app.MapUserEndpoints();
 app.MapActivityEndpoints();
+app.MapProgressEndpoints();
 
 app.Run();

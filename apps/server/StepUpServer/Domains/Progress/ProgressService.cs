@@ -5,7 +5,7 @@ namespace StepUpServer.Domains.Progress;
 
 public interface IProgressService
 {
-    // Define service methods here
+    Task<Progress> GetByUser(string userId);
 }
 
 public class ProgressService(IProgressRepository repository)
@@ -15,6 +15,14 @@ public class ProgressService(IProgressRepository repository)
 {
     private readonly IProgressRepository _repository = repository;
     private const ulong _nextLevelExpGain = 100;
+
+    public async Task<Progress> GetByUser(string userId)
+    {
+        var progress =
+            await _repository.GetByUserId(userId)
+            ?? throw new ApiException("errors.progressNotFound");
+        return progress;
+    }
 
     public async Task HandleAsync(UserCreatedEvent userEvent)
     {
