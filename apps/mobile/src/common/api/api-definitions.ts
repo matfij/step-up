@@ -23,3 +23,13 @@ export interface Activity {
   topSpeed: number;
   route: { latitude: number; longitude: number }[];
 }
+
+export interface Progress {
+  id: string;
+  userId: string;
+  level: number;
+  experience: number;
+  totalActivities: number;
+  totalDuration: number;
+  totalDistance: number;
+}

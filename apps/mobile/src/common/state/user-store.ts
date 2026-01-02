@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "../api/api-definitions";
+import { Progress, User } from "../api/api-definitions";
 
 type UserStore = {
   user?: User;
+  progress?: Progress;
   signIn: (user: User) => void;
   signOut: () => void;
+  setProgress: (progress: Progress) => void;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -15,6 +17,7 @@ export const useUserStore = create<UserStore>()(
       hydrated: false,
       signIn: (user: User) => set({ user }),
       signOut: () => set({ user: undefined }),
+      setProgress: (progress: Progress) => set({ progress }),
     }),
     {
       name: "user-store",
