@@ -30,7 +30,10 @@
     "authTokenNotValid": "Provided auth token is not valid",
     "userAlreadyConfirmed": "Your account is confirmed",
     "userNotFound": "User not found",
-    "userNotConfirmed": "Please verify you account first"
+    "userNotConfirmed": "Please verify you account first",
+    "invalidActivityName": "Activity name must be between {{min}} and {{max}} characters",
+    "invalidActivityDescription": "Activity name must be below {{max}} characters",
+    "invalidActivityRoute": "Activity route is invalid"
   },
   "index": {
     "title": "Index"

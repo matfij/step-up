@@ -102,6 +102,7 @@ export const ActivityComponent = () => {
           visible={showReport}
           report={activity.activityReport}
           onDiscard={() => setShowReport(false)}
+          onClose={() => setShowReport(false)}
         />
       )}
     </AppWrapper>

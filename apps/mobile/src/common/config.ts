@@ -13,5 +13,8 @@ export const appConfig = {
     usernameLengthMin: 4,
     usernameLengthMax: 16,
     authTokenLength: 6,
+    activityNameLengthMin: 1,
+    activityNameLengthMax: 100,
+    activityDescriptionLengthMax: 800,
   },
 } as const;

@@ -1,6 +1,7 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { theme } from "../theme";
 import { ReactNode } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type AppWrapperProps = {
   children: ReactNode;
@@ -8,7 +9,13 @@ type AppWrapperProps = {
 };
 
 export const AppWrapper = (props: AppWrapperProps) => {
-  return <View style={[styles.wrapper, props.style]}>{props.children}</View>;
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View style={[styles.wrapper, props.style, { marginTop: insets.top }]}>
+      {props.children}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

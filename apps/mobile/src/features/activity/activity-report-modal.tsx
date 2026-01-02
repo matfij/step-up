@@ -9,23 +9,73 @@ import {
 } from "../../common/components/app-button";
 import { formatDuration } from "./time-manager";
 import { AppInputLight } from "../../common/components/app-input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRequest } from "../../common/api/api-hooks";
+import { activityClient } from "../../common/api/activity-client";
+import { AppApiError } from "../../common/components/app-api-error";
+import {
+  isValidActivityDescription,
+  isValidActivityName,
+} from "../../common/validation";
+import { appConfig } from "../../common/config";
 
 type ActivityReportModalProps = {
   visible: boolean;
   report: ActivityReport;
   onDiscard: () => void;
+  onClose: () => void;
 };
 
 export const ActivityReportModal = (props: ActivityReportModalProps) => {
   const { t } = useTranslation();
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const createActivity = useRequest(activityClient.create);
 
-  const onSave = () => {};
+  useEffect(() => setNameError(""), [name]);
+
+  useEffect(() => setDescriptionError(""), [description]);
+
+  useEffect(() => {
+    if (createActivity.success && createActivity.data) {
+      props.onClose();
+    }
+  }, [createActivity.success, createActivity.data]);
+
+  const onSave = () => {
+    if (!isValidActivityName(name)) {
+      setNameError(
+        t("errors.invalidActivityName", {
+          min: appConfig.validation.activityNameLengthMin,
+          max: appConfig.validation.activityNameLengthMax,
+        })
+      );
+      return;
+    } else if (!isValidActivityDescription(description)) {
+      setDescriptionError(
+        t("errors.invalidActivityDescription", {
+          max: appConfig.validation.activityDescriptionLengthMax,
+        })
+      );
+      return;
+    }
+
+    createActivity.call({
+      name: name,
+      description: description,
+      duration: props.report.duration,
+      distance: props.report.distance,
+      averageSpeed: props.report.averageSpeed,
+      topSpeed: props.report.topSpeed,
+      route: props.report.route,
+      startTime: props.report.startTime,
+    });
+  };
 
   return (
-    <Modal visible={props.visible} transparent animationType="fade">
+    <Modal visible={props.visible} transparent animationType="slide">
       <View style={styles.backdrop}>
         <View style={styles.modalWrapper}>
           <View style={styles.header}>
@@ -48,11 +98,13 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
               <View style={styles.inputWrapper}>
                 <AppInputLight
                   value={name}
+                  error={nameError}
                   label={t("activity.name")}
                   onChange={setName}
                 />
                 <AppInputLight
                   value={description}
+                  error={descriptionError}
                   label={t("activity.description")}
                   onChange={setDescription}
                 />
@@ -86,15 +138,21 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
           </ScrollView>
 
           <View style={styles.buttonWrapper}>
+            <AppApiError
+              error={createActivity.error}
+              style={{ marginTop: -theme.spacing.md, marginBottom: 0 }}
+            />
             <AppButton
               label={t("common.save")}
               onClick={onSave}
-              style={styles.saveButton}
+              disabled={createActivity.loading}
+              style={{ width: "100%" }}
             />
             <AppButtonSecondary
               label={t("common.discard")}
               onClick={props.onDiscard}
-              style={styles.discardButton}
+              disabled={createActivity.loading}
+              style={{ width: "100%" }}
             />
           </View>
         </View>
@@ -163,7 +221,7 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: theme.spacing.md,
+    padding: theme.spacing.lg,
     gap: theme.spacing.sm,
   },
   statCard: {
@@ -192,7 +250,6 @@ const styles = StyleSheet.create({
   },
   inputSection: {
     padding: theme.spacing.lg,
-    paddingTop: theme.spacing.md,
   },
   sectionTitle: {
     ...themeComposable.typography.bodyBold,
@@ -211,11 +268,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: theme.colors.light[300],
     backgroundColor: theme.colors.light[200],
-  },
-  saveButton: {
-    width: "100%",
-  },
-  discardButton: {
-    width: "100%",
   },
 });

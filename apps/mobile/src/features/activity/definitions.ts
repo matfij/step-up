@@ -1,4 +1,5 @@
 export type ActivityReport = {
+  startTime: number;
   duration: number;
   distance: number;
   averageSpeed: number;

@@ -129,6 +129,7 @@ export const useActivity = () => {
 
     await setAsyncStorageItem("activityStartTime", now);
     await setAsyncStorageItem("activityLocation", []);
+    await setAsyncStorageItem("activityIsPaused", false);
 
     setIsTracking(true);
     setIsPaused(false);
@@ -169,6 +170,7 @@ export const useActivity = () => {
     const locations = locationsRef.current;
 
     const newActivityReport: ActivityReport = {
+      startTime: startTimeRef.current,
       duration: duration,
       distance: Math.round(calculateRouteLength(locations)),
       averageSpeed: Math.round(getAverageSpeed(locations)),

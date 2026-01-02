@@ -6,12 +6,12 @@ import { AppAction } from "../common/components/app-action";
 import { AppButton } from "../common/components/app-button";
 import { AppInput } from "../common/components/app-input";
 import { theme, themeComposable } from "../common/theme";
-import { isValidAuthToken, isValidEmail } from "../common/utils";
 import { useRequest } from "../common/api/api-hooks";
 import { userClient } from "../common/api/user-client";
 import { useUserStore } from "../common/state/user-store";
 import { AppApiError } from "../common/components/app-api-error";
 import { AppWrapper } from "../common/components/app-wrapper";
+import { isValidEmail, isValidAuthToken } from "../common/validation";
 
 export default function Index() {
   const router = useRouter();
