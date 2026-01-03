@@ -57,5 +57,12 @@
     "activityDetails": "Activity details",
     "name": "Name",
     "description": "Description"
+  },
+  "profile": {
+    "level": "Level",
+    "progress": "Progress",
+    "totalDuration": "Total duration",
+    "totalDistance": "Total distance",
+    "totalActivities": "Total activities"
   }
 }
