@@ -1,5 +1,5 @@
 import { Modal, StyleSheet, Text, View, ScrollView } from "react-native";
-import { ActivityReport } from "./definitions";
+import { ActivityReport } from "./activity-definitions";
 import { useTranslation } from "react-i18next";
 import { withAlpha } from "../../common/utils";
 import { theme, themeComposable } from "../../common/theme";
@@ -69,7 +69,8 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
       distance: props.report.distance,
       averageSpeed: props.report.averageSpeed,
       topSpeed: props.report.topSpeed,
-      route: props.report.route,
+      routeLatitudes: props.report.routeLatitudes,
+      routeLongitudes: props.report.routeLongitudes,
       startTime: props.report.startTime,
     });
   };

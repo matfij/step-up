@@ -21,7 +21,8 @@ export interface Activity {
   distance: number;
   averageSpeed: number;
   topSpeed: number;
-  route: { latitude: number; longitude: number }[];
+  routeLatitudes: number[];
+  routeLongitudes: number[];
 }
 
 export interface Progress {

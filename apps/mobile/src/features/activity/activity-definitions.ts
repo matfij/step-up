@@ -4,10 +4,11 @@ export type ActivityReport = {
   distance: number;
   averageSpeed: number;
   topSpeed: number;
-  route: Coordinate[];
+  routeLatitudes: number[];
+  routeLongitudes: number[];
 };
 
 export type Coordinate = {
   latitude: number;
   longitude: number;
-};
+}

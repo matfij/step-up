@@ -67,7 +67,10 @@ public class ActivityValidator : IActivityValidator
 
         if (activity.AverageSpeed < _averageSpeedMin || activity.AverageSpeed > _averageSpeedMax)
         {
-            throw new ApiException("errors.invalidActivityAverageSpeed", nameof(activity.AverageSpeed));
+            throw new ApiException(
+                "errors.invalidActivityAverageSpeed",
+                nameof(activity.AverageSpeed)
+            );
         }
 
         if (activity.TopSpeed < _topSpeedMin || activity.TopSpeed > _topSpeedMax)
@@ -77,20 +80,34 @@ public class ActivityValidator : IActivityValidator
 
         if (activity.TopSpeed < activity.AverageSpeed)
         {
-            throw new ApiException("errors.invalidActivitySpeedRelation", nameof(activity.AverageSpeed));
+            throw new ApiException(
+                "errors.invalidActivitySpeedRelation",
+                nameof(activity.AverageSpeed)
+            );
         }
 
-        if (activity.Route.Length < _routeMinPoints || activity.Route.Length > _routeMaxPoints)
+        if (
+            activity.RouteLatitudes.Length < _routeMinPoints
+            || activity.RouteLatitudes.Length > _routeMaxPoints
+            || activity.RouteLatitudes.Length != activity.RouteLongitudes.Length
+        )
         {
-            throw new ApiException("errors.invalidActivityRoute", nameof(activity.Route));
+            throw new ApiException("errors.invalidActivityRoute");
         }
 
-        foreach (var point in activity.Route)
+        for (int i = 0; i < activity.RouteLatitudes.Length; i++)
         {
-            if (point.Latitude is < _latitudeMin or > _latitudeMax ||
-                point.Longitude is < _longitudeMin or > _longitudeMax)
+            var latitude = activity.RouteLatitudes[i];
+            var longitude = activity.RouteLongitudes[i];
+
+            if (
+                latitude < _latitudeMin
+                || latitude > _latitudeMax
+                || longitude < _longitudeMin
+                || longitude > _longitudeMax
+            )
             {
-                throw new ApiException("errors.invalidActivityRoutePoint", nameof(activity.Route));
+                throw new ApiException("errors.invalidActivityRoute");
             }
         }
     }

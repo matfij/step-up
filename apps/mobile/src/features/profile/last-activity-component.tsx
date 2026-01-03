@@ -1,4 +1,4 @@
-import { useEffect, useRef, useTransition } from "react";
+import { useEffect, useMemo, useRef, useTransition } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Polyline, Region } from "react-native-maps";
 import { Activity } from "../../common/api/api-definitions";
@@ -15,15 +15,22 @@ export const LastActivityComponent = (props: LastActivityComponentProps) => {
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
 
+  const coordinates = useMemo(
+    () =>
+      props.activity.routeLatitudes.map((lat, index) => ({
+        latitude: lat,
+        longitude: props.activity.routeLongitudes[index],
+      })),
+    [props.activity.routeLatitudes, props.activity.routeLongitudes]
+  );
+
   useEffect(() => {
-    setTimeout(
-      () =>
-        mapRef.current?.fitToCoordinates(props.activity!.route, {
-          edgePadding: { top: 10, right: 10, bottom: 20, left: 10 },
-          animated: false,
-        }),
-      100
-    );
+    setTimeout(() => {
+      mapRef.current?.fitToCoordinates(coordinates, {
+        edgePadding: { top: 10, right: 10, bottom: 20, left: 10 },
+        animated: false,
+      });
+    }, 100);
   }, [props.activity]);
 
   return (
@@ -43,7 +50,7 @@ export const LastActivityComponent = (props: LastActivityComponentProps) => {
         style={styles.activityMap}
       >
         <Polyline
-          coordinates={props.activity.route}
+          coordinates={coordinates}
           strokeColor={theme.colors.accent[3]}
           strokeWidth={3}
         />

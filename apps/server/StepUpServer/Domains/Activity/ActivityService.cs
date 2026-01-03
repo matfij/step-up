@@ -34,7 +34,8 @@ namespace StepUpServer.Domains.Activity
                 Distance = request.Distance,
                 AverageSpeed = request.AverageSpeed,
                 TopSpeed = request.TopSpeed,
-                Route = request.Route,
+                RouteLatitudes = request.RouteLatitudes,
+                RouteLongitudes = request.RouteLongitudes,
             };
 
             _validator.ValidateAll(newActivity);

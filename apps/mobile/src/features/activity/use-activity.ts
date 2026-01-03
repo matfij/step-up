@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import * as Location from "expo-location";
-import { ActivityReport } from "./definitions";
+import { ActivityReport } from "./activity-definitions";
 import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
 import { calculateRouteLength } from "./distance-manager";
 import { getAverageSpeed, getCurrentSpeed, getTopSpeed } from "./speed-manager";
@@ -175,7 +175,8 @@ export const useActivity = () => {
       distance: Math.round(calculateRouteLength(locations)),
       averageSpeed: Math.round(getAverageSpeed(locations)),
       topSpeed: Math.round(getTopSpeed(locations)),
-      route: locations.map((location) => location.coords),
+      routeLatitudes: locations.map((location) => location.coords.latitude),
+      routeLongitudes: locations.map((location) => location.coords.longitude),
     };
 
     setActivityReport(newActivityReport);

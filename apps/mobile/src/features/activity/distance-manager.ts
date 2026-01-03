@@ -1,5 +1,5 @@
 import { LocationObject } from "expo-location";
-import { Coordinate } from "./definitions";
+import { Coordinate } from "./activity-definitions";
 
 const EARTH_RADIUS_M = 6_371_000;
 

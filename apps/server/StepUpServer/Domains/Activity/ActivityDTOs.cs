@@ -8,7 +8,8 @@ public readonly record struct CreateActivityRequest(
     ulong Distance,
     float AverageSpeed,
     float TopSpeed,
-    Coordinate[] Route
+    double[] RouteLatitudes,
+    double[] RouteLongitudes
 );
 
 public readonly record struct UpdateActivityRequest(
