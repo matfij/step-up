@@ -10,7 +10,7 @@ public interface IAchievementsRepository
     Task<Achievements> Update(Achievements achievements);
 }
 
-public class AchievementsRepository
+public class AchievementsRepository : IAchievementsRepository
 {
     private readonly IMongoCollection<Achievements> _collection;
 

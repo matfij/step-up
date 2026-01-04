@@ -10,19 +10,27 @@ public class Achievements
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public AchievementTier Traveler { get; set; } = AchievementTier.None; // based on total distance
-    public AchievementTier Enduring { get; set; } = AchievementTier.None; // based on total duration
-    public AchievementTier Swift { get; set; } = AchievementTier.None; // based on average speed on minimum 5000m distance
-    public AchievementTier Consistent { get; set; } = AchievementTier.None; // based on current streak
-    public AchievementTier Cumulative { get; set; } = AchievementTier.None; // based on total activities
+    public AchievementDetails Traveler { get; set; } = new(); // based on total distance
+    public AchievementDetails Enduring { get; set; } = new(); // based on total duration
+    public AchievementDetails Consistent { get; set; } = new(); // based on current streak
+    public AchievementDetails Cumulative { get; set; } = new(); // based on total activities
+    public AchievementDetails Swift { get; set; } = new(); // based on average speed on minimum 5000m distance
+    public AchievementDetails Steadfast { get; set; } = new(); // based on single activity distance
 
-    public bool Marathonner { get; set; } = false; // based on single activity distance
+    public AchievementDetails Marathonner { get; set; } = new(); // based on single activity distance
+}
 
+public class AchievementDetails
+{
+    public AchievementTier Tier { get; set; } = AchievementTier.None;
+    public ulong Progress { get; set; } = 0;
+    public ulong AchievedAt { get; set; } = 0;
 }
 
 public enum AchievementTier
 {
     None = 0,
+    Achieved = 1,
     BronzeI = 10,
     BronzeII = 11,
     BronzeIII = 12,

@@ -6,8 +6,8 @@ public readonly record struct CreateActivityRequest(
     ulong StartTime,
     ulong Duration,
     ulong Distance,
-    float AverageSpeed,
-    float TopSpeed,
+    ulong AverageSpeed,
+    ulong TopSpeed,
     double[] RouteLatitudes,
     double[] RouteLongitudes
 );

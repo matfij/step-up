@@ -2,6 +2,7 @@ using System.Text.Json.Serialization.Metadata;
 using MongoDB.Driver;
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
+using StepUpServer.Domains.Achievements;
 using StepUpServer.Domains.Activity;
 using StepUpServer.Domains.Progress;
 using StepUpServer.Domains.User;
@@ -40,6 +41,11 @@ builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
 builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressService>();
+
+builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
+builder.Services.AddScoped<IAchievementsService, AchievementsService>();
+builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, AchievementsService>();
+builder.Services.AddScoped<IEventHandler<ProgressUpdatedEvent>, AchievementsService>();
 
 var app = builder.Build();
 

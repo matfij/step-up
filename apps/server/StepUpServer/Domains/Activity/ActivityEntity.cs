@@ -17,8 +17,8 @@ public class Activity
     public required ulong Duration { get; set; } // ms
 
     public required ulong Distance { get; set; } // meters
-    public required float AverageSpeed { get; set; } // meters per minute
-    public required float TopSpeed { get; set; } // meters per minute
+    public required ulong AverageSpeed { get; set; } // meters per minute
+    public required ulong TopSpeed { get; set; } // meters per minute
 
     public required double[] RouteLatitudes { get; set; }
     public required double[] RouteLongitudes { get; set; }

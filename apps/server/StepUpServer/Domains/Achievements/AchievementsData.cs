@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
 namespace StepUpServer.Domains.Achievements;
 
 public static class AchievementsData
 {
+    public static readonly ulong MarathonnerThreshold = 42_195;
+
     public static readonly Dictionary<AchievementTier, ulong> TravelerThresholds = new()
     {
         { AchievementTier.BronzeI, 10_000 },
@@ -40,6 +44,7 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 360_000_000_000 },
     };
 
+    public static readonly ulong MinSwiftDistance = 5_000;
     public static readonly Dictionary<AchievementTier, ulong> SwiftThresholds = new()
     {
         { AchievementTier.BronzeI, 100 },
@@ -96,4 +101,56 @@ public static class AchievementsData
         { AchievementTier.MasterII, 250_000 },
         { AchievementTier.MasterIII, 500_000 },
     };
+
+    public static readonly Dictionary<AchievementTier, ulong> SteadfastThresholds = new()
+    {
+        { AchievementTier.BronzeI, 5_000 },
+        { AchievementTier.BronzeII, 10_000 },
+        { AchievementTier.BronzeIII, 15_000 },
+        { AchievementTier.SilverI, 25_000 },
+        { AchievementTier.SilverII, 35_000 },
+        { AchievementTier.SilverIII, 45_000 },
+        { AchievementTier.GoldI, 70_000 },
+        { AchievementTier.GoldII, 85_000 },
+        { AchievementTier.GoldIII, 100_000 },
+        { AchievementTier.RubyI, 150_000 },
+        { AchievementTier.RubyII, 200_000 },
+        { AchievementTier.RubyIII, 250_000 },
+        { AchievementTier.MasterI, 500_000 },
+        { AchievementTier.MasterII, 750_000 },
+        { AchievementTier.MasterIII, 1_000_000 },
+    };
+
+    public static AchievementTier CalculateTier(
+        Dictionary<AchievementTier, ulong> thresholds,
+        ulong value
+    )
+    {
+        var tier = AchievementTier.None;
+        foreach (var threshold in thresholds.OrderBy(x => x.Value))
+        {
+            if (value >= threshold.Value)
+            {
+                tier = threshold.Key;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return tier;
+    }
+
+    public static (AchievementTier? nextTier, ulong? requirement) GetNextTier(
+        Dictionary<AchievementTier, ulong> thresholds,
+        AchievementTier currentTier
+    )
+    {
+        var nextTier = thresholds
+            .Where(x => x.Key > currentTier)
+            .OrderBy(x => x.Key)
+            .FirstOrDefault();
+
+        return nextTier.Key != AchievementTier.None ? (nextTier.Key, nextTier.Value) : (null, null);
+    }
 }
