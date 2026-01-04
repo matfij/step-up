@@ -9,9 +9,11 @@ import { AppWrapper } from "../../common/components/app-wrapper";
 import { formatDuration } from "./time-manager";
 import { withAlpha } from "../../common/utils";
 import { ActivityReportModal } from "./activity-report-modal";
+import { useRouter } from "expo-router";
 
 export const ActivityComponent = () => {
   const { t } = useTranslation();
+  const { navigate } = useRouter();
   const activity = useActivity();
   const mapRef = useRef<MapView | null>(null);
   const [region, setRegion] = useState<Region | undefined>();
@@ -22,6 +24,18 @@ export const ActivityComponent = () => {
       setShowReport(true);
     }
   }, [activity.activityReport]);
+
+  const onClose = (navigateToIndex: boolean) => {
+    setShowReport(false);
+    if (navigateToIndex) {
+      navigate("/(tabs)");
+    }
+  };
+
+  const onDiscard = () => {
+    setShowReport(false);
+    activity.discard();
+  };
 
   return (
     <AppWrapper>
@@ -101,8 +115,8 @@ export const ActivityComponent = () => {
         <ActivityReportModal
           visible={showReport}
           report={activity.activityReport}
-          onDiscard={() => setShowReport(false)}
-          onClose={() => setShowReport(false)}
+          onDiscard={onDiscard}
+          onClose={onClose}
         />
       )}
     </AppWrapper>

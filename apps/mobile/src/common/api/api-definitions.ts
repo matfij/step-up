@@ -33,4 +33,6 @@ export interface Progress {
   totalActivities: number;
   totalDuration: number;
   totalDistance: number;
+  currentStreak: number;
+  bestStreak: number;
 }

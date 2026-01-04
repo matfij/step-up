@@ -18,12 +18,14 @@ import {
   isValidActivityName,
 } from "../../common/validation";
 import { appConfig } from "../../common/config";
+import { useUserStore } from "../../common/state/user-store";
+import { progressClient } from "../../common/api/progress-client";
 
 type ActivityReportModalProps = {
   visible: boolean;
   report: ActivityReport;
   onDiscard: () => void;
-  onClose: () => void;
+  onClose: (navigateToIndex: boolean) => void;
 };
 
 export const ActivityReportModal = (props: ActivityReportModalProps) => {
@@ -33,6 +35,8 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
   const [description, setDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const createActivity = useRequest(activityClient.create);
+  const getProgress = useRequest(progressClient.getByUser);
+  const { setProgress } = useUserStore();
 
   useEffect(() => setNameError(""), [name]);
 
@@ -40,9 +44,16 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
 
   useEffect(() => {
     if (createActivity.success && createActivity.data) {
-      props.onClose();
+      getProgress.call(undefined);
     }
   }, [createActivity.success, createActivity.data]);
+
+  useEffect(() => {
+    if (getProgress.success && getProgress.data) {
+      setProgress(getProgress.data);
+      props.onClose(true);
+    }
+  }, [getProgress.success, getProgress.data]);
 
   const onSave = () => {
     if (!isValidActivityName(name)) {
@@ -140,19 +151,19 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
 
           <View style={styles.buttonWrapper}>
             <AppApiError
-              error={createActivity.error}
+              error={createActivity.error || getProgress.error}
               style={{ marginTop: -theme.spacing.md, marginBottom: 0 }}
             />
             <AppButton
               label={t("common.save")}
               onClick={onSave}
-              disabled={createActivity.loading}
+              disabled={createActivity.loading || getProgress.loading}
               style={{ width: "100%" }}
             />
             <AppButtonSecondary
               label={t("common.discard")}
               onClick={props.onDiscard}
-              disabled={createActivity.loading}
+              disabled={createActivity.loading || getProgress.loading}
               style={{ width: "100%" }}
             />
           </View>

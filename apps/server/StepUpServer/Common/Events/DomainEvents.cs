@@ -18,5 +18,7 @@ public record ActivityCreatedEvent : IDomainEvent
     public required ulong Duration { get; init; }
     public required ulong Distance { get; init; }
     public required float AverageSpeed { get; init; }
+    public required ulong StartTime { get; init; }
+    public required ulong LastActivityStartTime { get; init; }
     public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
 }

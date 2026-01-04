@@ -63,6 +63,8 @@
     "progress": "Progress",
     "totalDuration": "Total duration",
     "totalDistance": "Total distance",
-    "totalActivities": "Total activities"
+    "totalActivities": "Total activities",
+    "currentStreak": "Current streak",
+    "bestStreak": "Best streak"
   }
 }

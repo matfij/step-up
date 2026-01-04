@@ -9,6 +9,7 @@ type UserStore = {
   signIn: (user: User) => void;
   signOut: () => void;
   setProgress: (progress: Progress) => void;
+  updateProgress: () => void;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -18,6 +19,15 @@ export const useUserStore = create<UserStore>()(
       signIn: (user: User) => set({ user }),
       signOut: () => set({ user: undefined }),
       setProgress: (progress: Progress) => set({ progress }),
+      updateProgress: () =>
+        set((state) => ({
+          progress: state.progress
+            ? {
+                ...state.progress,
+                totalActivities: state.progress.totalActivities + 1,
+              }
+            : undefined,
+        })),
     }),
     {
       name: "user-store",

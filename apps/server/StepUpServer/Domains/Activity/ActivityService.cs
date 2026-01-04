@@ -40,6 +40,8 @@ namespace StepUpServer.Domains.Activity
 
             _validator.ValidateAll(newActivity);
 
+            var lastActivity = await _repository.GetByUserId(userId, 0, 1);
+
             var activity = await _repository.Create(newActivity);
 
             await _publisher.PublishAsync(
@@ -50,6 +52,8 @@ namespace StepUpServer.Domains.Activity
                     Distance = activity.Distance,
                     Duration = activity.Duration,
                     AverageSpeed = activity.AverageSpeed,
+                    LastActivityStartTime = lastActivity.Length > 0 ? lastActivity[0].StartTime : 0,
+                    StartTime = activity.StartTime,
                 }
             );
 

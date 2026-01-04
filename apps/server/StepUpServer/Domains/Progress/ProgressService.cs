@@ -41,6 +41,25 @@ public class ProgressService(IProgressRepository repository)
         progress.TotalDuration += activityEvent.Duration;
         progress.TotalDistance += activityEvent.Distance;
 
+        var currentActivityDate = DateTimeOffset.FromUnixTimeMilliseconds((long)activityEvent.StartTime).Date;
+
+        if (activityEvent.LastActivityStartTime != 0)
+        {
+            var lastActivityDate = DateTimeOffset.FromUnixTimeMilliseconds((long)activityEvent.LastActivityStartTime).Date;
+            var daysDifference = (currentActivityDate - lastActivityDate).Days;
+            progress.CurrentStreak = daysDifference switch
+            {
+                0 => progress.CurrentStreak,      // Same day - keep current
+                1 => progress.CurrentStreak + 1,  // Next day - increment
+                _ => 1                            // Gap - reset
+            };
+        }
+        else
+        {
+            progress.CurrentStreak = 1;
+        }
+        progress.BestStreak = Math.Max(progress.BestStreak, progress.CurrentStreak);
+
         var expGain = (ulong)(activityEvent.Duration / 60_000f + activityEvent.Distance / 100f);
         progress.Experience += expGain;
         progress.Level = CalculateLevel(progress.Experience);
