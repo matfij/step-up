@@ -4,9 +4,10 @@ namespace StepUpServer.Domains.Achievements;
 
 public static class AchievementsData
 {
-    public static readonly ulong MarathonnerThreshold = 42_195;
+    public static readonly ulong GreenhornThreshold = 1;
+    public static readonly ulong MarathonerThreshold = 42_195;
 
-    public static readonly Dictionary<AchievementTier, ulong> TravelerThresholds = new()
+    public static readonly Dictionary<AchievementTier, ulong> TotalDistanceThresholds = new()
     {
         { AchievementTier.BronzeI, 10_000 },
         { AchievementTier.BronzeII, 50_000 },
@@ -25,7 +26,7 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 1_000_000_000 },
     };
 
-    public static readonly Dictionary<AchievementTier, ulong> EnduringThresholds = new()
+    public static readonly Dictionary<AchievementTier, ulong> TotalDurationThresholds = new()
     {
         { AchievementTier.BronzeI, 3_600_000 },
         { AchievementTier.BronzeII, 18_000_000 },
@@ -44,8 +45,8 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 360_000_000_000 },
     };
 
-    public static readonly ulong MinSwiftDistance = 5_000;
-    public static readonly Dictionary<AchievementTier, ulong> SwiftThresholds = new()
+    public static readonly ulong MaxActivitySpeedRequiredDistance = 5_000;
+    public static readonly Dictionary<AchievementTier, ulong> MaxActivitySpeedTrasholds = new()
     {
         { AchievementTier.BronzeI, 100 },
         { AchievementTier.BronzeII, 125 },
@@ -64,7 +65,7 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 900 },
     };
 
-    public static readonly Dictionary<AchievementTier, ulong> ConsistentThresholds = new()
+    public static readonly Dictionary<AchievementTier, ulong> MaxCurrentStreakThresholds = new()
     {
         { AchievementTier.BronzeI, 7 },
         { AchievementTier.BronzeII, 14 },
@@ -83,7 +84,7 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 900 },
     };
 
-    public static readonly Dictionary<AchievementTier, ulong> CumulativeThresholds = new()
+    public static readonly Dictionary<AchievementTier, ulong> TotalActivitiesThresholds = new()
     {
         { AchievementTier.BronzeI, 10 },
         { AchievementTier.BronzeII, 50 },
@@ -102,7 +103,7 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 500_000 },
     };
 
-    public static readonly Dictionary<AchievementTier, ulong> SteadfastThresholds = new()
+    public static readonly Dictionary<AchievementTier, ulong> MaxActivityDistanceThreshold = new()
     {
         { AchievementTier.BronzeI, 5_000 },
         { AchievementTier.BronzeII, 10_000 },
@@ -151,6 +152,6 @@ public static class AchievementsData
             .OrderBy(x => x.Key)
             .FirstOrDefault();
 
-        return nextTier.Key != AchievementTier.None ? (nextTier.Key, nextTier.Value) : (null, null);
+        return (nextTier.Key, nextTier.Value);
     }
 }

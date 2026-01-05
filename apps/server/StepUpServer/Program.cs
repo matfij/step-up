@@ -55,5 +55,6 @@ app.UseMiddleware<AuthMiddleware>();
 app.MapUserEndpoints();
 app.MapActivityEndpoints();
 app.MapProgressEndpoints();
+app.MapAchievementsEndpoints();
 
 app.Run();

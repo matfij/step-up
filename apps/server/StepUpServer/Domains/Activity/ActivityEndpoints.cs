@@ -37,7 +37,7 @@ public static class ActivityEndpoints
             .WithMetadata(new RequireAuthAttribute());
 
         app.MapGet(
-                "/activitiesByUserId/{userId}",
+                "/activities/byUserId/{userId}",
                 async (
                     string userId,
                     IActivityService activityService,

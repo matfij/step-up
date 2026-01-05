@@ -10,14 +10,15 @@ public class Achievements
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public AchievementDetails Traveler { get; set; } = new(); // based on total distance
-    public AchievementDetails Enduring { get; set; } = new(); // based on total duration
-    public AchievementDetails Consistent { get; set; } = new(); // based on current streak
-    public AchievementDetails Cumulative { get; set; } = new(); // based on total activities
-    public AchievementDetails Swift { get; set; } = new(); // based on average speed on minimum 5000m distance
-    public AchievementDetails Steadfast { get; set; } = new(); // based on single activity distance
+    public AchievementDetails TotalDistance { get; set; } = new(); // based on total distance
+    public AchievementDetails TotalDuration { get; set; } = new(); // based on total duration
+    public AchievementDetails TotalActivities { get; set; } = new(); // based on total activities
+    public AchievementDetails MaxCurrentStreak { get; set; } = new(); // based on current streak
+    public AchievementDetails MaxActivitySpeed { get; set; } = new(); // based on average speed on minimum 5000m distance
+    public AchievementDetails MaxActivityDistance { get; set; } = new(); // based on single activity distance
 
-    public AchievementDetails Marathonner { get; set; } = new(); // based on single activity distance
+    public AchievementDetails Greenhorn { get; set; } = new(); // completing first activity
+    public AchievementDetails Marathoner { get; set; } = new(); // based on single activity distance
 }
 
 public class AchievementDetails
