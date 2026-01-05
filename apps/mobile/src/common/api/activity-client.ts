@@ -17,7 +17,7 @@ export class ActivityClient extends ApiClient {
     take: number;
   }) =>
     this.request<Activity[]>(
-      `/activitiesByUserId/${params.userId}?skip=${params.skip}&take=${params.take}`,
+      `/activities/byUserId/${params.userId}?skip=${params.skip}&take=${params.take}`,
       { method: "GET" }
     );
 

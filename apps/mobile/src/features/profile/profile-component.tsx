@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { useUserStore } from "../../common/state/user-store";
 import { progressClient } from "../../common/api/progress-client";
@@ -11,29 +11,43 @@ import { formatDuration } from "../activity/time-manager";
 import { activityClient } from "../../common/api/activity-client";
 import { LastActivityComponent } from "./last-activity-component";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { achievementsClient } from "../../common/api/achievements-client";
 
 export const ProfileComponent = () => {
   const { t } = useTranslation();
-  const { user, progress, setProgress } = useUserStore();
-  const getProgress = useRequest(progressClient.getByUser);
+  const { user, progress, achievements, setProgress, setAchievements, signOut } = useUserStore();
+  const getProgress = useRequest(progressClient.getByUserId);
+  const getAchievements = useRequest(achievementsClient.getByUserId);
   const getLastActivity = useRequest(activityClient.getByUserId);
 
   const lastActivity = getLastActivity.data?.[0];
 
   useEffect(() => {
-    if (!progress && user && !getProgress.loading) {
-      getProgress.call(undefined);
+    if (!user) {
+      return;
     }
-    if (user && !getLastActivity.loading && !getLastActivity.data) {
+    if (!progress && !getProgress.loading) {
+      getProgress.call(user.id);
+    }
+    if (!achievements && !getAchievements.loading) {
+      getAchievements.call(user.id);
+    }
+    if (!getLastActivity.loading && !getLastActivity.data) {
       getLastActivity.call({ userId: user.id, skip: 0, take: 1 });
     }
-  }, [user, progress]);
+  }, [user, progress, achievements]);
 
   useEffect(() => {
     if (getProgress.success && getProgress.data) {
       setProgress(getProgress.data);
     }
   }, [getProgress.success, getProgress.data]);
+
+  useEffect(() => {
+    if (getAchievements.success && getAchievements.data) {
+      setAchievements(getAchievements.data);
+    }
+  }, [getAchievements.success, getAchievements.data]);
 
   if (getProgress.loading || !progress || !user) {
     return <></>;

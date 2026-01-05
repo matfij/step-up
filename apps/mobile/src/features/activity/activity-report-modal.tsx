@@ -35,7 +35,7 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
   const [description, setDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const createActivity = useRequest(activityClient.create);
-  const getProgress = useRequest(progressClient.getByUser);
+  const getProgress = useRequest(progressClient.getByUserId);
   const { setProgress } = useUserStore();
 
   useEffect(() => setNameError(""), [name]);

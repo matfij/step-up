@@ -36,3 +36,43 @@ export interface Progress {
   currentStreak: number;
   bestStreak: number;
 }
+
+export interface Achievements {
+  id: string;
+  userId: string;
+  totalDistance: AchievementProgress;
+  totalDuration: AchievementProgress;
+  totalActivities: AchievementProgress;
+  maxCurrentStreak: AchievementProgress;
+  maxActivitySpeed: AchievementProgress;
+  maxActivityDistance: AchievementProgress;
+  greenhorn: AchievementProgress;
+  marathoner: AchievementProgress;
+}
+
+export interface AchievementProgress {
+  tier: AchievementTier;
+  progress: number;
+  nextTierProgress: number | null;
+  achievedAt: number;
+}
+
+export enum AchievementTier {
+  None = 0,
+  Achieved = 1,
+  BronzeI = 10,
+  BronzeII = 11,
+  BronzeIII = 12,
+  SilverI = 20,
+  SilverII = 21,
+  SilverIII = 22,
+  GoldI = 30,
+  GoldII = 31,
+  GoldIII = 32,
+  RubyI = 40,
+  RubyII = 41,
+  RubyIII = 42,
+  MasterI = 50,
+  MasterII = 51,
+  MasterIII = 52,
+}
