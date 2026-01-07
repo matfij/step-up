@@ -19,7 +19,6 @@ import {
 } from "../../common/validation";
 import { appConfig } from "../../common/config";
 import { useUserStore } from "../../common/state/user-store";
-import { progressClient } from "../../common/api/progress-client";
 
 type ActivityReportModalProps = {
   visible: boolean;
@@ -35,25 +34,17 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
   const [description, setDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const createActivity = useRequest(activityClient.create);
-  const getProgress = useRequest(progressClient.getByUserId);
-  const { setProgress } = useUserStore();
+  const { user } = useUserStore();
 
   useEffect(() => setNameError(""), [name]);
 
   useEffect(() => setDescriptionError(""), [description]);
 
   useEffect(() => {
-    if (createActivity.success && createActivity.data) {
-      getProgress.call(undefined);
-    }
-  }, [createActivity.success, createActivity.data]);
-
-  useEffect(() => {
-    if (getProgress.success && getProgress.data) {
-      setProgress(getProgress.data);
+    if (user && createActivity.success && createActivity.data) {
       props.onClose(true);
     }
-  }, [getProgress.success, getProgress.data]);
+  }, [createActivity.success, createActivity.data]);
 
   const onSave = () => {
     if (!isValidActivityName(name)) {
@@ -151,19 +142,19 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
 
           <View style={styles.buttonWrapper}>
             <AppApiError
-              error={createActivity.error || getProgress.error}
+              error={createActivity.error}
               style={{ marginTop: -theme.spacing.md, marginBottom: 0 }}
             />
             <AppButton
               label={t("common.save")}
               onClick={onSave}
-              disabled={createActivity.loading || getProgress.loading}
+              disabled={createActivity.loading}
               style={{ width: "100%" }}
             />
             <AppButtonSecondary
               label={t("common.discard")}
               onClick={props.onDiscard}
-              disabled={createActivity.loading || getProgress.loading}
+              disabled={createActivity.loading}
               style={{ width: "100%" }}
             />
           </View>

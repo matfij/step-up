@@ -26,11 +26,11 @@ export abstract class ApiClient {
         const errorData = await response.json();
         return { error: errorData.error };
       }
-      console.log({ response });
+
       const data = await this.safeParse(response);
       return { data };
     } catch (error) {
-      console.log("err", error);
+      console.log("api error", endpoint, error);
       return {
         error: {
           name: "Unknown Error",

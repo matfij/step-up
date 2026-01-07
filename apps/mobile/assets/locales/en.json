@@ -65,6 +65,27 @@
     "totalDistance": "Total distance",
     "totalActivities": "Total activities",
     "currentStreak": "Current streak",
-    "bestStreak": "Best streak"
+    "bestStreak": "Best streak",
+    "achievements": "Achievements",
+    "achievement": {
+      "none": "None",
+      "achieved": "Achieved",
+      "bronzeI": "Bronze I",
+      "bronzeII": "Bronze II",
+      "bronzeIII": "Bronze III",
+      "silverI": "Silver I",
+      "silverII": "Silver II",
+      "silverIII": "Silver III",
+      "goldI": "Gold I",
+      "goldII": "Gold II",
+      "goldIII": "Gold III",
+      "rubyI": "Ruby I",
+      "rubyII": "Ruby II",
+      "rubyIII": "Ruby III",
+      "masterI": "Master I",
+      "masterII": "Master II",
+      "masterIII": "Master III",
+      "unknown": "Unknown"
+    }
   }
 }

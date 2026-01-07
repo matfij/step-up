@@ -47,6 +47,15 @@ export const theme = {
       2: "#00D4FF",
       3: "#B800FF",
     },
+    achievements: {
+      none: "#000000",
+      achieved: "#00FFD9",
+      bronze: "#CD7F32",
+      silver: "#C0C0C0",
+      gold: "#FFD700",
+      ruby: "#E0115F",
+      master: "#B800FF",
+    },
   },
   spacing: {
     xs: 4,
