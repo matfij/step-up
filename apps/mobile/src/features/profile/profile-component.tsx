@@ -11,45 +11,25 @@ import { formatDuration } from "../activity/time-manager";
 import { activityClient } from "../../common/api/activity-client";
 import { LastActivityComponent } from "./last-activity-component";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { achievementsClient } from "../../common/api/achievements-client";
+import { AchievementsComponent } from "./achievements-component";
 
 export const ProfileComponent = () => {
   const { t } = useTranslation();
-  const { user, progress, achievements, setProgress, setAchievements, signOut } = useUserStore();
+  const { user } = useUserStore();
   const getProgress = useRequest(progressClient.getByUserId);
-  const getAchievements = useRequest(achievementsClient.getByUserId);
   const getLastActivity = useRequest(activityClient.getByUserId);
 
   const lastActivity = getLastActivity.data?.[0];
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
-    if (!progress && !getProgress.loading) {
+    if (user) {
       getProgress.call(user.id);
-    }
-    if (!achievements && !getAchievements.loading) {
-      getAchievements.call(user.id);
-    }
-    if (!getLastActivity.loading && !getLastActivity.data) {
       getLastActivity.call({ userId: user.id, skip: 0, take: 1 });
     }
-  }, [user, progress, achievements]);
+  }, []);
+  console.log({ getProgress });
 
-  useEffect(() => {
-    if (getProgress.success && getProgress.data) {
-      setProgress(getProgress.data);
-    }
-  }, [getProgress.success, getProgress.data]);
-
-  useEffect(() => {
-    if (getAchievements.success && getAchievements.data) {
-      setAchievements(getAchievements.data);
-    }
-  }, [getAchievements.success, getAchievements.data]);
-
-  if (getProgress.loading || !progress || !user) {
+  if (!user || !getProgress.data) {
     return <></>;
   }
 
@@ -62,7 +42,7 @@ export const ProfileComponent = () => {
             source={require("@assets/images/avatar.png")}
           />
           <View style={styles.levelBadge}>
-            <Text style={styles.levelText}>{progress.level}</Text>
+            <Text style={styles.levelText}>{getProgress.data.level}</Text>
           </View>
         </View>
         <Text style={styles.userLabel}>{user.username}</Text>
@@ -71,7 +51,9 @@ export const ProfileComponent = () => {
       <View style={styles.streakWrapper}>
         <View style={styles.streakItem}>
           <View style={styles.streakValueWrapper}>
-            <Text style={styles.streakValue}>{progress.currentStreak}</Text>
+            <Text style={styles.streakValue}>
+              {getProgress.data.currentStreak}
+            </Text>
             <MaterialCommunityIcons
               name="fire"
               size={25}
@@ -83,7 +65,9 @@ export const ProfileComponent = () => {
         <View style={styles.streakDivider} />
         <View style={styles.streakItem}>
           <View style={styles.streakValueWrapper}>
-            <Text style={styles.streakValue}>{progress.bestStreak}</Text>
+            <Text style={styles.streakValue}>
+              {getProgress.data.bestStreak}
+            </Text>
             <MaterialCommunityIcons
               name="star"
               size={25}
@@ -96,20 +80,24 @@ export const ProfileComponent = () => {
 
       <View style={styles.statsWrapper}>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{progress.totalActivities}</Text>
+          <Text style={styles.statValue}>
+            {getProgress.data.totalActivities}
+          </Text>
           <Text style={styles.statLabel}>{t("profile.totalActivities")}</Text>
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>
-            {formatDuration(progress.totalDuration)}
+            {formatDuration(getProgress.data.totalDuration)}
           </Text>
           <Text style={styles.statLabel}>{t("profile.totalDuration")}</Text>
         </View>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{progress.totalDistance}</Text>
+          <Text style={styles.statValue}>{getProgress.data.totalDistance}</Text>
           <Text style={styles.statLabel}>{t("profile.totalDistance")}</Text>
         </View>
       </View>
+
+      <AchievementsComponent userId={user.id} />
 
       {lastActivity && <LastActivityComponent activity={lastActivity} />}
     </AppWrapper>
