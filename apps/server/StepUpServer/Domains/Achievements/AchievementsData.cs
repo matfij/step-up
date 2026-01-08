@@ -65,6 +65,25 @@ public static class AchievementsData
         { AchievementTier.MasterIII, 900 },
     };
 
+    public static readonly Dictionary<AchievementTier, ulong> MaxActivityDurationThresholds = new()
+    {
+        { AchievementTier.BronzeI, 600_000 },
+        { AchievementTier.BronzeII, 1_200_000 },
+        { AchievementTier.BronzeIII, 1_800_000 },
+        { AchievementTier.SilverI, 3_600_000 },
+        { AchievementTier.SilverII, 7_200_000 },
+        { AchievementTier.SilverIII, 10_800_000 },
+        { AchievementTier.GoldI, 18_000_000 },
+        { AchievementTier.GoldII, 25_200_000 },
+        { AchievementTier.GoldIII, 36_000_000 },
+        { AchievementTier.RubyI, 54_000_000 },
+        { AchievementTier.RubyII, 72_000_000 },
+        { AchievementTier.RubyIII, 90_000_000 },
+        { AchievementTier.MasterI, 150_000_000 },
+        { AchievementTier.MasterII, 210_000_000 },
+        { AchievementTier.MasterIII, 300_000_000 },
+    };
+
     public static readonly Dictionary<AchievementTier, ulong> MaxCurrentStreakThresholds = new()
     {
         { AchievementTier.BronzeI, 7 },
@@ -142,7 +161,7 @@ public static class AchievementsData
         return tier;
     }
 
-    public static (AchievementTier? nextTier, ulong? requirement) GetNextTier(
+    public static ulong GetNextTierThreshold(
         Dictionary<AchievementTier, ulong> thresholds,
         AchievementTier currentTier
     )
@@ -151,7 +170,18 @@ public static class AchievementsData
             .Where(x => x.Key > currentTier)
             .OrderBy(x => x.Key)
             .FirstOrDefault();
+        return nextTier.Value;
+    }
 
-        return (nextTier.Key, nextTier.Value);
+    public static ulong GetPreviousTierThreshold(
+        Dictionary<AchievementTier, ulong> thresholds,
+        AchievementTier currentTier
+    )
+    {
+        var previousTier = thresholds
+            .Where(x => x.Key < currentTier)
+            .OrderByDescending(x => x.Key)
+            .FirstOrDefault();
+        return previousTier.Value;
     }
 }

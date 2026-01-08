@@ -29,61 +29,99 @@ public class AchievementsService(IAchievementsRepository repository)
             {
                 Tier = achievements.TotalDistance.Tier,
                 Progress = achievements.TotalDistance.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.TotalDistanceThresholds,
                     achievements.TotalDistance.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.TotalDistanceThresholds,
+                    achievements.TotalDistance.Tier
+                ),
                 AchievedAt = achievements.TotalDistance.AchievedAt,
             },
             TotalDuration = new AchievementProgress
             {
                 Tier = achievements.TotalDuration.Tier,
                 Progress = achievements.TotalDuration.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.TotalDurationThresholds,
                     achievements.TotalDuration.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.TotalDurationThresholds,
+                    achievements.TotalDuration.Tier
+                ),
                 AchievedAt = achievements.TotalDuration.AchievedAt,
             },
             TotalActivities = new AchievementProgress
             {
                 Tier = achievements.TotalActivities.Tier,
                 Progress = achievements.TotalActivities.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.TotalActivitiesThresholds,
                     achievements.TotalActivities.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.TotalActivitiesThresholds,
+                    achievements.TotalActivities.Tier
+                ),
                 AchievedAt = achievements.TotalActivities.AchievedAt,
             },
             MaxCurrentStreak = new AchievementProgress
             {
                 Tier = achievements.MaxCurrentStreak.Tier,
                 Progress = achievements.MaxCurrentStreak.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.MaxCurrentStreakThresholds,
                     achievements.MaxCurrentStreak.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.MaxCurrentStreakThresholds,
+                    achievements.MaxCurrentStreak.Tier
+                ),
                 AchievedAt = achievements.MaxCurrentStreak.AchievedAt,
             },
             MaxActivitySpeed = new AchievementProgress
             {
                 Tier = achievements.MaxActivitySpeed.Tier,
                 Progress = achievements.MaxActivitySpeed.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.MaxActivitySpeedTrasholds,
                     achievements.MaxActivitySpeed.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.MaxActivitySpeedTrasholds,
+                    achievements.MaxActivitySpeed.Tier
+                ),
                 AchievedAt = achievements.MaxActivitySpeed.AchievedAt,
             },
             MaxActivityDistance = new AchievementProgress
             {
                 Tier = achievements.MaxActivityDistance.Tier,
                 Progress = achievements.MaxActivityDistance.Progress,
-                NextTierProgress = AchievementsData.GetNextTier(
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
                     AchievementsData.MaxActivityDistanceThreshold,
                     achievements.MaxActivityDistance.Tier
-                ).requirement,
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.MaxActivityDistanceThreshold,
+                    achievements.MaxActivityDistance.Tier
+                ),
                 AchievedAt = achievements.MaxActivityDistance.AchievedAt,
+            },
+            MaxActivityDuration = new AchievementProgress
+            {
+                Tier = achievements.MaxActivityDuration.Tier,
+                Progress = achievements.MaxActivityDuration.Progress,
+                PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    AchievementsData.MaxActivityDistanceThreshold,
+                    achievements.MaxActivityDuration.Tier
+                ),
+                NextTierProgress = AchievementsData.GetNextTierThreshold(
+                    AchievementsData.MaxActivityDistanceThreshold,
+                    achievements.MaxActivityDuration.Tier
+                ),
+                AchievedAt = achievements.MaxActivityDuration.AchievedAt,
             },
             Greenhorn = new AchievementProgress
             {

@@ -31,7 +31,6 @@ public record ProgressUpdatedEvent : IDomainEvent
     public required ulong ActivityAverageSpeed { get; init; }
     public required ulong TotalDistance { get; init; }
     public required ulong TotalDuration { get; init; }
-    public required ulong AverageSpeed { get; init; }
     public required ulong TotalActivities { get; init; }
     public required ulong CurrentStreak { get; init; }
     public DateTime OccurredAt { get; init; } = DateTime.UtcNow;

@@ -16,6 +16,7 @@ public class Achievements
     public AchievementDetails MaxCurrentStreak { get; set; } = new(); // based on current streak
     public AchievementDetails MaxActivitySpeed { get; set; } = new(); // based on average speed on minimum 5000m distance
     public AchievementDetails MaxActivityDistance { get; set; } = new(); // based on single activity distance
+    public AchievementDetails MaxActivityDuration { get; set; } = new(); // based on single activity duration
 
     public AchievementDetails Greenhorn { get; set; } = new(); // completing first activity
     public AchievementDetails Marathoner { get; set; } = new(); // based on single activity distance

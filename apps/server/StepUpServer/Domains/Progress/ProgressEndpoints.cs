@@ -7,7 +7,7 @@ public static class ProgressEndpoints
     public static void MapProgressEndpoints(this WebApplication app)
     {
         app.MapGet(
-                "/progressByUserId/{userId}",
+                "/progress/byUserId/{userId}",
                 async (string userId, IProgressService progressService) =>
                 {
                     var progress = await progressService.GetByUser(userId);

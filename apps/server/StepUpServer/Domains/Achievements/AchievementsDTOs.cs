@@ -9,6 +9,7 @@ public readonly record struct AchievementsProgress(
     AchievementProgress MaxCurrentStreak,
     AchievementProgress MaxActivitySpeed,
     AchievementProgress MaxActivityDistance,
+    AchievementProgress MaxActivityDuration,
     AchievementProgress Greenhorn,
     AchievementProgress Marathoner
 );
@@ -16,7 +17,8 @@ public readonly record struct AchievementsProgress(
 public record struct AchievementProgress(
     AchievementTier Tier,
     ulong Progress,
-    ulong? NextTierProgress,
+    ulong PreviousTierProgress,
+    ulong NextTierProgress,
     ulong AchievedAt
 );
 

@@ -8,12 +8,14 @@ public interface IProgressService
     Task<Progress> GetByUser(string userId);
 }
 
-public class ProgressService(IProgressRepository repository)
+public class ProgressService(IProgressRepository repository, IEventPublisher publisher)
     : IProgressService,
         IEventHandler<UserCreatedEvent>,
         IEventHandler<ActivityCreatedEvent>
 {
     private readonly IProgressRepository _repository = repository;
+    private readonly IEventPublisher _publisher = publisher;
+
     private const ulong _nextLevelExpGain = 100;
 
     public async Task<Progress> GetByUser(string userId)
@@ -65,6 +67,18 @@ public class ProgressService(IProgressRepository repository)
         progress.Level = CalculateLevel(progress.Experience);
 
         await _repository.Update(progress);
+
+        await _publisher.PublishAsync(new ProgressUpdatedEvent
+        {
+            UserId = activityEvent.UserId,
+            ActivityDuration = activityEvent.Duration,
+            ActivityDistance = activityEvent.Distance,
+            ActivityAverageSpeed = activityEvent.AverageSpeed,
+            TotalDistance = progress.TotalDistance,
+            TotalDuration = progress.TotalDuration,
+            TotalActivities = progress.TotalActivities,
+            CurrentStreak = progress.CurrentStreak
+        });
     }
 
     private uint CalculateLevel(ulong experience)
