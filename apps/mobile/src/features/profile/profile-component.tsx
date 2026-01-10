@@ -27,7 +27,6 @@ export const ProfileComponent = () => {
       getLastActivity.call({ userId: user.id, skip: 0, take: 1 });
     }
   }, []);
-  console.log({ getProgress });
 
   if (!user || !getProgress.data) {
     return <></>;

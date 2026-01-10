@@ -67,7 +67,7 @@
     "currentStreak": "Current streak",
     "bestStreak": "Best streak",
     "achievements": "Achievements",
-    "achievement": {
+    "achievementTier": {
       "none": "None",
       "achieved": "Achieved",
       "bronzeI": "Bronze I",
@@ -86,6 +86,28 @@
       "masterII": "Master II",
       "masterIII": "Master III",
       "unknown": "Unknown"
+    },
+    "achievementName": {
+      "totalDistance": "Wayfarer",
+      "totalDuration": "Unwavering",
+      "totalActivities": "Devoted",
+      "maxCurrentStreak": "Ignited",
+      "maxActivitySpeed": "Windrunner",
+      "maxActivityDistance": "Trailblazer",
+      "maxActivityDuration": "Iron Will",
+      "greenhorn": "Greenhorn",
+      "marathoner": "Marathoner"
+    },
+    "achievementDescription": {
+      "totalDistance": "Cumulative distance across all activities",
+      "totalDuration": "Total time spent on all activities",
+      "totalActivities": "Number of completed activities",
+      "maxCurrentStreak": "Consecutive days with activity",
+      "maxActivitySpeed": "Fastest average speed achieved",
+      "maxActivityDistance": "Longest single activity distance",
+      "maxActivityDuration": "Longest single activity duration",
+      "greenhorn": "Complete your first activity",
+      "marathoner": "Run a marathon distance"
     }
   }
 }

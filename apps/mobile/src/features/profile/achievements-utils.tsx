@@ -1,4 +1,8 @@
-import { AchievementTier } from "../../common/api/api-definitions";
+import { ImageSourcePropType } from "react-native";
+import {
+  AchievementTier,
+  AchievementProgress,
+} from "../../common/api/api-definitions";
 import { theme } from "../../common/theme";
 
 export const getAchievementTierColor = (tier: AchievementTier) => {
@@ -32,23 +36,51 @@ export const getAchievementTierColor = (tier: AchievementTier) => {
 
 export const getTierName = (tier: AchievementTier) => {
   const tierKeys: Record<number, string> = {
-    [AchievementTier.None]: "profile.achievement.none",
-    [AchievementTier.Achieved]: "profile.achievement.achieved",
-    [AchievementTier.BronzeI]: "profile.achievement.bronzeI",
-    [AchievementTier.BronzeII]: "profile.achievement.bronzeII",
-    [AchievementTier.BronzeIII]: "profile.achievement.bronzeIII",
-    [AchievementTier.SilverI]: "profile.achievement.silverI",
-    [AchievementTier.SilverII]: "profile.achievement.silverII",
-    [AchievementTier.SilverIII]: "profile.achievement.silverIII",
-    [AchievementTier.GoldI]: "profile.achievement.goldI",
-    [AchievementTier.GoldII]: "profile.achievement.goldII",
-    [AchievementTier.GoldIII]: "profile.achievement.goldIII",
-    [AchievementTier.RubyI]: "profile.achievement.rubyI",
-    [AchievementTier.RubyII]: "profile.achievement.rubyII",
-    [AchievementTier.RubyIII]: "profile.achievement.rubyIII",
-    [AchievementTier.MasterI]: "profile.achievement.masterI",
-    [AchievementTier.MasterII]: "profile.achievement.masterII",
-    [AchievementTier.MasterIII]: "profile.achievement.masterIII",
+    [AchievementTier.None]: "profile.achievementTier.none",
+    [AchievementTier.Achieved]: "profile.achievementTier.achieved",
+    [AchievementTier.BronzeI]: "profile.achievementTier.bronzeI",
+    [AchievementTier.BronzeII]: "profile.achievementTier.bronzeII",
+    [AchievementTier.BronzeIII]: "profile.achievementTier.bronzeIII",
+    [AchievementTier.SilverI]: "profile.achievementTier.silverI",
+    [AchievementTier.SilverII]: "profile.achievementTier.silverII",
+    [AchievementTier.SilverIII]: "profile.achievementTier.silverIII",
+    [AchievementTier.GoldI]: "profile.achievementTier.goldI",
+    [AchievementTier.GoldII]: "profile.achievementTier.goldII",
+    [AchievementTier.GoldIII]: "profile.achievementTier.goldIII",
+    [AchievementTier.RubyI]: "profile.achievementTier.rubyI",
+    [AchievementTier.RubyII]: "profile.achievementTier.rubyII",
+    [AchievementTier.RubyIII]: "profile.achievementTier.rubyIII",
+    [AchievementTier.MasterI]: "profile.achievementTier.masterI",
+    [AchievementTier.MasterII]: "profile.achievementTier.masterII",
+    [AchievementTier.MasterIII]: "profile.achievementTier.masterIII",
   };
   return tierKeys[tier];
+};
+
+export const achievementImages: Record<string, ImageSourcePropType> = {
+  totalDistance: require("../../../assets/achievements/TotalDistance.png"),
+  totalDuration: require("../../../assets/achievements/TotalDuration.png"),
+  totalActivities: require("../../../assets/achievements/TotalActivities.png"),
+  maxCurrentStreak: require("../../../assets/achievements/MaxCurrentStreak.png"),
+  maxActivitySpeed: require("../../../assets/achievements/MaxActivitySpeed.png"),
+  maxActivityDistance: require("../../../assets/achievements/MaxActivityDistance.png"),
+  maxActivityDuration: require("../../../assets/achievements/MaxActivityDuration.png"),
+  greenhorn: require("../../../assets/achievements/Greenhorn.png"),
+  marathoner: require("../../../assets/achievements/Marathoner.png"),
+};
+
+export const isAchievementProgress = (
+  obj: unknown
+): obj is AchievementProgress => {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "tier" in obj &&
+    "progress" in obj &&
+    "achievedAt" in obj
+  );
+};
+
+export const isAchievementKey = (key: string): boolean => {
+  return !["id", "userId"].includes(key);
 };

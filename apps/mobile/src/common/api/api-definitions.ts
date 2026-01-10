@@ -25,6 +25,8 @@ export interface Activity {
   routeLongitudes: number[];
 }
 
+
+
 export interface Progress {
   id: string;
   userId: string;
@@ -46,6 +48,7 @@ export interface Achievements {
   maxCurrentStreak: AchievementProgress;
   maxActivitySpeed: AchievementProgress;
   maxActivityDistance: AchievementProgress;
+  maxActivityDuration: AchievementProgress;
   greenhorn: AchievementProgress;
   marathoner: AchievementProgress;
 }
@@ -53,7 +56,8 @@ export interface Achievements {
 export interface AchievementProgress {
   tier: AchievementTier;
   progress: number;
-  nextTierProgress: number | null;
+  previousTierProgress: number;
+  nextTierProgress: number;
   achievedAt: number;
 }
 
