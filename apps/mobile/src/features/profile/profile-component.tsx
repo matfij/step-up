@@ -98,7 +98,6 @@ export const ProfileComponent = () => {
 
       <AchievementsComponent userId={user.id} />
 
-      {lastActivity && <LastActivityComponent activity={lastActivity} />}
     </AppWrapper>
   );
 };

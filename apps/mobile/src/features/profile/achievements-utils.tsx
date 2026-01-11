@@ -34,7 +34,7 @@ export const getAchievementTierColor = (tier: AchievementTier) => {
   }
 };
 
-export const getTierName = (tier: AchievementTier) => {
+export const getAchievementTierName = (tier: AchievementTier) => {
   const tierKeys: Record<number, string> = {
     [AchievementTier.None]: "profile.achievementTier.none",
     [AchievementTier.Achieved]: "profile.achievementTier.achieved",
