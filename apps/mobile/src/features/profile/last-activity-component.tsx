@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import MapView, { Polyline, Region } from "react-native-maps";
 import { Activity } from "../../common/api/api-definitions";
 import { theme, themeComposable } from "../../common/theme";
-import { formatDuration } from "../activity/time-manager";
+import { formatActivityDuration } from "../activity/time-manager";
 import { useTranslation } from "react-i18next";
 import { withAlpha } from "../../common/utils";
 
@@ -62,7 +62,7 @@ export const LastActivityComponent = (props: LastActivityComponentProps) => {
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>
-            {formatDuration(props.activity.duration)}
+            {formatActivityDuration(props.activity.duration)}
           </Text>
           <Text style={styles.statLabel}>{t("activity.duration")}</Text>
         </View>

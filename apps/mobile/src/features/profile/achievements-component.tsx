@@ -17,24 +17,30 @@ import {
   achievementImages,
   getAchievementTierColor,
   getAchievementTierName,
-  isAchievementKey,
-  isAchievementProgress,
 } from "./achievements-utils";
 import {
   AchievementProgress,
   AchievementTier,
+  UnitCategory,
 } from "../../common/api/api-definitions";
 import { withAlpha } from "../../common/utils";
+import {
+  formatDate,
+  formatDistance,
+  formatDuration,
+  formatSpeed,
+} from "../../common/formatters";
 
 interface AchievementsComponentProps {
   userId: string;
 }
 
 interface Achievement extends AchievementProgress {
-  name: string;
+  label: string;
   description: string;
   image: ImageSourcePropType;
   color: string;
+  unitCategory: UnitCategory;
 }
 
 export const AchievementsComponent = (props: AchievementsComponentProps) => {
@@ -49,33 +55,54 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
 
   useEffect(() => {
     if (getAchievements.data && getAchievements.success) {
-      const newAchievements = Object.entries(getAchievements.data)
-        .filter(
-          (entry): entry is [string, AchievementProgress] =>
-            isAchievementKey(entry[0]) && isAchievementProgress(entry[1])
-        )
-        .map(([key, value]) => ({
-          name: t(`profile.achievementName.${key}`),
-          description: t(`profile.achievementDescription.${key}`),
-          image: achievementImages[key],
-          color: getAchievementTierColor(value.tier),
-          ...value,
-        }))
+      const newAchievements = getAchievements.data.achievements
         .filter((achievement) => achievement.tier !== AchievementTier.None)
+        .map((achievement) => ({
+          label: t(`profile.achievementName.${achievement.name}`),
+          description: t(`profile.achievementDescription.${achievement.name}`),
+          image: achievementImages[achievement.name],
+          color: getAchievementTierColor(achievement.tier),
+          ...achievement,
+        }))
         .sort((a, b) => b.tier - a.tier);
 
       setAchievements(newAchievements);
     }
   }, [getAchievements.data, getAchievements.success, t]);
 
-  const getProgressPercentage = (achievement: Achievement): number => {
+  const getProgressPercentage = (achievement: Achievement) => {
     if (!achievement.nextTierProgress || achievement.nextTierProgress === 0) {
       return 100;
     }
     return Math.min(
-      (achievement.progress / achievement.nextTierProgress) * 100,
+      ((achievement.progress - achievement.previousTierProgress) /
+        (achievement.nextTierProgress - achievement.previousTierProgress)) *
+        100,
       100
     );
+  };
+
+  const getProgressLabel = (achievement: Achievement) => {
+    const current = achievement.progress - achievement.previousTierProgress;
+    const next =
+      achievement.nextTierProgress - achievement.previousTierProgress;
+    const finished = achievement.tier === AchievementTier.MasterIII;
+    switch (achievement.unitCategory) {
+      case UnitCategory.Count:
+        return finished ? current : `${current} / ${next}`;
+      case UnitCategory.Time:
+        return finished
+          ? formatDuration(current, t)
+          : `${formatDuration(current, t)} / ${formatDuration(next, t)}`;
+      case UnitCategory.Distance:
+        return finished
+          ? formatDistance(current, t)
+          : `${formatDistance(current, t)} / ${formatDistance(next, t)}`;
+      case UnitCategory.Speed:
+        return finished
+          ? formatSpeed(current, t)
+          : `${formatSpeed(current, t)} / ${formatSpeed(next, t)}`;
+    }
   };
 
   return (
@@ -84,7 +111,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {achievements.map((achievement) => (
           <Pressable
-            key={achievement.name}
+            key={achievement.label}
             onPress={() => setSelectedAchievement(achievement)}
             style={({ pressed }) => [
               styles.achievementItem,
@@ -120,7 +147,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
                   />
                   <View>
                     <Text style={styles.modalTitle}>
-                      {selectedAchievement.name}
+                      {selectedAchievement.label}
                     </Text>
                     <Text
                       style={{
@@ -137,11 +164,18 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
                   {selectedAchievement.description}
                 </Text>
 
+                <Text style={styles.modalDate}>
+                  {formatDate(selectedAchievement.achievedAt)}
+                </Text>
+
                 {selectedAchievement.tier !== AchievementTier.Achieved && (
                   <View style={styles.progressSection}>
                     <View style={styles.progressHeader}>
                       <Text style={styles.progressLabel}>
                         {t("profile.progress")}
+                      </Text>
+                      <Text style={styles.progressLabel}>
+                        {getProgressLabel(selectedAchievement)}
                       </Text>
                     </View>
 
@@ -222,13 +256,16 @@ const styles = StyleSheet.create({
   },
   modalTier: {
     ...themeComposable.typography.body,
-    // marginTop: theme.spacing.sm,
     fontWeight: "600",
   },
   modalDescription: {
     ...themeComposable.typography.body,
     color: theme.colors.light[300],
-    marginBottom: theme.spacing.lg,
+  },
+  modalDate: {
+    ...themeComposable.typography.bodyBold,
+    color: theme.colors.light[300],
+    fontSize: 12,
   },
   progressSection: {
     marginTop: theme.spacing.md,

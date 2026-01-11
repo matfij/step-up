@@ -7,7 +7,7 @@ export const getActivityDuration = (locations: LocationObject[]) => {
   return locations[locations.length - 1].timestamp - locations[0].timestamp;
 };
 
-export const formatDuration = (duration: number) => {
+export const formatActivityDuration = (duration: number) => {
   const totalSeconds = Math.floor(duration / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);

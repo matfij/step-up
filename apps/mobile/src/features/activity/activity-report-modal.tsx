@@ -7,7 +7,7 @@ import {
   AppButton,
   AppButtonSecondary,
 } from "../../common/components/app-button";
-import { formatDuration } from "./time-manager";
+import { formatActivityDuration } from "./time-manager";
 import { AppInputLight } from "../../common/components/app-input";
 import { useEffect, useState } from "react";
 import { useRequest } from "../../common/api/api-hooks";
@@ -117,7 +117,7 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
             <View style={styles.statsGrid}>
               <View style={styles.statCard}>
                 <Text style={styles.statValue}>
-                  {formatDuration(props.report.duration)}
+                  {formatActivityDuration(props.report.duration)}
                 </Text>
                 <Text style={styles.statLabel}>{t("activity.duration")}</Text>
               </View>

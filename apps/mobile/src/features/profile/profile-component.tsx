@@ -7,24 +7,18 @@ import { useRequest } from "../../common/api/api-hooks";
 import { theme, themeComposable } from "../../common/theme";
 import { useTranslation } from "react-i18next";
 import { withAlpha } from "../../common/utils";
-import { formatDuration } from "../activity/time-manager";
-import { activityClient } from "../../common/api/activity-client";
-import { LastActivityComponent } from "./last-activity-component";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AchievementsComponent } from "./achievements-component";
+import { formatDistance, formatDuration } from "../../common/formatters";
 
 export const ProfileComponent = () => {
   const { t } = useTranslation();
   const { user } = useUserStore();
   const getProgress = useRequest(progressClient.getByUserId);
-  const getLastActivity = useRequest(activityClient.getByUserId);
-
-  const lastActivity = getLastActivity.data?.[0];
 
   useEffect(() => {
     if (user) {
       getProgress.call(user.id);
-      getLastActivity.call({ userId: user.id, skip: 0, take: 1 });
     }
   }, []);
 
@@ -86,18 +80,19 @@ export const ProfileComponent = () => {
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>
-            {formatDuration(getProgress.data.totalDuration)}
+            {formatDuration(getProgress.data.totalDuration, t)}
           </Text>
           <Text style={styles.statLabel}>{t("profile.totalDuration")}</Text>
         </View>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{getProgress.data.totalDistance}</Text>
+          <Text style={styles.statValue}>
+            {formatDistance(getProgress.data.totalDistance, t)}
+          </Text>
           <Text style={styles.statLabel}>{t("profile.totalDistance")}</Text>
         </View>
       </View>
 
       <AchievementsComponent userId={user.id} />
-
     </AppWrapper>
   );
 };
@@ -203,6 +198,7 @@ const styles = StyleSheet.create({
   statValue: {
     ...themeComposable.typography.h2,
     color: theme.colors.primary[400],
+    fontSize: 18,
     fontWeight: "700",
   },
   statLabel: {

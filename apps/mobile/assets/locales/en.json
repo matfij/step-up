@@ -7,6 +7,14 @@
     "discard": "Discard",
     "close": "Close"
   },
+  "units": {
+    "second": "s",
+    "minute": "m",
+    "hour": "h",
+    "day": "d",
+    "kilometer": "km",
+    "meterPerMinute": "m/min"
+  },
   "auth": {
     "email": "Email",
     "username": "Username",
@@ -88,26 +96,26 @@
       "unknown": "Unknown"
     },
     "achievementName": {
-      "totalDistance": "Wayfarer",
-      "totalDuration": "Unwavering",
-      "totalActivities": "Devoted",
-      "maxCurrentStreak": "Ignited",
-      "maxActivitySpeed": "Windrunner",
-      "maxActivityDistance": "Trailblazer",
-      "maxActivityDuration": "Iron Will",
-      "greenhorn": "Greenhorn",
-      "marathoner": "Marathoner"
+      "TotalDistance": "Wayfarer",
+      "TotalDuration": "Unwavering",
+      "TotalActivities": "Devoted",
+      "MaxCurrentStreak": "Ignited",
+      "MaxActivitySpeed": "Windrunner",
+      "MaxActivityDistance": "Trailblazer",
+      "MaxActivityDuration": "Iron Will",
+      "Greenhorn": "Greenhorn",
+      "Marathoner": "Marathoner"
     },
     "achievementDescription": {
-      "totalDistance": "Cumulative distance across all activities",
-      "totalDuration": "Total time spent on all activities",
-      "totalActivities": "Number of completed activities",
-      "maxCurrentStreak": "Consecutive days with activity",
-      "maxActivitySpeed": "Fastest average speed achieved",
-      "maxActivityDistance": "Longest single activity distance",
-      "maxActivityDuration": "Longest single activity duration",
-      "greenhorn": "Complete your first activity",
-      "marathoner": "Run a marathon distance"
+      "TotalDistance": "Cumulative distance across all activities",
+      "TotalDuration": "Total time spent on all activities",
+      "TotalActivities": "Number of completed activities",
+      "MaxCurrentStreak": "Consecutive days with activity",
+      "MaxActivitySpeed": "Fastest average speed achieved",
+      "MaxActivityDistance": "Longest single activity distance",
+      "MaxActivityDuration": "Longest single activity duration",
+      "Greenhorn": "Complete your first activity",
+      "Marathoner": "Run a marathon distance"
     }
   }
 }

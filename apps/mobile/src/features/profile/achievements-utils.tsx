@@ -58,29 +58,13 @@ export const getAchievementTierName = (tier: AchievementTier) => {
 };
 
 export const achievementImages: Record<string, ImageSourcePropType> = {
-  totalDistance: require("../../../assets/achievements/TotalDistance.png"),
-  totalDuration: require("../../../assets/achievements/TotalDuration.png"),
-  totalActivities: require("../../../assets/achievements/TotalActivities.png"),
-  maxCurrentStreak: require("../../../assets/achievements/MaxCurrentStreak.png"),
-  maxActivitySpeed: require("../../../assets/achievements/MaxActivitySpeed.png"),
-  maxActivityDistance: require("../../../assets/achievements/MaxActivityDistance.png"),
-  maxActivityDuration: require("../../../assets/achievements/MaxActivityDuration.png"),
-  greenhorn: require("../../../assets/achievements/Greenhorn.png"),
-  marathoner: require("../../../assets/achievements/Marathoner.png"),
-};
-
-export const isAchievementProgress = (
-  obj: unknown
-): obj is AchievementProgress => {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "tier" in obj &&
-    "progress" in obj &&
-    "achievedAt" in obj
-  );
-};
-
-export const isAchievementKey = (key: string): boolean => {
-  return !["id", "userId"].includes(key);
+  TotalDistance: require("../../../assets/achievements/TotalDistance.png"),
+  TotalDuration: require("../../../assets/achievements/TotalDuration.png"),
+  TotalActivities: require("../../../assets/achievements/TotalActivities.png"),
+  MaxCurrentStreak: require("../../../assets/achievements/MaxCurrentStreak.png"),
+  MaxActivitySpeed: require("../../../assets/achievements/MaxActivitySpeed.png"),
+  MaxActivityDistance: require("../../../assets/achievements/MaxActivityDistance.png"),
+  MaxActivityDuration: require("../../../assets/achievements/MaxActivityDuration.png"),
+  Greenhorn: require("../../../assets/achievements/Greenhorn.png"),
+  Marathoner: require("../../../assets/achievements/Marathoner.png"),
 };

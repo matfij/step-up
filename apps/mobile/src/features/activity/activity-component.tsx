@@ -6,7 +6,7 @@ import { theme, themeComposable } from "../../common/theme";
 import { AppButton } from "../../common/components/app-button";
 import { useActivity } from "./use-activity";
 import { AppWrapper } from "../../common/components/app-wrapper";
-import { formatDuration } from "./time-manager";
+import { formatActivityDuration } from "./time-manager";
 import { withAlpha } from "../../common/utils";
 import { ActivityReportModal } from "./activity-report-modal";
 import { useRouter } from "expo-router";
@@ -68,7 +68,7 @@ export const ActivityComponent = () => {
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statValue}>
-                  {formatDuration(activity.duration)}
+                  {formatActivityDuration(activity.duration)}
                 </Text>
                 <Text style={styles.statLabel}>{t("activity.duration")}</Text>
               </View>
