@@ -27,7 +27,7 @@ public class ActivityValidator : IActivityValidator
     private const float _topSpeedMax = 100_000;
 
     private const int _routeMinPoints = 2;
-    private const int _routeMaxPoints = 1_000;
+    private const int _routeMaxPoints = 100_000;
 
     private const int _latitudeMin = -90;
     private const int _latitudeMax = 90;

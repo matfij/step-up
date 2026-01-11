@@ -3,18 +3,12 @@ namespace StepUpServer.Domains.Achievements;
 public readonly record struct AchievementsProgress(
     string Id,
     string UserId,
-    AchievementProgress TotalDistance,
-    AchievementProgress TotalDuration,
-    AchievementProgress TotalActivities,
-    AchievementProgress MaxCurrentStreak,
-    AchievementProgress MaxActivitySpeed,
-    AchievementProgress MaxActivityDistance,
-    AchievementProgress MaxActivityDuration,
-    AchievementProgress Greenhorn,
-    AchievementProgress Marathoner
+    AchievementProgress[] Achievements
 );
 
 public record struct AchievementProgress(
+    string Name,
+    UnitCategory UnitCategory,
     AchievementTier Tier,
     ulong Progress,
     ulong PreviousTierProgress,
@@ -22,3 +16,10 @@ public record struct AchievementProgress(
     ulong AchievedAt
 );
 
+public enum UnitCategory
+{
+    Count = 0,
+    Time = 1,
+    Distance = 2,
+    Speed = 3,
+}
