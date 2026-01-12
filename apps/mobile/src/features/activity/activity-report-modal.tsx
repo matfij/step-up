@@ -1,7 +1,7 @@
 import { Modal, StyleSheet, Text, View, ScrollView } from "react-native";
 import { ActivityReport } from "./activity-definitions";
 import { useTranslation } from "react-i18next";
-import { withAlpha } from "../../common/utils";
+import { noOp, withAlpha } from "../../common/utils";
 import { theme, themeComposable } from "../../common/theme";
 import {
   AppButton,
@@ -19,13 +19,14 @@ import {
 } from "../../common/validation";
 import { appConfig } from "../../common/config";
 import { useUserStore } from "../../common/state/user-store";
+import { ModalWrapper } from "../../common/components/modal-wrapper";
 
-type ActivityReportModalProps = {
+interface ActivityReportModalProps {
   visible: boolean;
   report: ActivityReport;
   onDiscard: () => void;
   onClose: (navigateToIndex: boolean) => void;
-};
+}
 
 export const ActivityReportModal = (props: ActivityReportModalProps) => {
   const { t } = useTranslation();
@@ -78,109 +79,85 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
   };
 
   return (
-    <Modal visible={props.visible} transparent animationType="slide">
-      <View style={styles.backdrop}>
-        <View style={styles.modalWrapper}>
-          <View style={styles.header}>
-            <View style={styles.successIcon}>
-              <Text style={styles.checkmark}>✓</Text>
-            </View>
-            <Text style={styles.title}>{t("activity.completed")}</Text>
-            <Text style={styles.subtitle}>{t("activity.completedHint.0")}</Text>
-          </View>
+    <ModalWrapper visible={props.visible} onClose={noOp}>
+      <View style={styles.header}>
+        <View style={styles.successIcon}>
+          <Text style={styles.checkmark}>✓</Text>
+        </View>
+        <Text style={styles.title}>{t("activity.completed")}</Text>
+        <Text style={styles.subtitle}>{t("activity.completedHint.0")}</Text>
+      </View>
 
-          <ScrollView
-            style={styles.scrollContent}
-            contentContainerStyle={styles.scrollContentContainer}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.inputSection}>
-              <Text style={styles.sectionTitle}>
-                {t("activity.activityDetails")}
-              </Text>
-              <View style={styles.inputWrapper}>
-                <AppInputLight
-                  value={name}
-                  error={nameError}
-                  label={t("activity.name")}
-                  onChange={setName}
-                />
-                <AppInputLight
-                  value={description}
-                  error={descriptionError}
-                  label={t("activity.description")}
-                  onChange={setDescription}
-                />
-              </View>
-            </View>
-
-            <View style={styles.statsGrid}>
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>
-                  {formatActivityDuration(props.report.duration)}
-                </Text>
-                <Text style={styles.statLabel}>{t("activity.duration")}</Text>
-              </View>
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>{props.report.distance}</Text>
-                <Text style={styles.statLabel}>{t("activity.distance")}</Text>
-              </View>
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>
-                  {props.report.averageSpeed}
-                </Text>
-                <Text style={styles.statLabel}>
-                  {t("activity.averageSpeed")}
-                </Text>
-              </View>
-              <View style={styles.statCard}>
-                <Text style={styles.statValue}>{props.report.topSpeed}</Text>
-                <Text style={styles.statLabel}>{t("activity.topSpeed")}</Text>
-              </View>
-            </View>
-          </ScrollView>
-
-          <View style={styles.buttonWrapper}>
-            <AppApiError
-              error={createActivity.error}
-              style={{ marginTop: -theme.spacing.md, marginBottom: 0 }}
+      <ScrollView
+        style={styles.scrollContent}
+        contentContainerStyle={styles.scrollContentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.inputSection}>
+          <Text style={styles.sectionTitle}>
+            {t("activity.activityDetails")}
+          </Text>
+          <View style={styles.inputWrapper}>
+            <AppInputLight
+              value={name}
+              error={nameError}
+              label={t("activity.name")}
+              onChange={setName}
             />
-            <AppButton
-              label={t("common.save")}
-              onClick={onSave}
-              disabled={createActivity.loading}
-              style={{ width: "100%" }}
-            />
-            <AppButtonSecondary
-              label={t("common.discard")}
-              onClick={props.onDiscard}
-              disabled={createActivity.loading}
-              style={{ width: "100%" }}
+            <AppInputLight
+              value={description}
+              error={descriptionError}
+              label={t("activity.description")}
+              onChange={setDescription}
             />
           </View>
         </View>
+
+        <View style={styles.statsGrid}>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>
+              {formatActivityDuration(props.report.duration)}
+            </Text>
+            <Text style={styles.statLabel}>{t("activity.duration")}</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{props.report.distance}</Text>
+            <Text style={styles.statLabel}>{t("activity.distance")}</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{props.report.averageSpeed}</Text>
+            <Text style={styles.statLabel}>{t("activity.averageSpeed")}</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statValue}>{props.report.topSpeed}</Text>
+            <Text style={styles.statLabel}>{t("activity.topSpeed")}</Text>
+          </View>
+        </View>
+      </ScrollView>
+
+      <View style={styles.buttonWrapper}>
+        <AppApiError
+          error={createActivity.error}
+          style={{ marginTop: -theme.spacing.md, marginBottom: 0 }}
+        />
+        <AppButton
+          label={t("common.save")}
+          onClick={onSave}
+          disabled={createActivity.loading}
+          style={{ width: "100%" }}
+        />
+        <AppButtonSecondary
+          label={t("common.discard")}
+          onClick={props.onDiscard}
+          disabled={createActivity.loading}
+          style={{ width: "100%" }}
+        />
       </View>
-    </Modal>
+    </ModalWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: withAlpha(theme.colors.dark[700], theme.opacity.glass),
-    justifyContent: "center",
-    alignItems: "center",
-    padding: theme.spacing.md,
-  },
-  modalWrapper: {
-    ...themeComposable.shadows.xl,
-    backgroundColor: theme.colors.light[100],
-    borderRadius: theme.borderRadius.xl,
-    width: "100%",
-    maxWidth: 420,
-    maxHeight: "90%",
-    overflow: "hidden",
-  },
   header: {
     alignItems: "center",
     paddingTop: theme.spacing.xl,

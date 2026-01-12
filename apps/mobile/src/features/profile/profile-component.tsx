@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { useUserStore } from "../../common/state/user-store";
 import { progressClient } from "../../common/api/progress-client";
@@ -10,11 +10,13 @@ import { withAlpha } from "../../common/utils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AchievementsComponent } from "./achievements-component";
 import { formatDistance, formatDuration } from "../../common/formatters";
+import { ActivitiesModal } from "./activities-modal";
 
 export const ProfileComponent = () => {
   const { t } = useTranslation();
   const { user } = useUserStore();
   const getProgress = useRequest(progressClient.getByUserId);
+  const [showActivities, setShowActivities] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -93,6 +95,26 @@ export const ProfileComponent = () => {
       </View>
 
       <AchievementsComponent userId={user.id} />
+
+      <View style={styles.actionsWrapper}>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => setShowActivities(true)}
+        >
+          <Text style={styles.actionLabel}>{t("profile.viewActivities")}</Text>
+          <MaterialCommunityIcons
+            name="navigation-variant-outline"
+            size={25}
+            style={styles.actionIcon}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <ActivitiesModal
+        userId={user.id}
+        visible={showActivities}
+        onClose={() => setShowActivities(false)}
+      />
     </AppWrapper>
   );
 };
@@ -207,5 +229,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textTransform: "uppercase",
     fontSize: 11,
+  },
+  actionsWrapper: {
+    width: "90%",
+  },
+  actionItem: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing.sm,
+  },
+  actionLabel: {
+    fontSize: 18,
+    fontWeight: 600,
+    color: theme.colors.primary[100],
+    textAlign: "left",
+  },
+  actionIcon: {
+    color: theme.colors.primary[300],
   },
 });

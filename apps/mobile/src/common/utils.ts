@@ -3,6 +3,8 @@ import { appConfig } from "./config";
 
 export type Argument<T extends (...args: any) => any> = Parameters<T>[number];
 
+export const noOp = () => {};
+
 export const getAsyncStorageItem = async <T>(
   key: keyof typeof appConfig.storageKeys,
   defaultValue: T

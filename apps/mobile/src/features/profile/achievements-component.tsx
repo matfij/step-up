@@ -30,6 +30,7 @@ import {
   formatDuration,
   formatSpeed,
 } from "../../common/formatters";
+import { ModalWrapper } from "../../common/components/modal-wrapper";
 
 interface AchievementsComponentProps {
   userId: string;
@@ -124,81 +125,72 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
         ))}
       </ScrollView>
 
-      <Modal
+      <ModalWrapper
         visible={selectedAchievement !== undefined}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setSelectedAchievement(undefined)}
+        style={{ width: "95%" }}
+        onClose={() => setSelectedAchievement(undefined)}
       >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setSelectedAchievement(undefined)}
-        >
-          <Pressable
-            style={styles.modalContent}
-            onPress={(e) => e.stopPropagation()}
-          >
-            {selectedAchievement && (
-              <>
-                <View style={styles.modalHeader}>
-                  <Image
-                    style={styles.modalImage}
-                    source={selectedAchievement.image}
-                  />
-                  <View>
-                    <Text style={styles.modalTitle}>
-                      {selectedAchievement.label}
+        <View style={styles.modalContent}>
+          {selectedAchievement && (
+            <>
+              <View style={styles.modalHeader}>
+                <Image
+                  style={styles.modalImage}
+                  source={selectedAchievement.image}
+                />
+                <View>
+                  <Text style={styles.modalTitle}>
+                    {selectedAchievement.label}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.modalTier,
+                      color: selectedAchievement.color,
+                    }}
+                  >
+                    {t(getAchievementTierName(selectedAchievement.tier))}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.modalDescription}>
+                {selectedAchievement.description}
+              </Text>
+
+              <Text style={styles.modalDate}>
+                {formatDate(selectedAchievement.achievedAt)}
+              </Text>
+
+              {selectedAchievement.tier !== AchievementTier.Achieved && (
+                <View style={styles.progressSection}>
+                  <View style={styles.progressHeader}>
+                    <Text style={styles.progressLabel}>
+                      {t("profile.progress")}
                     </Text>
-                    <Text
-                      style={{
-                        ...styles.modalTier,
-                        color: selectedAchievement.color,
-                      }}
-                    >
-                      {t(getAchievementTierName(selectedAchievement.tier))}
+                    <Text style={styles.progressLabel}>
+                      {getProgressLabel(selectedAchievement)}
                     </Text>
+                  </View>
+
+                  <View style={styles.progressBarContainer}>
+                    <View
+                      style={[
+                        styles.progressBarFill,
+                        {
+                          width: `${getProgressPercentage(
+                            selectedAchievement
+                          )}%`,
+                          backgroundColor: selectedAchievement.color,
+                        },
+                      ]}
+                    />
                   </View>
                 </View>
-
-                <Text style={styles.modalDescription}>
-                  {selectedAchievement.description}
-                </Text>
-
-                <Text style={styles.modalDate}>
-                  {formatDate(selectedAchievement.achievedAt)}
-                </Text>
-
-                {selectedAchievement.tier !== AchievementTier.Achieved && (
-                  <View style={styles.progressSection}>
-                    <View style={styles.progressHeader}>
-                      <Text style={styles.progressLabel}>
-                        {t("profile.progress")}
-                      </Text>
-                      <Text style={styles.progressLabel}>
-                        {getProgressLabel(selectedAchievement)}
-                      </Text>
-                    </View>
-
-                    <View style={styles.progressBarContainer}>
-                      <View
-                        style={[
-                          styles.progressBarFill,
-                          {
-                            width: `${getProgressPercentage(
-                              selectedAchievement
-                            )}%`,
-                            backgroundColor: selectedAchievement.color,
-                          },
-                        ]}
-                      />
-                    </View>
-                  </View>
-                )}
-              </>
-            )}
-          </Pressable>
-        </Pressable>
-      </Modal>
+              )}
+            </>
+          )}
+        </View>
+      </ModalWrapper>
     </View>
   );
 };
@@ -206,6 +198,9 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
 const styles = StyleSheet.create({
   achievementsWrapper: {
     width: "90%",
+    paddingBottom: theme.spacing.md,
+    borderBottomColor: theme.colors.light[300],
+    borderBottomWidth: 1,
   },
   achievementsLabel: {
     ...themeComposable.typography.bodySmall,
@@ -224,18 +219,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: withAlpha(theme.colors.dark[400], theme.opacity.glass),
-  },
   modalContent: {
     backgroundColor: theme.colors.dark[300],
     borderRadius: theme.borderRadius.lg,
     padding: theme.spacing.lg,
-    width: "85%",
-    maxWidth: 400,
     borderWidth: 1,
     borderColor: theme.colors.dark[200],
   },

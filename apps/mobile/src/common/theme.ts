@@ -68,7 +68,7 @@ export const theme = {
   },
   opacity: {
     solid: 1,
-    glass: 0.84,
+    glass: 0.98,
     liquid: 0.24,
     mist: 0.12,
   },
