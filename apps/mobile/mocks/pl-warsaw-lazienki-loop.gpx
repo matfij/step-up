@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="test">
+  <trk>
+    <name>Łazienki Park Warsaw Loop</name>
+    <trkseg>
+      <!-- Starting at Palace on the Isle -->
+      <trkpt lat="52.2148" lon="21.0352"><time>2025-01-11T10:00:00Z</time></trkpt>
+      <trkpt lat="52.2155" lon="21.0358"><time>2025-01-11T10:00:15Z</time></trkpt>
+      <trkpt lat="52.2162" lon="21.0365"><time>2025-01-11T10:00:30Z</time></trkpt>
+      <trkpt lat="52.2170" lon="21.0370"><time>2025-01-11T10:00:45Z</time></trkpt>
+      <trkpt lat="52.2178" lon="21.0375"><time>2025-01-11T10:01:00Z</time></trkpt>
+      <trkpt lat="52.2185" lon="21.0378"><time>2025-01-11T10:01:15Z</time></trkpt>
+      <trkpt lat="52.2192" lon="21.0380"><time>2025-01-11T10:01:30Z</time></trkpt>
+      <!-- Northern section -->
+      <trkpt lat="52.2198" lon="21.0378"><time>2025-01-11T10:01:45Z</time></trkpt>
+      <trkpt lat="52.2203" lon="21.0373"><time>2025-01-11T10:02:00Z</time></trkpt>
+      <trkpt lat="52.2207" lon="21.0367"><time>2025-01-11T10:02:15Z</time></trkpt>
+      <trkpt lat="52.2210" lon="21.0360"><time>2025-01-11T10:02:30Z</time></trkpt>
+      <trkpt lat="52.2212" lon="21.0352"><time>2025-01-11T10:02:45Z</time></trkpt>
+      <trkpt lat="52.2213" lon="21.0345"><time>2025-01-11T10:03:00Z</time></trkpt>
+      <trkpt lat="52.2213" lon="21.0337"><time>2025-01-11T10:03:15Z</time></trkpt>
+      <trkpt lat="52.2212" lon="21.0330"><time>2025-01-11T10:03:30Z</time></trkpt>
+      <!-- Eastern turn -->
+      <trkpt lat="52.2210" lon="21.0323"><time>2025-01-11T10:03:45Z</time></trkpt>
+      <trkpt lat="52.2207" lon="21.0318"><time>2025-01-11T10:04:00Z</time></trkpt>
+      <trkpt lat="52.2203" lon="21.0315"><time>2025-01-11T10:04:15Z</time></trkpt>
+      <trkpt lat="52.2198" lon="21.0313"><time>2025-01-11T10:04:30Z</time></trkpt>
+      <trkpt lat="52.2192" lon="21.0312"><time>2025-01-11T10:04:45Z</time></trkpt>
+      <trkpt lat="52.2185" lon="21.0312"><time>2025-01-11T10:05:00Z</time></trkpt>
+      <trkpt lat="52.2178" lon="21.0313"><time>2025-01-11T10:05:15Z</time></trkpt>
+      <trkpt lat="52.2170" lon="21.0315"><time>2025-01-11T10:05:30Z</time></trkpt>
+      <trkpt lat="52.2162" lon="21.0318"><time>2025-01-11T10:05:45Z</time></trkpt>
+      <!-- Southern section -->
+      <trkpt lat="52.2155" lon="21.0322"><time>2025-01-11T10:06:00Z</time></trkpt>
+      <trkpt lat="52.2148" lon="21.0325"><time>2025-01-11T10:06:15Z</time></trkpt>
+      <trkpt lat="52.2142" lon="21.0328"><time>2025-01-11T10:06:30Z</time></trkpt>
+      <trkpt lat="52.2137" lon="21.0330"><time>2025-01-11T10:06:45Z</time></trkpt>
+      <trkpt lat="52.2132" lon="21.0332"><time>2025-01-11T10:07:00Z</time></trkpt>
+      <trkpt lat="52.2128" lon="21.0335"><time>2025-01-11T10:07:15Z</time></trkpt>
+      <trkpt lat="52.2125" lon="21.0340"><time>2025-01-11T10:07:30Z</time></trkpt>
+      <trkpt lat="52.2123" lon="21.0345"><time>2025-01-11T10:07:45Z</time></trkpt>
+      <trkpt lat="52.2122" lon="21.0352"><time>2025-01-11T10:08:00Z</time></trkpt>
+      <!-- Western turn -->
+      <trkpt lat="52.2123" lon="21.0360"><time>2025-01-11T10:08:15Z</time></trkpt>
+      <trkpt lat="52.2125" lon="21.0367"><time>2025-01-11T10:08:30Z</time></trkpt>
+      <trkpt lat="52.2128" lon="21.0373"><time>2025-01-11T10:08:45Z</time></trkpt>
+      <trkpt lat="52.2132" lon="21.0378"><time>2025-01-11T10:09:00Z</time></trkpt>
+      <trkpt lat="52.2137" lon="21.0382"><time>2025-01-11T10:09:15Z</time></trkpt>
+      <trkpt lat="52.2142" lon="21.0385"><time>2025-01-11T10:09:30Z</time></trkpt>
+      <!-- Second loop - Northern section -->
+      <trkpt lat="52.2148" lon="21.0387"><time>2025-01-11T10:09:45Z</time></trkpt>
+      <trkpt lat="52.2155" lon="21.0388"><time>2025-01-11T10:10:00Z</time></trkpt>
+      <trkpt lat="52.2162" lon="21.0388"><time>2025-01-11T10:10:15Z</time></trkpt>
+      <trkpt lat="52.2170" lon="21.0387"><time>2025-01-11T10:10:30Z</time></trkpt>
+      <trkpt lat="52.2178" lon="21.0385"><time>2025-01-11T10:10:45Z</time></trkpt>
+      <trkpt lat="52.2185" lon="21.0382"><time>2025-01-11T10:11:00Z</time></trkpt>
+      <trkpt lat="52.2192" lon="21.0378"><time>2025-01-11T10:11:15Z</time></trkpt>
+      <trkpt lat="52.2198" lon="21.0373"><time>2025-01-11T10:11:30Z</time></trkpt>
+      <trkpt lat="52.2203" lon="21.0367"><time>2025-01-11T10:11:45Z</time></trkpt>
+      <trkpt lat="52.2207" lon="21.0360"><time>2025-01-11T10:12:00Z</time></trkpt>
+      <trkpt lat="52.2210" lon="21.0352"><time>2025-01-11T10:12:15Z</time></trkpt>
+      <trkpt lat="52.2212" lon="21.0345"><time>2025-01-11T10:12:30Z</time></trkpt>
+      <trkpt lat="52.2213" lon="21.0337"><time>2025-01-11T10:12:45Z</time></trkpt>
+      <trkpt lat="52.2212" lon="21.0330"><time>2025-01-11T10:13:00Z</time></trkpt>
+      <!-- Eastern section second loop -->
+      <trkpt lat="52.2210" lon="21.0323"><time>2025-01-11T10:13:15Z</time></trkpt>
+      <trkpt lat="52.2207" lon="21.0318"><time>2025-01-11T10:13:30Z</time></trkpt>
+      <trkpt lat="52.2203" lon="21.0315"><time>2025-01-11T10:13:45Z</time></trkpt>
+      <trkpt lat="52.2198" lon="21.0313"><time>2025-01-11T10:14:00Z</time></trkpt>
+      <trkpt lat="52.2192" lon="21.0312"><time>2025-01-11T10:14:15Z</time></trkpt>
+      <trkpt lat="52.2185" lon="21.0313"><time>2025-01-11T10:14:30Z</time></trkpt>
+      <trkpt lat="52.2178" lon="21.0315"><time>2025-01-11T10:14:45Z</time></trkpt>
+      <trkpt lat="52.2170" lon="21.0318"><time>2025-01-11T10:15:00Z</time></trkpt>
+      <trkpt lat="52.2162" lon="21.0322"><time>2025-01-11T10:15:15Z</time></trkpt>
+      <trkpt lat="52.2155" lon="21.0327"><time>2025-01-11T10:15:30Z</time></trkpt>
+      <!-- Return to start -->
+      <trkpt lat="52.2148" lon="21.0333"><time>2025-01-11T10:15:45Z</time></trkpt>
+      <trkpt lat="52.2142" lon="21.0338"><time>2025-01-11T10:16:00Z</time></trkpt>
+      <trkpt lat="52.2137" lon="21.0343"><time>2025-01-11T10:16:15Z</time></trkpt>
+      <trkpt lat="52.2135" lon="21.0348"><time>2025-01-11T10:16:30Z</time></trkpt>
+      <trkpt lat="52.2137" lon="21.0353"><time>2025-01-11T10:16:45Z</time></trkpt>
+      <trkpt lat="52.2142" lon="21.0355"><time>2025-01-11T10:17:00Z</time></trkpt>
+      <trkpt lat="52.2148" lon="21.0352"><time>2025-01-11T10:17:15Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="test">
+  <trk>
+    <n>Imperial Palace Tokyo Loop</n>
+    <trkseg>
+      <!-- Starting at Wadakura Fountain Park -->
+      <trkpt lat="35.6850" lon="139.7585"><time>2025-01-11T09:00:00Z</time></trkpt>
+      <trkpt lat="35.6848" lon="139.7580"><time>2025-01-11T09:00:15Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7575"><time>2025-01-11T09:00:30Z</time></trkpt>
+      <trkpt lat="35.6842" lon="139.7570"><time>2025-01-11T09:00:45Z</time></trkpt>
+      <trkpt lat="35.6838" lon="139.7565"><time>2025-01-11T09:01:00Z</time></trkpt>
+      <trkpt lat="35.6834" lon="139.7561"><time>2025-01-11T09:01:15Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7558"><time>2025-01-11T09:01:30Z</time></trkpt>
+      <!-- Southern section -->
+      <trkpt lat="35.6825" lon="139.7555"><time>2025-01-11T09:01:45Z</time></trkpt>
+      <trkpt lat="35.6820" lon="139.7553"><time>2025-01-11T09:02:00Z</time></trkpt>
+      <trkpt lat="35.6815" lon="139.7552"><time>2025-01-11T09:02:15Z</time></trkpt>
+      <trkpt lat="35.6810" lon="139.7551"><time>2025-01-11T09:02:30Z</time></trkpt>
+      <trkpt lat="35.6805" lon="139.7551"><time>2025-01-11T09:02:45Z</time></trkpt>
+      <trkpt lat="35.6800" lon="139.7552"><time>2025-01-11T09:03:00Z</time></trkpt>
+      <trkpt lat="35.6795" lon="139.7553"><time>2025-01-11T09:03:15Z</time></trkpt>
+      <trkpt lat="35.6790" lon="139.7555"><time>2025-01-11T09:03:30Z</time></trkpt>
+      <trkpt lat="35.6786" lon="139.7558"><time>2025-01-11T09:03:45Z</time></trkpt>
+      <!-- Southwest corner turn -->
+      <trkpt lat="35.6783" lon="139.7562"><time>2025-01-11T09:04:00Z</time></trkpt>
+      <trkpt lat="35.6781" lon="139.7567"><time>2025-01-11T09:04:15Z</time></trkpt>
+      <trkpt lat="35.6780" lon="139.7572"><time>2025-01-11T09:04:30Z</time></trkpt>
+      <trkpt lat="35.6780" lon="139.7578"><time>2025-01-11T09:04:45Z</time></trkpt>
+      <trkpt lat="35.6781" lon="139.7583"><time>2025-01-11T09:05:00Z</time></trkpt>
+      <trkpt lat="35.6783" lon="139.7588"><time>2025-01-11T09:05:15Z</time></trkpt>
+      <trkpt lat="35.6786" lon="139.7592"><time>2025-01-11T09:05:30Z</time></trkpt>
+      <!-- Western section -->
+      <trkpt lat="35.6790" lon="139.7595"><time>2025-01-11T09:05:45Z</time></trkpt>
+      <trkpt lat="35.6795" lon="139.7597"><time>2025-01-11T09:06:00Z</time></trkpt>
+      <trkpt lat="35.6800" lon="139.7598"><time>2025-01-11T09:06:15Z</time></trkpt>
+      <trkpt lat="35.6805" lon="139.7599"><time>2025-01-11T09:06:30Z</time></trkpt>
+      <trkpt lat="35.6810" lon="139.7599"><time>2025-01-11T09:06:45Z</time></trkpt>
+      <trkpt lat="35.6815" lon="139.7598"><time>2025-01-11T09:07:00Z</time></trkpt>
+      <trkpt lat="35.6820" lon="139.7597"><time>2025-01-11T09:07:15Z</time></trkpt>
+      <trkpt lat="35.6825" lon="139.7595"><time>2025-01-11T09:07:30Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7593"><time>2025-01-11T09:07:45Z</time></trkpt>
+      <trkpt lat="35.6835" lon="139.7591"><time>2025-01-11T09:08:00Z</time></trkpt>
+      <!-- Northwest section -->
+      <trkpt lat="35.6840" lon="139.7590"><time>2025-01-11T09:08:15Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7590"><time>2025-01-11T09:08:30Z</time></trkpt>
+      <trkpt lat="35.6850" lon="139.7591"><time>2025-01-11T09:08:45Z</time></trkpt>
+      <trkpt lat="35.6855" lon="139.7592"><time>2025-01-11T09:09:00Z</time></trkpt>
+      <trkpt lat="35.6860" lon="139.7594"><time>2025-01-11T09:09:15Z</time></trkpt>
+      <trkpt lat="35.6865" lon="139.7596"><time>2025-01-11T09:09:30Z</time></trkpt>
+      <trkpt lat="35.6870" lon="139.7599"><time>2025-01-11T09:09:45Z</time></trkpt>
+      <trkpt lat="35.6874" lon="139.7602"><time>2025-01-11T09:10:00Z</time></trkpt>
+      <trkpt lat="35.6877" lon="139.7606"><time>2025-01-11T09:10:15Z</time></trkpt>
+      <!-- Northern section -->
+      <trkpt lat="35.6879" lon="139.7611"><time>2025-01-11T09:10:30Z</time></trkpt>
+      <trkpt lat="35.6880" lon="139.7616"><time>2025-01-11T09:10:45Z</time></trkpt>
+      <trkpt lat="35.6880" lon="139.7621"><time>2025-01-11T09:11:00Z</time></trkpt>
+      <trkpt lat="35.6879" lon="139.7626"><time>2025-01-11T09:11:15Z</time></trkpt>
+      <trkpt lat="35.6877" lon="139.7630"><time>2025-01-11T09:11:30Z</time></trkpt>
+      <trkpt lat="35.6874" lon="139.7634"><time>2025-01-11T09:11:45Z</time></trkpt>
+      <trkpt lat="35.6870" lon="139.7637"><time>2025-01-11T09:12:00Z</time></trkpt>
+      <!-- Northeast corner turn -->
+      <trkpt lat="35.6865" lon="139.7639"><time>2025-01-11T09:12:15Z</time></trkpt>
+      <trkpt lat="35.6860" lon="139.7640"><time>2025-01-11T09:12:30Z</time></trkpt>
+      <trkpt lat="35.6855" lon="139.7640"><time>2025-01-11T09:12:45Z</time></trkpt>
+      <trkpt lat="35.6850" lon="139.7639"><time>2025-01-11T09:13:00Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7637"><time>2025-01-11T09:13:15Z</time></trkpt>
+      <trkpt lat="35.6840" lon="139.7634"><time>2025-01-11T09:13:30Z</time></trkpt>
+      <trkpt lat="35.6836" lon="139.7630"><time>2025-01-11T09:13:45Z</time></trkpt>
+      <trkpt lat="35.6833" lon="139.7625"><time>2025-01-11T09:14:00Z</time></trkpt>
+      <!-- Eastern section -->
+      <trkpt lat="35.6831" lon="139.7620"><time>2025-01-11T09:14:15Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7615"><time>2025-01-11T09:14:30Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7610"><time>2025-01-11T09:14:45Z</time></trkpt>
+      <trkpt lat="35.6831" lon="139.7605"><time>2025-01-11T09:15:00Z</time></trkpt>
+      <trkpt lat="35.6833" lon="139.7600"><time>2025-01-11T09:15:15Z</time></trkpt>
+      <trkpt lat="35.6836" lon="139.7596"><time>2025-01-11T09:15:30Z</time></trkpt>
+      <trkpt lat="35.6840" lon="139.7593"><time>2025-01-11T09:15:45Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7591"><time>2025-01-11T09:16:00Z</time></trkpt>
+      <!-- Second loop -->
+      <trkpt lat="35.6848" lon="139.7588"><time>2025-01-11T09:16:15Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7583"><time>2025-01-11T09:16:30Z</time></trkpt>
+      <trkpt lat="35.6842" lon="139.7578"><time>2025-01-11T09:16:45Z</time></trkpt>
+      <trkpt lat="35.6838" lon="139.7573"><time>2025-01-11T09:17:00Z</time></trkpt>
+      <trkpt lat="35.6834" lon="139.7569"><time>2025-01-11T09:17:15Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7565"><time>2025-01-11T09:17:30Z</time></trkpt>
+      <trkpt lat="35.6825" lon="139.7562"><time>2025-01-11T09:17:45Z</time></trkpt>
+      <trkpt lat="35.6820" lon="139.7560"><time>2025-01-11T09:18:00Z</time></trkpt>
+      <trkpt lat="35.6815" lon="139.7559"><time>2025-01-11T09:18:15Z</time></trkpt>
+      <trkpt lat="35.6810" lon="139.7558"><time>2025-01-11T09:18:30Z</time></trkpt>
+      <trkpt lat="35.6805" lon="139.7558"><time>2025-01-11T09:18:45Z</time></trkpt>
+      <trkpt lat="35.6800" lon="139.7559"><time>2025-01-11T09:19:00Z</time></trkpt>
+      <trkpt lat="35.6795" lon="139.7561"><time>2025-01-11T09:19:15Z</time></trkpt>
+      <trkpt lat="35.6790" lon="139.7564"><time>2025-01-11T09:19:30Z</time></trkpt>
+      <trkpt lat="35.6786" lon="139.7568"><time>2025-01-11T09:19:45Z</time></trkpt>
+      <trkpt lat="35.6783" lon="139.7573"><time>2025-01-11T09:20:00Z</time></trkpt>
+      <trkpt lat="35.6781" lon="139.7578"><time>2025-01-11T09:20:15Z</time></trkpt>
+      <trkpt lat="35.6781" lon="139.7583"><time>2025-01-11T09:20:30Z</time></trkpt>
+      <trkpt lat="35.6783" lon="139.7588"><time>2025-01-11T09:20:45Z</time></trkpt>
+      <trkpt lat="35.6786" lon="139.7592"><time>2025-01-11T09:21:00Z</time></trkpt>
+      <trkpt lat="35.6790" lon="139.7595"><time>2025-01-11T09:21:15Z</time></trkpt>
+      <trkpt lat="35.6795" lon="139.7597"><time>2025-01-11T09:21:30Z</time></trkpt>
+      <trkpt lat="35.6800" lon="139.7598"><time>2025-01-11T09:21:45Z</time></trkpt>
+      <trkpt lat="35.6805" lon="139.7599"><time>2025-01-11T09:22:00Z</time></trkpt>
+      <trkpt lat="35.6810" lon="139.7599"><time>2025-01-11T09:22:15Z</time></trkpt>
+      <trkpt lat="35.6815" lon="139.7598"><time>2025-01-11T09:22:30Z</time></trkpt>
+      <trkpt lat="35.6820" lon="139.7596"><time>2025-01-11T09:22:45Z</time></trkpt>
+      <trkpt lat="35.6825" lon="139.7594"><time>2025-01-11T09:23:00Z</time></trkpt>
+      <trkpt lat="35.6830" lon="139.7592"><time>2025-01-11T09:23:15Z</time></trkpt>
+      <trkpt lat="35.6835" lon="139.7590"><time>2025-01-11T09:23:30Z</time></trkpt>
+      <trkpt lat="35.6840" lon="139.7589"><time>2025-01-11T09:23:45Z</time></trkpt>
+      <trkpt lat="35.6845" lon="139.7588"><time>2025-01-11T09:24:00Z</time></trkpt>
+      <!-- Return to start -->
+      <trkpt lat="35.6850" lon="139.7585"><time>2025-01-11T09:24:15Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>
