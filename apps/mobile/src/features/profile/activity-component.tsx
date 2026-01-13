@@ -7,11 +7,11 @@ import { formatActivityDuration } from "../activity/time-manager";
 import { useTranslation } from "react-i18next";
 import { withAlpha } from "../../common/utils";
 
-type LastActivityComponentProps = {
+type ActivityComponentProps = {
   activity: Activity;
 };
 
-export const LastActivityComponent = (props: LastActivityComponentProps) => {
+export const ActivityComponent = (props: ActivityComponentProps) => {
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
 
@@ -77,7 +77,7 @@ export const LastActivityComponent = (props: LastActivityComponentProps) => {
 
 const styles = StyleSheet.create({
   activityWrapper: {
-    width: "90%",
+    width: "100%",
   },
   activityName: {
     ...themeComposable.typography.bodyBold,

@@ -1,8 +1,10 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
 import { useRequest } from "../../common/api/api-hooks";
 import { activityClient } from "../../common/api/activity-client";
 import { useEffect, useState } from "react";
+import { ActivityComponent } from "./activity-component";
+import { theme } from "../../common/theme";
 
 interface ActivityModalProps {
   userId: string;
@@ -26,20 +28,27 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
 
   return (
     <ModalWrapper visible={props.visible} onClose={props.onClose}>
-      <Text style={styles.title}>Activities</Text>
-      {getActivities.data?.map((activity) => (
-        <Text key={activity.id}>
-          {activity.name} | {activity.distance}
-        </Text>
-      ))}
+      <View style={styles.modalContent}>
+        {getActivities.data &&
+          getActivities.data.map((activity) => (
+            <View key={activity.id} style={styles.activityItem}>
+              <ActivityComponent activity={activity} />
+            </View>
+          ))}
+      </View>
     </ModalWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 600,
-    // textTransform: "uppercase",
+  modalContent: {
+    padding: theme.spacing.lg,
+    backgroundColor: theme.colors.dark[500],
+  },
+  activityItem: {
+    paddingBottom: theme.spacing.md,
+    marginBottom: theme.spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.light[300],
   },
 });

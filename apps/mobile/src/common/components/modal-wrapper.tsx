@@ -40,7 +40,7 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: withAlpha(theme.colors.dark[300], theme.opacity.glass),
+    backgroundColor: withAlpha(theme.colors.dark[100], theme.opacity.glass),
     justifyContent: "center",
     alignItems: "center",
     padding: theme.spacing.md,
