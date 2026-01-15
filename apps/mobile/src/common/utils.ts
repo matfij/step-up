@@ -23,10 +23,16 @@ export const setAsyncStorageItem = async (
   await AsyncStorage.setItem(appConfig.storageKeys[key], JSON.stringify(item));
 };
 
-export const withAlpha = (hexColor: string, alpha: number): string => {
+export const withAlpha = (hexColor: string, alpha: number) => {
   const hex = hexColor.replace("#", "");
   const alphaHex = Math.round(alpha * 255)
     .toString(16)
     .padStart(2, "0");
   return `#${hex}${alphaHex}`;
+};
+
+export const generateKey = (prefix = "item") => {
+  return `${prefix}-${Date.now()}-${Math.random()
+    .toString(36)
+    .substring(2, 9)}`;
 };

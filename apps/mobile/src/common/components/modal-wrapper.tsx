@@ -25,14 +25,10 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
       visible={props.visible}
       onRequestClose={() => props.onClose()}
     >
-      <Pressable style={styles.backdrop} onPress={() => props.onClose()}>
-        <Pressable
-          style={[styles.modalWrapper, props.style]}
-          onPress={(e) => e.stopPropagation()}
-        >
-          {props.children}
-        </Pressable>
-      </Pressable>
+      <View style={styles.backdrop}>
+        <Pressable style={StyleSheet.absoluteFill} onPress={props.onClose} />
+        <View style={[styles.modalWrapper, props.style]}>{props.children}</View>
+      </View>
     </Modal>
   );
 };
