@@ -1,8 +1,9 @@
+import Constants from "expo-constants";
 import { ApiError } from "./api-definitions";
 import { useUserStore } from "../state/user-store";
 
 export abstract class ApiClient {
-  private baseUrl = "http://10.0.2.2:8080";
+  private baseUrl = getApiUrl();
 
   protected request = async <T>(
     endpoint: string,
@@ -52,3 +53,16 @@ export abstract class ApiClient {
     return JSON.parse(text);
   };
 }
+
+const getApiUrl = () => {
+  if (__DEV__) {
+    return Constants.platform?.android
+      ? "http://10.0.2.2:8080"
+      : "http://127.0.0.1:8080";
+  }
+  const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+  if (!apiUrl) {
+    throw new Error("Provide apiUrl in app.json extra config.");
+  }
+  return apiUrl;
+};

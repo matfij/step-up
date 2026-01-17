@@ -11,7 +11,7 @@ import {
   Pressable,
 } from "react-native";
 import { achievementsClient } from "../../common/api/achievements-client";
-import { useRequest } from "../../common/api/api-hooks";
+import { useRequest } from "../../common/api/use-request";
 import { theme, themeComposable } from "../../common/theme";
 import {
   achievementImages,

@@ -8,6 +8,9 @@
     "scheme": "stepup",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "extra": {
+      "apiUrl": "http://10.0.2.2:8080"
+    },
     "ios": {
       "supportsTablet": true
     },

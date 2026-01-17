@@ -1,6 +1,6 @@
 import { StyleSheet, View, FlatList } from "react-native";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
-import { useRequest } from "../../common/api/api-hooks";
+import { useRequest } from "../../common/api/use-request";
 import { activityClient } from "../../common/api/activity-client";
 import { useEffect, useState, useCallback } from "react";
 import { ActivityComponent } from "./activity-component";
@@ -31,8 +31,9 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
   }, [props.userId, props.visible]);
 
   const loadActivities = async (currentSkip: number) => {
-    if (!hasMore && currentSkip > 0) return;
-
+    if (!hasMore && currentSkip > 0) {
+      return;
+    }
     await getActivities.call({
       userId: props.userId,
       skip: currentSkip,
@@ -45,7 +46,6 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
       if (getActivities.data.length < pageSize) {
         setHasMore(false);
       }
-
       setActivities((prev) =>
         skip === 0 ? getActivities.data! : [...prev, ...getActivities.data!]
       );
@@ -60,13 +60,10 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
     }
   };
 
-  const renderItem = useCallback(
-    ({ item }: { item: Activity }) => (
-      <View style={styles.activityItem}>
-        <ActivityComponent activity={item} />
-      </View>
-    ),
-    []
+  const renderItem = ({ item }: { item: Activity }) => (
+    <View style={styles.activityItem}>
+      <ActivityComponent activity={item} />
+    </View>
   );
 
   return (

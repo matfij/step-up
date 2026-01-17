@@ -10,7 +10,7 @@ import {
 import { formatActivityDuration } from "./time-manager";
 import { AppInputLight } from "../../common/components/app-input";
 import { useEffect, useState } from "react";
-import { useRequest } from "../../common/api/api-hooks";
+import { useRequest } from "../../common/api/use-request";
 import { activityClient } from "../../common/api/activity-client";
 import { AppApiError } from "../../common/components/app-api-error";
 import {
