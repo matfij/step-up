@@ -1,48 +1,67 @@
 import Constants from "expo-constants";
 import { ApiError } from "./api-definitions";
 import { useUserStore } from "../state/user-store";
+import { delay } from "../utils";
 
 export abstract class ApiClient {
   private baseUrl = getApiUrl();
+  private readonly timeout = 15_000;
+  private readonly retryCount = 1;
+  private readonly retryDelay = 1500;
 
   protected request = async <T>(
     endpoint: string,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<{ data?: T; error?: ApiError }> => {
-    try {
-      const token = useUserStore.getState().user?.apiToken;
+    let apiError = { name: "", message: "", key: "" };
 
-      const headers: HeadersInit = {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: token }),
-        ...options?.headers,
-      };
+    for (let attempt = 0; attempt <= this.retryCount; attempt++) {
+      try {
+        const token = useUserStore.getState().user?.apiToken;
 
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        ...options,
-        headers,
-      });
+        const headers: HeadersInit = {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: token }),
+          ...options?.headers,
+        };
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { error: errorData.error };
-      }
+        const abortController = new AbortController();
+        const timeoutId = setTimeout(
+          () => abortController.abort(),
+          this.timeout,
+        );
 
-      const data = await this.safeParse(response);
-      return { data };
-    } catch (error) {
-      console.log("api error", endpoint, error);
-      return {
-        error: {
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
+          ...options,
+          headers,
+          signal: abortController.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          return { error: errorData.error };
+        }
+
+        const data = await this.safeParse(response);
+        return { data };
+      } catch (error) {
+        apiError = {
           name: "Unknown Error",
           key: "errors.unknown",
           message:
             error instanceof Error
               ? error.message
               : "Failed to connect to server",
-        },
-      };
+        };
+        if (attempt < this.retryCount) {
+          await delay(this.retryDelay);
+        }
+      }
     }
+
+    return { error: apiError };
   };
 
   private safeParse = async (response: Response) => {

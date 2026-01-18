@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ApiError } from "./api-definitions";
 
 export const useRequest = <TArgs, TData>(
-  apiCall: (args: TArgs) => Promise<{ data?: TData; error?: ApiError }>
+  apiCall: (args: TArgs) => Promise<{ data?: TData; error?: ApiError }>,
 ) => {
   const [data, setData] = useState<TData | undefined>();
   const [error, setError] = useState<ApiError | undefined>();
@@ -17,6 +17,7 @@ export const useRequest = <TArgs, TData>(
 
     try {
       const result = await apiCall(args);
+      console.log({ result: result.error });
       if (result.data) {
         setData(result.data);
       }

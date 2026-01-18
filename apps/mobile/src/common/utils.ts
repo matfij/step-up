@@ -7,7 +7,7 @@ export const noOp = () => {};
 
 export const getAsyncStorageItem = async <T>(
   key: keyof typeof appConfig.storageKeys,
-  defaultValue: T
+  defaultValue: T,
 ) => {
   const data = await AsyncStorage.getItem(appConfig.storageKeys[key]);
   if (data === null || data === undefined) {
@@ -18,7 +18,7 @@ export const getAsyncStorageItem = async <T>(
 
 export const setAsyncStorageItem = async (
   key: keyof typeof appConfig.storageKeys,
-  item: unknown
+  item: unknown,
 ) => {
   await AsyncStorage.setItem(appConfig.storageKeys[key], JSON.stringify(item));
 };
@@ -35,4 +35,8 @@ export const generateKey = (prefix = "item") => {
   return `${prefix}-${Date.now()}-${Math.random()
     .toString(36)
     .substring(2, 9)}`;
+};
+
+export const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
