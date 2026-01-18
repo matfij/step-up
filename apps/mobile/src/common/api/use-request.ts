@@ -17,7 +17,6 @@ export const useRequest = <TArgs, TData>(
 
     try {
       const result = await apiCall(args);
-      console.log({ result: result.error });
       if (result.data) {
         setData(result.data);
       }

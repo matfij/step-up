@@ -117,12 +117,9 @@ const styles = StyleSheet.create({
   title: {
     ...themeComposable.typography.h1,
     ...themeComposable.textShadows.md,
-    width: "80%",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: "-50%" }, { translateY: "-50%" }],
-    color: theme.colors.primary[600],
+    marginTop: -theme.spacing.md,
+    textAlign: "center",
+    color: theme.colors.secondary[300],
   },
   brandImage: {
     height: 200,
