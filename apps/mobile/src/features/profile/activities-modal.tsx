@@ -1,10 +1,17 @@
-import { StyleSheet, View, FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
 import { useRequest } from "../../common/api/use-request";
 import { activityClient } from "../../common/api/activity-client";
-import { useEffect, useState, useCallback } from "react";
 import { ActivityComponent } from "./activity-component";
-import { theme } from "../../common/theme";
+import { theme, themeComposable } from "../../common/theme";
 import { Activity } from "../../common/api/api-definitions";
 
 interface ActivityModalProps {
@@ -13,9 +20,10 @@ interface ActivityModalProps {
   onClose: () => void;
 }
 
-const pageSize = 10;
+const pageSize = 3;
 
 export const ActivitiesModal = (props: ActivityModalProps) => {
+  const { t } = useTranslation();
   const getActivities = useRequest(activityClient.getByUserId);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [skip, setSkip] = useState(0);
@@ -47,13 +55,13 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
         setHasMore(false);
       }
       setActivities((prev) =>
-        skip === 0 ? getActivities.data! : [...prev, ...getActivities.data!]
+        skip === 0 ? getActivities.data! : [...prev, ...getActivities.data!],
       );
     }
   }, [getActivities.success, getActivities.data]);
 
   const handleLoadMore = () => {
-    if (!getActivities.loading && hasMore) {
+    if (!getActivities.loading && !getActivities.error && hasMore) {
       const nextSkip = skip + pageSize;
       setSkip(nextSkip);
       loadActivities(nextSkip);
@@ -66,6 +74,18 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
     </View>
   );
 
+  const renderEmpty = () => {
+    if (getActivities.loading) {
+      return (
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size={64} color={theme.colors.primary[500]} />
+        </View>
+      );
+    } else {
+      return <Text style={styles.emptyLabel}>{t("profile.noActivities")}</Text>;
+    }
+  };
+
   return (
     <ModalWrapper visible={props.visible} onClose={props.onClose}>
       <View style={styles.modalContent}>
@@ -75,6 +95,7 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
           keyExtractor={(item) => item.id}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
+          ListEmptyComponent={renderEmpty}
         />
       </View>
     </ModalWrapper>
@@ -90,5 +111,15 @@ const styles = StyleSheet.create({
     paddingBottom: theme.spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.light[300],
+  },
+  loadingWrapper: {
+    padding: theme.spacing.xl,
+  },
+  emptyLabel: {
+    ...themeComposable.typography.h2,
+    padding: theme.spacing.xl,
+    color: theme.colors.light[300],
+    backgroundColor: theme.colors.dark[300],
+    borderRadius: theme.borderRadius.md,
   },
 });

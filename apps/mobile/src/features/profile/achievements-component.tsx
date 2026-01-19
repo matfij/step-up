@@ -50,6 +50,12 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [selectedAchievement, setSelectedAchievement] = useState<Achievement>();
 
+  const emptyAchievements =
+    getAchievements.success &&
+    getAchievements.data?.achievements.filter(
+      (achievement) => achievement.tier !== AchievementTier.None,
+    ).length === 0;
+
   useEffect(() => {
     getAchievements.call(props.userId);
   }, [props.userId]);
@@ -79,7 +85,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
       ((achievement.progress - achievement.previousTierProgress) /
         (achievement.nextTierProgress - achievement.previousTierProgress)) *
         100,
-      100
+      100,
     );
   };
 
@@ -124,6 +130,10 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
           </Pressable>
         ))}
       </ScrollView>
+
+      {emptyAchievements && (
+        <Text style={styles.emptyLabel}>{t("profile.noAchievements")}</Text>
+      )}
 
       <ModalWrapper
         visible={selectedAchievement !== undefined}
@@ -178,7 +188,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
                         styles.progressBarFill,
                         {
                           width: `${getProgressPercentage(
-                            selectedAchievement
+                            selectedAchievement,
                           )}%`,
                           backgroundColor: selectedAchievement.color,
                         },
@@ -211,13 +221,19 @@ const styles = StyleSheet.create({
   achievementItem: {
     marginRight: theme.spacing.sm,
     overflow: "hidden",
-    backgroundColor: theme.colors.dark[300],
     borderRadius: theme.borderRadius.md,
     borderWidth: 2,
   },
   achievementImage: {
     width: 50,
     height: 50,
+  },
+  emptyLabel: {
+    height: 50,
+    padding: theme.spacing.md,
+    color: theme.colors.light[300],
+    backgroundColor: theme.colors.dark[300],
+    borderRadius: theme.borderRadius.md,
   },
   modalContent: {
     backgroundColor: theme.colors.dark[300],

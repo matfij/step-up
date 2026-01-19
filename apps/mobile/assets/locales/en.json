@@ -12,6 +12,7 @@
     "minute": "m",
     "hour": "h",
     "day": "d",
+    "meter": "m",
     "kilometer": "km",
     "meterPerMinute": "m/min"
   },
@@ -76,6 +77,8 @@
     "bestStreak": "Best streak",
     "achievements": "Achievements",
     "viewActivities": "View activities",
+    "noAchievements": "No achievements",
+    "noActivities": "No activities",
     "achievementTier": {
       "none": "None",
       "achieved": "Achieved",
