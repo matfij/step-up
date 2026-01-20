@@ -5,7 +5,9 @@
   "common": {
     "save": "Save",
     "discard": "Discard",
-    "close": "Close"
+    "close": "Close",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "units": {
     "second": "s",
@@ -65,7 +67,9 @@
     },
     "activityDetails": "Activity details",
     "name": "Name",
-    "description": "Description"
+    "description": "Description",
+    "confirmFinish": "Are you sure you want to finish activity?",
+    "confirmDiscard": "Are you sure you want to discard activity?"
   },
   "profile": {
     "level": "Level",

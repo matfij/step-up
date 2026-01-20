@@ -53,14 +53,14 @@ export const ActivityReportModal = (props: ActivityReportModalProps) => {
         t("errors.invalidActivityName", {
           min: appConfig.validation.activityNameLengthMin,
           max: appConfig.validation.activityNameLengthMax,
-        })
+        }),
       );
       return;
     } else if (!isValidActivityDescription(description)) {
       setDescriptionError(
         t("errors.invalidActivityDescription", {
           max: appConfig.validation.activityDescriptionLengthMax,
-        })
+        }),
       );
       return;
     }

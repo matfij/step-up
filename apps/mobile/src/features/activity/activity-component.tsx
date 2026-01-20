@@ -10,6 +10,7 @@ import { formatActivityDuration } from "./time-manager";
 import { withAlpha } from "../../common/utils";
 import { ActivityReportModal } from "./activity-report-modal";
 import { useRouter } from "expo-router";
+import { ConfirmModal } from "../../common/components/confim-modal";
 
 export const ActivityComponent = () => {
   const { t } = useTranslation();
@@ -18,12 +19,19 @@ export const ActivityComponent = () => {
   const mapRef = useRef<MapView | null>(null);
   const [region, setRegion] = useState<Region | undefined>();
   const [showReport, setShowReport] = useState(false);
+  const [showFinishModal, setShowFinishModal] = useState(true);
+  const [showDiscardModal, setShowDiscardModal] = useState(true);
 
   useEffect(() => {
     if (activity.activityReport) {
       setShowReport(true);
     }
   }, [activity.activityReport]);
+
+  const onConfirmComplete = () => {
+    setShowFinishModal(false);
+    activity.complete();
+  };
 
   const onClose = (navigateToIndex: boolean) => {
     setShowReport(false);
@@ -33,6 +41,7 @@ export const ActivityComponent = () => {
   };
 
   const onDiscard = () => {
+    setShowDiscardModal(false);
     setShowReport(false);
     activity.discard();
   };
@@ -104,21 +113,33 @@ export const ActivityComponent = () => {
             {activity.isTracking && (
               <AppButton
                 label={t("activity.complete")}
-                onClick={activity.complete}
+                onClick={() => setShowFinishModal(true)}
                 style={styles.button}
               />
             )}
           </View>
         </View>
       </View>
-      {showReport && activity.activityReport && (
+      {activity.activityReport && (
         <ActivityReportModal
           visible={showReport}
           report={activity.activityReport}
-          onDiscard={onDiscard}
+          onDiscard={() => setShowDiscardModal(true)}
           onClose={onClose}
         />
       )}
+      <ConfirmModal
+        visible={showFinishModal}
+        message={t("activity.confirmFinish")}
+        onConfirm={onConfirmComplete}
+        onClose={() => setShowFinishModal(false)}
+      />
+      <ConfirmModal
+        visible={showDiscardModal}
+        message={t("activity.confirmDiscard")}
+        onConfirm={onDiscard}
+        onClose={() => setShowDiscardModal(false)}
+      />
     </AppWrapper>
   );
 };

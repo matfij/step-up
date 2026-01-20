@@ -3,6 +3,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   ViewStyle,
 } from "react-native";
 import { theme, themeComposable } from "../theme";
@@ -12,6 +13,7 @@ type AppButtonProps = {
   disabled?: boolean;
   onClick: () => void;
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 };
 
 export const AppButton = (props: AppButtonProps) => {
@@ -26,7 +28,7 @@ export const AppButton = (props: AppButtonProps) => {
         props.style,
       ]}
     >
-      <Text style={styles.label}>{props.label}</Text>
+      <Text style={[styles.label, props.textStyle]}>{props.label}</Text>
     </Pressable>
   );
 };
@@ -43,7 +45,9 @@ export const AppButtonSecondary = (props: AppButtonProps) => {
         props.style,
       ]}
     >
-      <Text style={styles.labelSecondary}>{props.label}</Text>
+      <Text style={[styles.labelSecondary, props.textStyle]}>
+        {props.label}
+      </Text>
     </Pressable>
   );
 };
