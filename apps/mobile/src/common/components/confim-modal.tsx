@@ -22,7 +22,14 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
           <AppButtonSecondary
             label={t("common.cancel")}
             onClick={props.onClose}
-            style={{ width: "45%", marginVertical: theme.spacing.md }}
+            style={{
+              width: "45%",
+              marginVertical: theme.spacing.md,
+            }}
+            textStyle={{
+              fontSize: 16,
+              lineHeight: 22,
+            }}
           />
           <AppButton
             label={t("common.confirm")}
@@ -35,7 +42,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
             }}
             textStyle={{
               fontSize: 16,
-              lineHeight: 24,
+              lineHeight: 22,
             }}
           />
         </View>

@@ -19,9 +19,9 @@ export const ActivityComponent = () => {
   const mapRef = useRef<MapView | null>(null);
   const [region, setRegion] = useState<Region | undefined>();
   const [showReport, setShowReport] = useState(false);
-  const [showFinishModal, setShowFinishModal] = useState(true);
-  const [showDiscardModal, setShowDiscardModal] = useState(true);
-
+  const [showFinishModal, setShowFinishModal] = useState(false);
+  const [showDiscardModal, setShowDiscardModal] = useState(false);
+    throw new Error(" no soup!")
   useEffect(() => {
     if (activity.activityReport) {
       setShowReport(true);
