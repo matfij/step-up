@@ -107,7 +107,7 @@ export const themeComposable = {
       fontSize: 16,
       fontWeight: 700,
       lineHeight: 24,
-      letterSpacing: 0.1,
+      letterSpacing: 0.2,
     },
     bodyLarge: {
       fontSize: 18,

@@ -1,16 +1,16 @@
+import { useRouter } from "expo-router";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Region } from "react-native-maps";
-import { useEffect, useRef, useState } from "react";
-import { theme, themeComposable } from "../../common/theme";
 import { AppButton } from "../../common/components/app-button";
-import { useActivity } from "./use-activity";
 import { AppWrapper } from "../../common/components/app-wrapper";
-import { formatActivityDuration } from "./time-manager";
+import { ConfirmModal } from "../../common/components/confim-modal";
+import { theme, themeComposable } from "../../common/theme";
 import { withAlpha } from "../../common/utils";
 import { ActivityReportModal } from "./activity-report-modal";
-import { useRouter } from "expo-router";
-import { ConfirmModal } from "../../common/components/confim-modal";
+import { formatActivityDuration } from "./time-manager";
+import { useActivity } from "./use-activity";
 
 export const ActivityComponent = () => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export const ActivityComponent = () => {
   const [showReport, setShowReport] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
-    throw new Error(" no soup!")
+
   useEffect(() => {
     if (activity.activityReport) {
       setShowReport(true);
@@ -86,6 +86,10 @@ export const ActivityComponent = () => {
                 <Text style={styles.statLabel}>{t("activity.speed")}</Text>
               </View>
             </View>
+          )}
+
+          {activity.error && (
+            <Text style={styles.errorLabel}>{t(activity.error)}</Text>
           )}
 
           <View style={styles.buttonContainer}>
@@ -192,6 +196,11 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.5,
     fontSize: 12,
+  },
+  errorLabel: {
+    ...themeComposable.typography.bodyBold,
+    color: theme.colors.status.error,
+    textAlign: "center",
   },
   buttonContainer: {
     flexDirection: "row",

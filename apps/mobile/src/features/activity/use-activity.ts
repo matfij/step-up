@@ -1,12 +1,12 @@
+import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
-import * as Location from "expo-location";
-import { ActivityReport } from "./activity-definitions";
-import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
-import { calculateRouteLength } from "./distance-manager";
-import { getAverageSpeed, getCurrentSpeed, getTopSpeed } from "./speed-manager";
 import { appConfig } from "../../common/config";
+import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
+import { ActivityReport } from "./activity-definitions";
+import { calculateRouteLength } from "./distance-manager";
 import { startLocationTracking } from "./location-manager";
+import { getAverageSpeed, getCurrentSpeed, getTopSpeed } from "./speed-manager";
 
 const REFRESH_TIME_MS = 1000;
 
@@ -21,6 +21,7 @@ export const useActivity = () => {
   const [speed, setSpeed] = useState(0);
   const [duration, setDuration] = useState(0);
   const [activityReport, setActivityReport] = useState<ActivityReport>();
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
@@ -32,7 +33,7 @@ export const useActivity = () => {
       ) {
         getAsyncStorageItem<Location.LocationObject[]>(
           "activityLocation",
-          []
+          [],
         ).then((locations) => {
           locationsRef.current = locations;
         });
@@ -47,7 +48,7 @@ export const useActivity = () => {
     const loadPersistedActivity = async () => {
       const savedStartTime = await getAsyncStorageItem<number>(
         "activityStartTime",
-        0
+        0,
       );
       const savedLocations = await getAsyncStorageItem<
         Location.LocationObject[]
@@ -71,7 +72,7 @@ export const useActivity = () => {
     const locationSubscription = setInterval(async () => {
       const locations = await getAsyncStorageItem<Location.LocationObject[]>(
         "activityLocation",
-        []
+        [],
       );
       locationsRef.current = locations;
     }, REFRESH_TIME_MS);
@@ -121,7 +122,14 @@ export const useActivity = () => {
       return;
     }
 
-    await startLocationTracking();
+    setError("");
+
+    const started = await startLocationTracking();
+
+    if (!started) {
+      setError("activity.missingPermissions");
+      return;
+    }
 
     const now = Date.now();
     startTimeRef.current = now;
@@ -140,11 +148,11 @@ export const useActivity = () => {
 
   const pause = async () => {
     const isLocationTracked = await Location.hasStartedLocationUpdatesAsync(
-      appConfig.taskNames.backgroundLocation
+      appConfig.taskNames.backgroundLocation,
     );
     if (isLocationTracked) {
       await Location.stopLocationUpdatesAsync(
-        appConfig.taskNames.backgroundLocation
+        appConfig.taskNames.backgroundLocation,
       );
     }
     await setAsyncStorageItem("activityIsPaused", true);
@@ -159,11 +167,11 @@ export const useActivity = () => {
 
   const complete = async () => {
     const isLocationTracked = await Location.hasStartedLocationUpdatesAsync(
-      appConfig.taskNames.backgroundLocation
+      appConfig.taskNames.backgroundLocation,
     );
     if (isLocationTracked) {
       await Location.stopLocationUpdatesAsync(
-        appConfig.taskNames.backgroundLocation
+        appConfig.taskNames.backgroundLocation,
       );
     }
 
@@ -194,11 +202,11 @@ export const useActivity = () => {
 
   const discard = async () => {
     const isLocationTracked = await Location.hasStartedLocationUpdatesAsync(
-      appConfig.taskNames.backgroundLocation
+      appConfig.taskNames.backgroundLocation,
     );
     if (isLocationTracked) {
       await Location.stopLocationUpdatesAsync(
-        appConfig.taskNames.backgroundLocation
+        appConfig.taskNames.backgroundLocation,
       );
     }
 
@@ -222,6 +230,7 @@ export const useActivity = () => {
     speed,
     duration,
     activityReport,
+    error,
     start,
     pause,
     resume,

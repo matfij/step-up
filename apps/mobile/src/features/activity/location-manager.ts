@@ -7,8 +7,8 @@ import {
   startLocationUpdatesAsync,
 } from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
 import { appConfig } from "../../common/config";
+import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
 
 export const startLocationTracking = async () => {
   const foregroundPermission = await requestForegroundPermissionsAsync();
@@ -24,8 +24,11 @@ export const startLocationTracking = async () => {
           notificationBody: "Tracking your activity",
         },
       });
+      return true;
     }
+    return false;
   }
+  return false;
 };
 
 TaskManager.defineTask<{ locations: LocationObject[] }>(
@@ -39,10 +42,10 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
     if (!isPaused) {
       const locations = await getAsyncStorageItem<LocationObject[]>(
         "activityLocation",
-        []
+        [],
       );
       locations.push(...data.locations);
       await setAsyncStorageItem("activityLocation", locations);
     }
-  }
+  },
 );

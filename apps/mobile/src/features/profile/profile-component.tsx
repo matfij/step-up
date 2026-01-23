@@ -1,12 +1,12 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AppWrapper } from "../../common/components/app-wrapper";
-import { useUserStore } from "../../common/state/user-store";
 import { progressClient } from "../../common/api/progress-client";
 import { useRequest } from "../../common/api/use-request";
+import { AppWrapper } from "../../common/components/app-wrapper";
+import { useUserStore } from "../../common/state/user-store";
 import { theme, themeComposable } from "../../common/theme";
-import { useTranslation } from "react-i18next";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AchievementsComponent } from "./achievements-component";
 import { ActivitiesModal } from "./activities-modal";
 import { ProgressComponent } from "./progress-component";
