@@ -23,6 +23,13 @@ namespace StepUpServer.Domains.Activity
 
         public async Task<Activity> Create(string userId, CreateActivityRequest request)
         {
+            var existingActivity = await _repository.GetByUserIdAndTime(userId, request.StartTime);
+
+            if (existingActivity is not null)
+            {
+                return existingActivity;  // Prevent activity duplication
+            }
+
             var newActivity = new Activity
             {
                 Id = Utils.GenerateId(),

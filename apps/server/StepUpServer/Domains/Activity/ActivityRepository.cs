@@ -8,6 +8,7 @@ public interface IActivityRepository
     Task<Activity> Create(Activity activity);
     Task<Activity?> GetById(string id);
     Task<Activity[]> GetByUserId(string userId, int skip, int take);
+    Task<Activity?> GetByUserIdAndTime(string id, ulong time);
     Task<Activity> Update(Activity activity);
 }
 
@@ -48,6 +49,13 @@ public class ActivityRepository : IActivityRepository
             .Skip(skip)
             .Limit(take);
         return [.. await query.ToListAsync()];
+    }
+
+    public async Task<Activity?> GetByUserIdAndTime(string id, ulong time)
+    {
+        return await _activities
+            .Find(a => a.UserId == id && a.StartTime == time)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Activity> Update(Activity activity)
