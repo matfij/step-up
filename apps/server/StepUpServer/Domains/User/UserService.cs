@@ -50,7 +50,7 @@ public partial class UserService(
         user.ApiToken = GenerateApiToken();
         user.IsConfirmed = true;
         await _repository.Update(user);
-        await _eventPublisher.PublishAsync(new UserCreatedEvent { UserId = user.Id });
+        await _eventPublisher.PublishAsync(new UserCreatedEvent { UserId = user.Id, Username = user.Username });
         return user;
     }
 

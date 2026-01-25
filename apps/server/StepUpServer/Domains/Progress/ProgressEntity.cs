@@ -9,6 +9,7 @@ public class Progress
     [BsonRepresentation(BsonType.String)]
     public required string Id { get; set; }
     public required string UserId { get; set; }
+    public required string Username { get; set; }
 
     public uint Level { get; set; } = 1;
     public ulong Experience { get; set; } = 0;
@@ -19,4 +20,7 @@ public class Progress
 
     public ulong CurrentStreak { get; set; } = 0; // days
     public ulong BestStreak { get; set; } = 0; // days
+
+    public ulong MonthlyDuration { get; set; } = 0; // ms
+    public ulong MonthlyDistance { get; set; } = 0; // m
 }

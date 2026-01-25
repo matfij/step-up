@@ -28,7 +28,12 @@ public class ProgressService(IProgressRepository repository, IEventPublisher pub
 
     public async Task HandleAsync(UserCreatedEvent userEvent)
     {
-        var progress = new Progress { Id = Utils.GenerateId(), UserId = userEvent.UserId };
+        var progress = new Progress
+        {
+            Id = Utils.GenerateId(),
+            UserId = userEvent.UserId,
+            Username = userEvent.Username,
+        };
 
         await _repository.Create(progress);
     }
@@ -42,6 +47,8 @@ public class ProgressService(IProgressRepository repository, IEventPublisher pub
         progress.TotalActivities += 1;
         progress.TotalDuration += activityEvent.Duration;
         progress.TotalDistance += activityEvent.Distance;
+        progress.MonthlyDuration += activityEvent.Duration;
+        progress.MonthlyDistance += activityEvent.Distance;
 
         var currentActivityDate = DateTimeOffset.FromUnixTimeMilliseconds((long)activityEvent.StartTime).Date;
 
@@ -81,7 +88,7 @@ public class ProgressService(IProgressRepository repository, IEventPublisher pub
         });
     }
 
-    private uint CalculateLevel(ulong experience)
+    private static uint CalculateLevel(ulong experience)
     {
         var level = 1u;
         ulong nextLevelExp = _nextLevelExpGain;
