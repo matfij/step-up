@@ -9,8 +9,10 @@ export const useRequest = <TArgs, TData>(
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const call = async (args: TArgs) => {
-    setData(undefined);
+  const call = async (args: TArgs, clearData = true) => {
+    if (clearData) {
+      setData(undefined);
+    }
     setError(undefined);
     setLoading(true);
     setSuccess(false);

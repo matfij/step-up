@@ -1,13 +1,13 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
+import { Progress } from "../../common/api/api-definitions";
 import { formatDistance, formatDuration } from "../../common/formatters";
 import { theme, themeComposable } from "../../common/theme";
 import { withAlpha } from "../../common/utils";
-import { Progress } from "../../common/api/api-definitions";
 
 interface ProgressComponentProps {
-  progress: Progress;
+  progress?: Progress;
   loading: boolean;
 }
 
@@ -20,7 +20,7 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
         <View style={styles.streakItem}>
           <View style={styles.streakValueWrapper}>
             <Text style={styles.streakValue}>
-              {props.progress.currentStreak}
+              {props.progress?.currentStreak ?? 0}
             </Text>
             <MaterialCommunityIcons
               name="fire"
@@ -33,7 +33,9 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
         <View style={styles.streakDivider} />
         <View style={styles.streakItem}>
           <View style={styles.streakValueWrapper}>
-            <Text style={styles.streakValue}>{props.progress.bestStreak}</Text>
+            <Text style={styles.streakValue}>
+              {props.progress?.bestStreak ?? 0}
+            </Text>
             <MaterialCommunityIcons
               name="star"
               size={25}
@@ -45,18 +47,20 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
       </View>
       <View style={styles.statsWrapper}>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{props.progress.totalActivities}</Text>
+          <Text style={styles.statValue}>
+            {props.progress?.totalActivities ?? 0}
+          </Text>
           <Text style={styles.statLabel}>{t("profile.totalActivities")}</Text>
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>
-            {formatDuration(props.progress.totalDuration, t)}
+            {formatDuration(props.progress?.totalDuration ?? 0, t)}
           </Text>
           <Text style={styles.statLabel}>{t("profile.totalDuration")}</Text>
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>
-            {formatDistance(props.progress.totalDistance, t)}
+            {formatDistance(props.progress?.totalDistance ?? 0, t)}
           </Text>
           <Text style={styles.statLabel}>{t("profile.totalDistance")}</Text>
         </View>

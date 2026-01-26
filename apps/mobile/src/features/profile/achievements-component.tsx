@@ -1,39 +1,38 @@
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Image,
-  ImageSourcePropType,
-  Modal,
-  Pressable,
 } from "react-native";
 import { achievementsClient } from "../../common/api/achievements-client";
-import { useRequest } from "../../common/api/use-request";
-import { theme, themeComposable } from "../../common/theme";
-import {
-  achievementImages,
-  getAchievementTierColor,
-  getAchievementTierName,
-} from "./achievements-utils";
 import {
   AchievementProgress,
   AchievementTier,
   UnitCategory,
 } from "../../common/api/api-definitions";
-import { withAlpha } from "../../common/utils";
+import { useRequest } from "../../common/api/use-request";
+import { ModalWrapper } from "../../common/components/modal-wrapper";
 import {
   formatDate,
   formatDistance,
   formatDuration,
   formatSpeed,
 } from "../../common/formatters";
-import { ModalWrapper } from "../../common/components/modal-wrapper";
+import { theme, themeComposable } from "../../common/theme";
+import {
+  achievementImages,
+  getAchievementTierColor,
+  getAchievementTierName,
+} from "./achievements-utils";
 
 interface AchievementsComponentProps {
-  userId: string;
+  userId?: string;
 }
 
 interface Achievement extends AchievementProgress {
@@ -56,9 +55,13 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
       (achievement) => achievement.tier !== AchievementTier.None,
     ).length === 0;
 
-  useEffect(() => {
-    getAchievements.call(props.userId);
-  }, [props.userId]);
+  useFocusEffect(
+    useCallback(() => {
+      if (props.userId) {
+        getAchievements.call(props.userId, false);
+      }
+    }, [props.userId]),
+  );
 
   useEffect(() => {
     if (getAchievements.data && getAchievements.success) {

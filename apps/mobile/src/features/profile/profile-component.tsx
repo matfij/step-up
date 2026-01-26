@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { progressClient } from "../../common/api/progress-client";
@@ -13,19 +14,17 @@ import { ProgressComponent } from "./progress-component";
 
 export const ProfileComponent = () => {
   const { t } = useTranslation();
-  const { user } = useUserStore();
+  const { user, signOut } = useUserStore();
   const getProgress = useRequest(progressClient.getByUserId);
   const [showActivities, setShowActivities] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      getProgress.call(user.id);
-    }
-  }, []);
-
-  if (!user || !getProgress.data) {
-    return <></>;
-  }
+  useFocusEffect(
+    useCallback(() => {
+      if (user) {
+        getProgress.call(user.id, false);
+      }
+    }, [user]),
+  );
 
   return (
     <AppWrapper>
@@ -36,10 +35,10 @@ export const ProfileComponent = () => {
             source={require("@assets/images/avatar.png")}
           />
           <View style={styles.levelBadge}>
-            <Text style={styles.levelText}>{getProgress.data.level}</Text>
+            <Text style={styles.levelText}>{getProgress?.data?.level}</Text>
           </View>
         </View>
-        <Text style={styles.userLabel}>{user.username}</Text>
+        <Text style={styles.userLabel}>{user?.username}</Text>
       </View>
 
       <ProgressComponent
@@ -47,7 +46,7 @@ export const ProfileComponent = () => {
         loading={getProgress.loading}
       />
 
-      <AchievementsComponent userId={user.id} />
+      <AchievementsComponent userId={user?.id} />
 
       <View style={styles.actionsWrapper}>
         <TouchableOpacity
@@ -64,7 +63,7 @@ export const ProfileComponent = () => {
       </View>
 
       <ActivitiesModal
-        userId={user.id}
+        userId={user?.id}
         visible={showActivities}
         onClose={() => setShowActivities(false)}
       />

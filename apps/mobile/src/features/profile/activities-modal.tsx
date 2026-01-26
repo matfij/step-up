@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  StyleSheet,
-  View,
-  FlatList,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
   Text,
+  View,
 } from "react-native";
-import { ModalWrapper } from "../../common/components/modal-wrapper";
-import { useRequest } from "../../common/api/use-request";
 import { activityClient } from "../../common/api/activity-client";
-import { ActivityComponent } from "./activity-component";
-import { theme, themeComposable } from "../../common/theme";
 import { Activity } from "../../common/api/api-definitions";
+import { useRequest } from "../../common/api/use-request";
+import { ModalWrapper } from "../../common/components/modal-wrapper";
+import { theme, themeComposable } from "../../common/theme";
+import { ActivityComponent } from "./activity-component";
 
 interface ActivityModalProps {
-  userId: string;
+  userId?: string;
   visible: boolean;
   onClose: () => void;
 }
@@ -39,7 +39,7 @@ export const ActivitiesModal = (props: ActivityModalProps) => {
   }, [props.userId, props.visible]);
 
   const loadActivities = async (currentSkip: number) => {
-    if (!hasMore && currentSkip > 0) {
+    if (!props.userId || (!hasMore && currentSkip > 0)) {
       return;
     }
     await getActivities.call({
