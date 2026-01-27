@@ -11,7 +11,7 @@ public record struct AchievementProgress(
     UnitCategory UnitCategory,
     AchievementTier Tier,
     ulong Progress,
-    ulong PreviousTierProgress,
+    ulong CurrentTierProgress,
     ulong NextTierProgress,
     ulong AchievedAt
 );

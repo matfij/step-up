@@ -12,7 +12,7 @@ public static class AchievementsData
         { AchievementTier.BronzeI, 10_000 },
         { AchievementTier.BronzeII, 50_000 },
         { AchievementTier.BronzeIII, 100_000 },
-        { AchievementTier.SilverI, 250_000 },
+        { AchievementTier.SilverI, 150_000 },
         { AchievementTier.SilverII, 500_000 },
         { AchievementTier.SilverIII, 1_000_000 },
         { AchievementTier.GoldI, 2_500_000 },
@@ -173,14 +173,13 @@ public static class AchievementsData
         return nextTier.Value;
     }
 
-    public static ulong GetPreviousTierThreshold(
+    public static ulong GetCurrentTierThreshold(
         Dictionary<AchievementTier, ulong> thresholds,
         AchievementTier currentTier
     )
     {
         var previousTier = thresholds
-            .Where(x => x.Key < currentTier)
-            .OrderByDescending(x => x.Key)
+            .Where(x => x.Key == currentTier)
             .FirstOrDefault();
         return previousTier.Value;
     }

@@ -76,6 +76,8 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
         }))
         .sort((a, b) => b.tier - a.tier);
 
+      console.log(newAchievements);
+
       setAchievements(newAchievements);
     }
   }, [getAchievements.data, getAchievements.success, t]);
@@ -85,17 +87,16 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
       return 100;
     }
     return Math.min(
-      ((achievement.progress - achievement.previousTierProgress) /
-        (achievement.nextTierProgress - achievement.previousTierProgress)) *
+      ((achievement.progress - achievement.currentTierProgress) /
+        (achievement.nextTierProgress - achievement.currentTierProgress)) *
         100,
       100,
     );
   };
 
   const getProgressLabel = (achievement: Achievement) => {
-    const current = achievement.progress - achievement.previousTierProgress;
-    const next =
-      achievement.nextTierProgress - achievement.previousTierProgress;
+    const current = achievement.progress - achievement.currentTierProgress;
+    const next = achievement.nextTierProgress - achievement.currentTierProgress;
     const finished = achievement.tier === AchievementTier.MasterIII;
     switch (achievement.unitCategory) {
       case UnitCategory.Count:

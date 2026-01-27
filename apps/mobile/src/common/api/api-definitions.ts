@@ -1,5 +1,9 @@
 export class ApiError extends Error {
-  constructor(message: string, public key: string, public field?: string) {
+  constructor(
+    message: string,
+    public key: string,
+    public field?: string,
+  ) {
     super(message);
   }
 }
@@ -48,7 +52,7 @@ export interface AchievementProgress {
   unitCategory: UnitCategory;
   tier: AchievementTier;
   progress: number;
-  previousTierProgress: number;
+  currentTierProgress: number;
   nextTierProgress: number;
   achievedAt: number;
 }

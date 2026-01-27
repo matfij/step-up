@@ -33,7 +33,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Distance,
                     Tier = achievements.TotalDistance.Tier,
                     Progress = achievements.TotalDistance.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.TotalDistanceThresholds,
                         achievements.TotalDistance.Tier
                     ),
@@ -49,7 +49,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Time,
                     Tier = achievements.TotalDuration.Tier,
                     Progress = achievements.TotalDuration.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.TotalDurationThresholds,
                         achievements.TotalDuration.Tier
                     ),
@@ -65,7 +65,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Count,
                     Tier = achievements.TotalActivities.Tier,
                     Progress = achievements.TotalActivities.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.TotalActivitiesThresholds,
                         achievements.TotalActivities.Tier
                     ),
@@ -81,7 +81,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Count,
                     Tier = achievements.MaxCurrentStreak.Tier,
                     Progress = achievements.MaxCurrentStreak.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.MaxCurrentStreakThresholds,
                         achievements.MaxCurrentStreak.Tier
                     ),
@@ -97,7 +97,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Speed,
                     Tier = achievements.MaxActivitySpeed.Tier,
                     Progress = achievements.MaxActivitySpeed.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.MaxActivitySpeedTrasholds,
                         achievements.MaxActivitySpeed.Tier
                     ),
@@ -113,7 +113,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Distance,
                     Tier = achievements.MaxActivityDistance.Tier,
                     Progress = achievements.MaxActivityDistance.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.MaxActivityDistanceThreshold,
                         achievements.MaxActivityDistance.Tier
                     ),
@@ -129,7 +129,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     UnitCategory = UnitCategory.Time,
                     Tier = achievements.MaxActivityDuration.Tier,
                     Progress = achievements.MaxActivityDuration.Progress,
-                    PreviousTierProgress = AchievementsData.GetPreviousTierThreshold(
+                    CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
                         AchievementsData.MaxActivityDistanceThreshold,
                         achievements.MaxActivityDuration.Tier
                     ),
