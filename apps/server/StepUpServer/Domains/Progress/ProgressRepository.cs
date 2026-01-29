@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using MongoDB.Driver;
 
 namespace StepUpServer.Domains.Progress;
@@ -7,6 +8,7 @@ public interface IProgressRepository
     Task<Progress> Create(Progress progress);
     Task<Progress?> GetById(string id);
     Task<Progress?> GetByUserId(string userId);
+    Task<List<Progress>> GetBestBy(Expression<Func<Progress, object>> keySelector);
     Task<Progress> Update(Progress progress);
 }
 
@@ -43,6 +45,16 @@ public class ProgressRepository : IProgressRepository
     {
         return await _collection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
     }
+
+    public async Task<List<Progress>> GetBestBy(Expression<Func<Progress, object>> keySelector)
+    {
+        return await _collection
+            .Find(_ => true)
+            .SortByDescending(keySelector)
+            .Limit(10)
+            .ToListAsync();
+    }
+
 
     public async Task<Progress> Update(Progress progress)
     {
