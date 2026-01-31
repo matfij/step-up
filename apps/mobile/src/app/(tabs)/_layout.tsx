@@ -39,6 +39,19 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: t("leaderboard.title"),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="medal-outline"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -32,6 +32,7 @@ export interface Activity {
 export interface Progress {
   id: string;
   userId: string;
+  username: string;
   level: number;
   experience: number;
   totalActivities: number;
@@ -39,6 +40,8 @@ export interface Progress {
   totalDistance: number;
   currentStreak: number;
   bestStreak: number;
+  monthlyDuration: number;
+  monthlyDistance: number;
 }
 
 export interface Achievements {

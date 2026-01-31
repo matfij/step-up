@@ -129,5 +129,14 @@
       "Greenhorn": "Complete your first activity",
       "Marathoner": "Run a marathon distance"
     }
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "duration": "Duration",
+    "distance": "Distance",
+    "monthlyDuration": "Monthly duration",
+    "monthlyDistance": "Monthly distance",
+    "athlete": "Athlete",
+    "score": "Score"
   }
 }
