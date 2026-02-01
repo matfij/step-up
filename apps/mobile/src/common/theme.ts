@@ -69,8 +69,10 @@ export const theme = {
   opacity: {
     solid: 1,
     glass: 0.92,
+    ice: 0.48,
     liquid: 0.24,
     mist: 0.12,
+    ether: 0.08,
   },
   borderRadius: {
     none: 0,
@@ -89,13 +91,13 @@ export const themeComposable = {
       fontSize: 32,
       fontWeight: 700,
       lineHeight: 40,
-      letterSpacing: 0.5,
+      letterSpacing: 0.8,
     },
     h2: {
       fontSize: 24,
       fontWeight: 700,
       lineHeight: 32,
-      letterSpacing: 0.2,
+      letterSpacing: 0.4,
     },
     body: {
       fontSize: 16,

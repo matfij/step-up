@@ -75,9 +75,6 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
           ...achievement,
         }))
         .sort((a, b) => b.tier - a.tier);
-
-      console.log(newAchievements);
-
       setAchievements(newAchievements);
     }
   }, [getAchievements.data, getAchievements.success, t]);
