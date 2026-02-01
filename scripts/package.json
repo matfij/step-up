@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@faker-js/faker": "^10.2.0",
-    "mongodb": "^7.0.0",
-    "uuid": "^13.0.0"
+    "mongodb": "^7.0.0"
   }
 }
