@@ -72,6 +72,7 @@ export const LeaderboardComponent = () => {
         break;
     }
   }, [
+    currentBoard,
     getBestDuration.data,
     getBestDistance.data,
     getBestMonthlyDuration.data,

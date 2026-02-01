@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme, themeComposable } from "../../common/theme";
 import { useTranslation } from "react-i18next";
