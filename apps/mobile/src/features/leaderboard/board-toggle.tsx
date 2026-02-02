@@ -71,8 +71,9 @@ const styles = StyleSheet.create({
     ...themeComposable.typography.body,
     color: theme.colors.light[200],
     fontWeight: "500",
-    fontSize: 11,
+    fontSize: 12,
     textAlign: "center",
+    lineHeight: 16,
   },
   labelSelected: {
     color: theme.colors.light[100],
