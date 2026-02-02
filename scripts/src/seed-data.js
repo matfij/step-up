@@ -4,6 +4,11 @@ import { faker } from "@faker-js/faker";
 const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
 
+if (!MONGO_URI || !DB_NAME) {
+  throw new Error("MONGO_URI and DB_NAME must be set");
+}
+
+const CLEAN_DATA = false;
 const USER_COUNT = 10;
 const MIN_ACTIVITIES_PER_USER = 3;
 const MAX_ACTIVITIES_PER_USER = 15;
@@ -154,8 +159,8 @@ const seed = async () => {
           AchievedAt: 0,
         },
         TotalActivities: {
-          Tier: Math.floor(MAX_ACTIVITIES_PER_USER / 10),
-          Progress: MAX_ACTIVITIES_PER_USER,
+          Tier: Math.floor(maxActivities / 10),
+          Progress: maxActivities,
           AchievedAt: 0,
         },
         MaxCurrentStreak: {
@@ -184,8 +189,8 @@ const seed = async () => {
           AchievedAt: now() - rand(0, 50_000_000),
         },
         Marathoner: {
-          Tier: Math.floor(totalDistance / 42_195),
-          Progress: totalDistance,
+          Tier: 0,
+          Progress: 0,
           AchievedAt: 0,
         },
       });
@@ -202,5 +207,7 @@ const seed = async () => {
   }
 };
 
-await clean();
+if (CLEAN_DATA) {
+  await clean();
+}
 await seed();
