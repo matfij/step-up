@@ -8,7 +8,7 @@ import { Progress } from "../../common/api/api-definitions";
 import { theme, themeComposable } from "../../common/theme";
 import { BoardKey, BoardToggle } from "./board-toggle";
 import { formatDistance, formatDuration } from "../../common/formatters";
-import { generateKey, withAlpha } from "../../common/utils";
+import { withAlpha } from "../../common/utils";
 import { SkeletonItem } from "../../common/components/skeleton-item";
 
 const skeletonColor = withAlpha(
@@ -118,8 +118,8 @@ export const LeaderboardComponent = () => {
           </View>
           <ScrollView>
             {leaderboardLoading &&
-              Array.from({ length: 10 }).map(() => (
-                <View key={generateKey()} style={styles.leaderItem}>
+              Array.from({ length: 10 }).map((_, index) => (
+                <View key={`skeleton-${index}`} style={styles.leaderItem}>
                   <View style={styles.leaderRankContainer}>
                     <SkeletonItem
                       width={32}
