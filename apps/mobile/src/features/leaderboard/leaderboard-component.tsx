@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { useRequest } from "../../common/api/use-request";
@@ -9,6 +9,12 @@ import { theme, themeComposable } from "../../common/theme";
 import { BoardKey, BoardToggle } from "./board-toggle";
 import { formatDistance, formatDuration } from "../../common/formatters";
 import { withAlpha } from "../../common/utils";
+import { SkeletonItem } from "../../common/components/skeleton-item";
+
+const skeletonColor = withAlpha(
+  theme.colors.secondary[300],
+  theme.opacity.mist,
+);
 
 export const LeaderboardComponent = () => {
   const { t } = useTranslation();
@@ -22,6 +28,12 @@ export const LeaderboardComponent = () => {
     progressClient.getBestMonthlyDistance,
   );
   const [leaderboardData, setLeaderboardData] = useState<Progress[]>([]);
+
+  const leaderboardLoading =
+    getBestDuration.loading ||
+    getBestDistance.loading ||
+    getBestMonthlyDuration.loading ||
+    getBestMonthlyDistance.loading;
 
   useEffect(() => {
     switch (currentBoard) {
@@ -95,7 +107,6 @@ export const LeaderboardComponent = () => {
   return (
     <AppWrapper>
       <View style={styles.mainWrapper}>
-        <Text style={styles.title}>{t("leaderboard.title")}</Text>
         <View style={styles.leadersWrapper}>
           <View style={styles.leaderHeaderItem}>
             <Text style={styles.leaderHeaderLabel}>
@@ -105,17 +116,49 @@ export const LeaderboardComponent = () => {
               {t("leaderboard.score")}
             </Text>
           </View>
-          {leaderboardData.map((leader, index) => (
-            <View key={leader.id} style={styles.leaderItem}>
-              <View style={styles.leaderRankContainer}>
-                <View style={styles.rankBadge}>
-                  <Text style={styles.rankNumber}>{index + 1}</Text>
+          <ScrollView>
+            {leaderboardLoading &&
+              Array.from({ length: 10 }).map((_, index) => (
+                <View key={`skeleton-${index}`} style={styles.leaderItem}>
+                  <View style={styles.leaderRankContainer}>
+                    <SkeletonItem
+                      width={32}
+                      height={32}
+                      borderRadius={theme.spacing.md}
+                      color={skeletonColor}
+                    />
+                    <SkeletonItem
+                      width={40}
+                      height={40}
+                      borderRadius={theme.borderRadius.md}
+                      color={skeletonColor}
+                    />
+                    <SkeletonItem
+                      width={140}
+                      height={18}
+                      color={skeletonColor}
+                    />
+                  </View>
+                  <SkeletonItem width={64} height={18} color={skeletonColor} />
                 </View>
-                <Text style={styles.leaderLabel}>{leader.username}</Text>
-              </View>
-              <Text style={styles.leaderScore}>{getScore(leader)}</Text>
-            </View>
-          ))}
+              ))}
+            {!leaderboardLoading &&
+              leaderboardData.map((leader, index) => (
+                <View key={leader.id} style={styles.leaderItem}>
+                  <View style={styles.leaderRankContainer}>
+                    <View style={styles.rankBadge}>
+                      <Text style={styles.rankNumber}>{index + 1}</Text>
+                    </View>
+                    <Image
+                      style={styles.leaderImage}
+                      source={require("@assets/images/avatar.png")}
+                    />
+                    <Text style={styles.leaderLabel}>{leader.username}</Text>
+                  </View>
+                  <Text style={styles.leaderScore}>{getScore(leader)}</Text>
+                </View>
+              ))}
+          </ScrollView>
         </View>
         <BoardToggle
           board={currentBoard}
@@ -130,18 +173,22 @@ const styles = StyleSheet.create({
   mainWrapper: {
     height: "100%",
     justifyContent: "flex-end",
-    paddingBottom: theme.spacing.lg,
+    paddingBottom: theme.spacing.md,
     paddingHorizontal: theme.spacing.md,
-    gap: theme.spacing.lg,
+    gap: theme.spacing.md,
   },
   title: {
     ...themeComposable.typography.h2,
     color: theme.colors.secondary[200],
   },
   leadersWrapper: {
-    height: "50%",
+    height: "75%",
     borderRadius: theme.borderRadius.lg,
     overflow: "hidden",
+    backgroundColor: withAlpha(
+      theme.colors.secondary[500],
+      theme.opacity.ether,
+    ),
   },
   leaderHeaderItem: {
     flexDirection: "row",
@@ -156,10 +203,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: withAlpha(
-      theme.colors.secondary[500],
-      theme.opacity.ether,
-    ),
     paddingVertical: theme.spacing.md,
     paddingHorizontal: theme.spacing.md,
     borderBottomWidth: 1,
@@ -182,6 +225,11 @@ const styles = StyleSheet.create({
     ...themeComposable.typography.bodyBold,
     color: theme.colors.light[300],
     fontSize: 14,
+  },
+  leaderImage: {
+    width: 40,
+    height: 40,
+    borderRadius: theme.borderRadius.md,
   },
   leaderHeaderLabel: {
     ...themeComposable.typography.bodyBold,

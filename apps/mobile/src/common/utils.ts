@@ -31,12 +31,6 @@ export const withAlpha = (hexColor: string, alpha: number) => {
   return `#${hex}${alphaHex}`;
 };
 
-export const generateKey = (prefix = "item") => {
-  return `${prefix}-${Date.now()}-${Math.random()
-    .toString(36)
-    .substring(2, 9)}`;
-};
-
 export const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
