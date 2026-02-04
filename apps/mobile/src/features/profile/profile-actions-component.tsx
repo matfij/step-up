@@ -36,6 +36,7 @@ export const ProfileActionsComponent = (
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   actionsWrapper: {
     width: "90%",
