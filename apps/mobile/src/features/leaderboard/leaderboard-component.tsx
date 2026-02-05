@@ -1,4 +1,11 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppWrapper } from "../../common/components/app-wrapper";
 import { useRequest } from "../../common/api/use-request";
@@ -10,6 +17,7 @@ import { BoardKey, BoardToggle } from "./board-toggle";
 import { formatDistance, formatDuration } from "../../common/formatters";
 import { withAlpha } from "../../common/utils";
 import { SkeletonItem } from "../../common/components/skeleton-item";
+import { LeaderModal } from "./leader-modal";
 
 const skeletonColor = withAlpha(
   theme.colors.secondary[300],
@@ -28,6 +36,7 @@ export const LeaderboardComponent = () => {
     progressClient.getBestMonthlyDistance,
   );
   const [leaderboardData, setLeaderboardData] = useState<Progress[]>([]);
+  const [leaderProgress, setLeaderProgress] = useState<Progress>();
 
   const leaderboardLoading =
     getBestDuration.loading ||
@@ -144,7 +153,11 @@ export const LeaderboardComponent = () => {
               ))}
             {!leaderboardLoading &&
               leaderboardData.map((leader, index) => (
-                <View key={leader.id} style={styles.leaderItem}>
+                <TouchableOpacity
+                  key={leader.id}
+                  style={styles.leaderItem}
+                  onPress={() => setLeaderProgress(leader)}
+                >
                   <View style={styles.leaderRankContainer}>
                     <View style={styles.rankBadge}>
                       <Text style={styles.rankNumber}>{index + 1}</Text>
@@ -156,7 +169,7 @@ export const LeaderboardComponent = () => {
                     <Text style={styles.leaderLabel}>{leader.username}</Text>
                   </View>
                   <Text style={styles.leaderScore}>{getScore(leader)}</Text>
-                </View>
+                </TouchableOpacity>
               ))}
           </ScrollView>
         </View>
@@ -165,6 +178,10 @@ export const LeaderboardComponent = () => {
           onChange={(board) => setCurrentBoard(board)}
         />
       </View>
+      <LeaderModal
+        progress={leaderProgress}
+        onClose={() => setLeaderProgress(undefined)}
+      />
     </AppWrapper>
   );
 };
