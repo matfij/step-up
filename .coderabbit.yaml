@@ -1,0 +1,293 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: true
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: true
+  high_level_summary: true
+  review_status: true
+  review_details: true
+  collapse_walkthrough: true
+
+  pre_merge_checks:
+    docstrings:
+      mode: off
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: ["main", "develop"]
+
+  path_instructions:
+    # ============================================================================
+    # SERVER (C# / .NET 10.0 / MongoDB)
+    # ============================================================================
+
+    - path: "apps/server/**/*.cs"
+      instructions: |
+        This is .NET 10.0 Minimal API code following Domain-Driven Design patterns.
+
+        ## Architecture & Design Patterns
+        - Enforce Domain-Driven Design structure: Entity → Repository → Service → Validator → Endpoints
+        - Services must depend on Repository, Validator, and IEventPublisher (via DI)
+        - Repositories must implement interface + implementation pattern (e.g., IUserRepository + UserRepository)
+        - Validators must separate async DB checks from sync business rules
+        - Ensure proper domain event publishing after state changes
+        - Flag tight coupling between layers (e.g., endpoints directly using repositories)
+
+        ## Dependency Injection & Service Registration
+        - Enforce constructor-based DI using primary constructors (C# 12)
+        - Reject service locator or static dependencies
+        - Verify all services are registered in Program.cs
+        - MongoDB Client should be Singleton, Database should be Singleton, Repositories/Services should be Scoped
+        - Event handlers must be registered as IEventHandler<TEvent> in Program.cs
+
+        ## API & Endpoint Patterns
+        - Business logic must be in services, not endpoint mappings
+        - Protected endpoints must use .WithMetadata(new RequireAuthAttribute())
+        - Use context.GetUserId() extension method for authenticated user retrieval
+        - Endpoints should return Results.Ok/NotFound/etc., not raw objects
+        - Ensure RESTful conventions (GET/POST/PUT/DELETE with appropriate HTTP verbs)
+        - DTOs must be separated from domain entities
+        - Map entities to DTOs in endpoints only, services return entities
+
+        ## Error Handling & Validation
+        - Throw ApiException with translation keys (e.g., "errors.userNotFound")
+        - Ensure proper validation in validators before DB operations
+        - Validators should use EnsureValid*, ValidateAsync* naming
+        - Check that cancellation tokens are passed to async methods where appropriate
+        - Verify proper null handling with nullable reference types
+
+        ## MongoDB & Data Access
+        - Repository constructors must receive IMongoDatabase via DI
+        - Collections retrieved via database.GetCollection<T>("CollectionName")
+        - Indexes should be created in repository constructors
+        - Use Builders<T>.Filter for queries, not raw BSON
+        - Timestamps must be ulong (Unix timestamp milliseconds)
+        - Entity IDs must be string type
+        - Check for proper async/await usage with MongoDB operations
+
+        ## Code Style & C# Patterns
+        - Use primary constructors for DI (C# 12)
+        - Use required keyword for required properties in DTOs/records
+        - Prefer record for DTOs and domain events
+        - Use init for immutable properties
+        - Verify nullable reference types are properly annotated
+        - Ensure async methods return Task or Task<T>
+        - Use Utils.GenerateId() for ID generation, Utils.GetCurrentTimestamp() for timestamps
+
+        ## Naming Conventions
+        - Classes: PascalCase (e.g., UserService, ActivityRepository)
+        - Interfaces: Prefix with I (e.g., IUserService, IActivityRepository)
+        - Methods: PascalCase
+        - Files: One class per file, filename matches class name
+        - MongoDB collections: Plural names (e.g., "Users", "Activities")
+
+        ## Security & Authentication
+        - Verify API token authentication via Authorization header
+        - Check that protected endpoints enforce RequireAuthAttribute
+        - Ensure sensitive data is not exposed in error messages
+        - Flag hardcoded secrets or connection strings
+
+    # ============================================================================
+    # MOBILE (React Native / Expo / TypeScript)
+    # ============================================================================
+
+    - path: "apps/mobile/src/**/*.{ts,tsx}"
+      instructions: |
+        This is React Native (Expo SDK 54) code with TypeScript strict mode.
+
+        ## Component & Hook Patterns
+        - Enforce proper React hooks usage (no conditional hooks, correct dependency arrays)
+        - Heavy logic must be in custom hooks or services, not inside components
+        - Flag inline object/function creation in JSX that causes unnecessary re-renders
+        - useCallback/useMemo should be used appropriately for performance
+        - Verify proper cleanup in useEffect hooks
+        - Check for missing dependencies in useEffect/useCallback/useMemo
+
+        ## State Management (Zustand)
+        - Store files must be in common/state/ with -store suffix
+        - Verify AsyncStorage persistence configuration
+        - Store keys must be prefixed with app identifier
+        - Check for proper TypeScript typing of store state and actions
+        - Ensure stores are not directly mutated (use Zustand patterns)
+
+        ## API & Data Fetching
+        - API calls must be abstracted in common/api/ client classes
+        - Clients must extend ApiClient base class
+        - API hooks should be in api-hooks.ts following React hooks pattern
+        - Flag direct fetch/axios calls inside components
+        - Verify proper error handling with ApiError class
+        - Check for proper loading and error states in components
+        - Ensure Authorization header uses token from user store
+
+        ## Navigation (Expo Router)
+        - Verify file-based routing conventions (routes in src/app/)
+        - Protected routes must use Stack.Protected with guard prop
+        - Check proper typing of route params and navigation props
+        - Tab routes should be in (tabs)/ directory
+        - Verify proper use of useRouter, useLocalSearchParams, useSegments
+
+        ## Styling & Theme
+        - Styles must use theme from common/theme.ts (no hardcoded colors/spacing)
+        - Use StyleSheet.create() for styles
+        - Common components must use App* prefix (e.g., AppButton, AppInput)
+        - Verify support for disabled/pressed states in interactive components
+        - Check for duplicated style definitions that should be reusable
+        - Ensure theme values are used (colors, spacing, borderRadius, opacity)
+
+        ## Internationalization (i18next)
+        - Translation keys must use dot notation (e.g., errors.unknown)
+        - Verify useTranslation() hook is used, not direct t() calls
+        - Check that translation keys exist in both en.json and pl.json
+        - Flag hardcoded user-facing strings
+
+        ## Type Safety & TypeScript
+        - Enforce TypeScript strict mode compliance
+        - API types must be defined in common/api/api-definitions.ts
+        - Use TypeScript interfaces for data structures
+        - Verify proper typing of props, state, and function parameters
+        - Flag any usage (should be typed properly)
+        - Check for proper null/undefined handling
+
+        ## File & Naming Conventions
+        - Files: kebab-case with descriptive names
+        - Components: kebab-case (e.g., app-button.tsx, activity-card.tsx)
+        - Stores: kebab-case with -store suffix (e.g., user-store.ts)
+        - Use path aliases: @/* for src root, @assets/* for assets
+        - One component per file (match filename to component name)
+
+        ## Performance & Best Practices
+        - Flag heavy computations in render (should use useMemo)
+        - Check for proper list rendering (FlatList vs map, proper keyExtractor)
+        - Verify proper handling of async operations
+        - Ensure images use proper source types (static vs uri)
+        - Check for memory leaks (unsubscribed listeners, timers)
+
+        ## Activity Tracking Specifics
+        - Background location tracking must use expo-location + expo-task-manager
+        - Route data should be stored as lat/lng arrays
+        - Activity state must use custom hooks (use-activity.ts)
+        - Verify proper permission handling for location services
+
+        ## Error Handling
+        - API errors must use ApiError class
+        - Verify try/catch blocks for async operations
+        - Check for proper error state display in UI
+        - Ensure user-facing error messages are translated
+
+    # ============================================================================
+    # MOBILE APP ROUTING
+    # ============================================================================
+
+    - path: "apps/mobile/src/app/**/*.{ts,tsx}"
+      instructions: |
+        This is Expo Router file-based routing code.
+
+        - Verify correct layout/page structure (\_layout.tsx vs route files)
+        - Protected routes must use proper guard functions
+        - Check for proper Stack/Tabs configuration
+        - Verify route parameters are properly typed
+        - Ensure auth flows (sign-in, sign-up) follow conventions
+        - Check for proper navigation between tabs and stacks
+
+    # ============================================================================
+    # COMMON CODE (SHARED UTILITIES)
+    # ============================================================================
+
+    - path: "apps/mobile/src/common/**/*.{ts,tsx}"
+      instructions: |
+        This is shared common code (API clients, components, state, utilities).
+
+        - Ensure no feature-specific code leaks into common/
+        - API clients must extend ApiClient base class
+        - Components must be truly reusable (no feature coupling)
+        - Utilities should be pure functions where possible
+        - Theme must be the single source of truth for styling values
+        - Config values must be defined as const in config.ts
+
+    # ============================================================================
+    # DOCUMENTATION & CONFIG
+    # ============================================================================
+
+    - path: "**/*.md"
+      instructions: |
+        Markdown documentation files.
+
+        - Ensure proper heading hierarchy (no skipped levels)
+        - Check for broken internal links
+        - Verify code blocks have language identifiers
+        - Ensure consistent formatting and style
+        - Flag outdated information that contradicts codebase
+
+    - path: "**/package.json"
+      instructions: |
+        Mobile app package.json (Expo).
+
+        - Verify Expo SDK version compatibility
+        - Check for conflicting dependency versions
+        - Ensure no deprecated packages
+        - Verify proper semver ranges
+        - Flag unnecessary dependencies
+
+    - path: "**/*.csproj"
+      instructions: |
+        .NET project file.
+
+        - Verify .NET 10.0 target framework
+        - Check for outdated NuGet packages
+        - Ensure nullable reference types are enabled
+        - Verify MongoDB.Driver version compatibility
+
+    # ============================================================================
+    # CONFIGURATION FILES
+    # ============================================================================
+
+    - path: "apps/server/appsettings*.json"
+      instructions: |
+        Server configuration files.
+
+        - Flag hardcoded secrets or sensitive data
+        - Verify proper environment-specific overrides
+        - Check for missing required configuration keys
+        - Ensure connection strings are not committed
+
+    - path: "apps/mobile/app.json"
+      instructions: |
+        Expo app configuration.
+
+        - Verify Expo SDK version matches package.json
+        - Check for proper app identifier and versioning
+        - Ensure new architecture is enabled if required
+        - Verify proper plugin configurations
+
+  finishing_touches:
+    docstrings:
+      enabled: false
+
+  tools:
+    markdownlint:
+      enabled: true
+
+    languagetool:
+      enabled: true
+      level: "picky"
+
+    shellcheck:
+      enabled: true
+
+    yamllint:
+      enabled: true
+
+    hadolint:
+      enabled: true
+
+    eslint:
+      enabled: true
+
+    biome:
+      enabled: true
+
+chat:
+  auto_reply: true
