@@ -24,7 +24,7 @@ reviews:
       instructions: |
         This is .NET 10.0 Minimal API code following Domain-Driven Design patterns.
         - Enforce Domain-Driven Design structure: Entity → Repository → Service (with optional Validator) → Endpoints
-        - Services must depend on Repository, concentrates logic and reacts to event
+        - Services must depend on Repository, concentrate logic and react to events
         - All layers must be loosely coupled based on Interfaces
         - Validators must separate async DB checks from sync business rules
         - Ensure proper domain event publishing after state changes
@@ -88,7 +88,7 @@ reviews:
         - Ensure theme values are used (colors, spacing, borderRadius, opacity)
         - Translation keys must use dot notation (e.g., errors.unknown)
         - Verify useTranslation() hook is used, not direct t() calls
-        - Check that translation keys exist in both en.json
+        - Check that translation keys exist in en.json
         - Flag hardcoded user-facing strings
         - Enforce TypeScript strict mode compliance
         - API types must be defined in common/api/api-definitions.ts
