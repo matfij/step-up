@@ -94,7 +94,7 @@ reviews:
         - API types must be defined in common/api/api-definitions.ts
         - Use TypeScript interfaces for data structures
         - Verify proper typing of props, state, and function parameters
-        - Flag any usage (should be typed properly), confirm unknown usage (if it was intended)
+        - Flag `any` usage (should be typed properly), confirm unknown usage (if it was intended)
         - Check for proper null/undefined handling
         - Flag heavy computations in render (should use useMemo)
         - Check for proper list rendering (FlatList vs map, proper keyExtractor)
