@@ -49,6 +49,7 @@ builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, AchievementsService>
 builder.Services.AddScoped<IEventHandler<ProgressUpdatedEvent>, AchievementsService>();
 
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
+builder.Services.AddScoped<IFollowerService, FollowerService>();
 
 var app = builder.Build();
 
@@ -59,5 +60,6 @@ app.MapUserEndpoints();
 app.MapActivityEndpoints();
 app.MapProgressEndpoints();
 app.MapAchievementsEndpoints();
+app.MapFollowerEndpoints();
 
 app.Run();

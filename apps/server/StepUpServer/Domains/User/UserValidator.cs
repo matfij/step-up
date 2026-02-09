@@ -5,6 +5,8 @@ namespace StepUpServer.Domains.User;
 
 public interface IUserValidator
 {
+    public Task<User> EnsureIdExists(string id);
+
     public Task<User> EnsureEmailExists(string email);
 
     public Task ValidateEmail(string email);
@@ -27,6 +29,13 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
 
     public const int UsernameMinLength = 4;
     public const int UsernameMaxLength = 16;
+
+    public async Task<User> EnsureIdExists(string id)
+    {
+        var user =
+            await _repository.GetById(id) ?? throw new ApiException("errors.userNotFound");
+        return user;
+    }
 
     public async Task<User> EnsureEmailExists(string email)
     {
