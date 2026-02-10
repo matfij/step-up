@@ -59,7 +59,7 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
     {
         var follower = await _repository.GetById(id);
 
-        if (follower is null || follower.FollowingId != userId)
+        if (follower is null || follower.FollowerId != userId)
         {
             throw new ApiException("errors.followerNotFound");
         }

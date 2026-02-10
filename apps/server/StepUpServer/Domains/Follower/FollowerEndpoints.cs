@@ -13,7 +13,8 @@ public static class FollowerEndpoints
                 {
                     var userId = context.GetUserId();
                     var follower = await followerService.Create(userId, id);
-                    return Results.Ok(
+                    return Results.Created(
+                        $"/followers/{follower.Id}",
                         new
                         {
                             follower.Id,
