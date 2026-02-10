@@ -4,8 +4,8 @@ namespace StepUpServer.Domains.Follower;
 
 public interface IFollowerRepository
 {
-    Task<Follower> GetById(string id);
     Task<Follower> Create(Follower follower);
+    Task<Follower?> GetById(string id);
     Task<List<Follower>> GetFollowers(string userId);
     Task<List<Follower>> GetFollowing(string userId);
     Task Delete(string id);
@@ -36,15 +36,15 @@ public class FollowerRepository : IFollowerRepository
         );
     }
 
-    public async Task<Follower> GetById(string id)
-    {
-        return await _collection.Find(f => f.Id == id).FirstOrDefaultAsync();
-    }
-
     public async Task<Follower> Create(Follower follower)
     {
         await _collection.InsertOneAsync(follower);
         return follower;
+    }
+
+    public async Task<Follower?> GetById(string id)
+    {
+        return await _collection.Find(f => f.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<List<Follower>> GetFollowers(string userId)

@@ -8,7 +8,7 @@ public interface IFollowerService
     public Task<Follower> Create(string userId, string followingId);
     public Task<List<Follower>> GetFollowers(string userId);
     public Task<List<Follower>> GetFollowing(string userId);
-    public Task Delete(string id);
+    public Task Delete(string userId, string id);
 }
 
 public class FollowerService(IFollowerRepository followerRepository, IUserValidator userValidator) : IFollowerService
@@ -18,8 +18,19 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
 
     public async Task<Follower> Create(string userId, string followingId)
     {
+        if (userId == followingId)
+        {
+            throw new ApiException("errors.cannotFollowYourself");
+        }
+
         var user = await _userValidator.EnsureIdExists(userId);
         var following = await _userValidator.EnsureIdExists(followingId);
+
+        var followers = await _repository.GetFollowers(followingId);
+        if (followers.Find(f => f.FollowerId == userId) is not null)
+        {
+            throw new ApiException("errors.alreadyFollowing");
+        }
 
         var follower = new Follower
         {
@@ -44,11 +55,11 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
         return await _repository.GetFollowing(userId);
     }
 
-    public async Task Delete(string id)
+    public async Task Delete(string userId, string id)
     {
         var follower = await _repository.GetById(id);
 
-        if (follower is null || follower.FollowingId != id)
+        if (follower is null || follower.FollowingId != userId)
         {
             throw new ApiException("errors.followerNotFound");
         }
