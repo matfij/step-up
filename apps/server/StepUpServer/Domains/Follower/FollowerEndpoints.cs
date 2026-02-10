@@ -29,7 +29,7 @@ public static class FollowerEndpoints
 
         app.MapGet(
                 "/followers/followers/{id}",
-                async (string id, HttpContext context, IFollowerService followerService) =>
+                async (string id, IFollowerService followerService) =>
                 {
                     var followers = await followerService.GetFollowers(id);
                     return Results.Ok(
@@ -51,7 +51,7 @@ public static class FollowerEndpoints
 
         app.MapGet(
                 "/followers/following/{id}",
-                async (string id, HttpContext context, IFollowerService followerService) =>
+                async (string id, IFollowerService followerService) =>
                 {
                     var following = await followerService.GetFollowing(id);
                     return Results.Ok(

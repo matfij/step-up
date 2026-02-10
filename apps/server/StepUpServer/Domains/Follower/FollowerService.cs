@@ -26,8 +26,8 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
         var user = await _userValidator.EnsureIdExists(userId);
         var following = await _userValidator.EnsureIdExists(followingId);
 
-        var followers = await _repository.GetFollowers(followingId);
-        if (followers.Find(f => f.FollowerId == userId) is not null)
+        var existingFollower = await _repository.GetByFollowerAndFollowing(userId, followingId);
+        if (existingFollower is not null)
         {
             throw new ApiException("errors.alreadyFollowing");
         }
