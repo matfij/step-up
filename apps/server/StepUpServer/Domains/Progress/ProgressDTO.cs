@@ -4,6 +4,8 @@ public record struct ProgressResponse(
     string Id,
     string UserId,
     string Username,
+    uint Level,
+    ulong Experience,
     ulong CurrentStreak,
     ulong BestStreak,
     ulong TotalDuration,
