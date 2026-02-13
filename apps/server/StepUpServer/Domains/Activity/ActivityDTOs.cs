@@ -17,3 +17,17 @@ public readonly record struct UpdateActivityRequest(
     string Name,
     string? Description
 );
+
+public readonly record struct ActivityResponse(
+    string Id,
+    string UserId,
+    string Name,
+    string? Description,
+    ulong StartTime,
+    ulong Duration,
+    ulong Distance,
+    ulong AverageSpeed,
+    ulong TopSpeed,
+    double[] RouteLatitudes,
+    double[] RouteLongitudes
+);

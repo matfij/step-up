@@ -1,12 +1,12 @@
 namespace StepUpServer.Domains.Achievements;
 
-public readonly record struct AchievementsProgress(
+public readonly record struct AchievementsProgressResponse(
     string Id,
     string UserId,
-    AchievementProgress[] Achievements
+    AchievementDetail[] Achievements
 );
 
-public record struct AchievementProgress(
+public record struct AchievementDetail(
     string Name,
     UnitCategory UnitCategory,
     AchievementTier Tier,

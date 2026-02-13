@@ -17,7 +17,21 @@ public static class ActivityEndpoints
                 {
                     var userId = context.GetUserId();
                     var activity = await activityService.Create(userId, request);
-                    return Results.Ok(activity);
+                    return Results.Ok(
+                        new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute());
@@ -31,7 +45,21 @@ public static class ActivityEndpoints
                     {
                         return Results.NotFound();
                     }
-                    return Results.Ok(activity);
+                    return Results.Ok(
+                         new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute());
@@ -46,7 +74,24 @@ public static class ActivityEndpoints
                 ) =>
                 {
                     var activities = await activityService.GetByUserId(userId, skip, take);
-                    return Results.Ok(activities);
+                    return Results.Ok(
+                        activities.Select(
+                            activity =>
+                                new ActivityResponse(
+                                    activity.Id,
+                                    activity.UserId,
+                                    activity.Name,
+                                    activity.Description,
+                                    activity.Duration,
+                                    activity.Distance,
+                                    activity.AverageSpeed,
+                                    activity.TopSpeed,
+                                    activity.StartTime,
+                                    activity.RouteLatitudes,
+                                    activity.RouteLongitudes
+                                )
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute());
@@ -61,7 +106,21 @@ public static class ActivityEndpoints
                 {
                     var userId = context.GetUserId();
                     var activity = await activityService.Update(userId, request);
-                    return Results.Ok(activity);
+                    return Results.Ok(
+                        new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute());

@@ -5,7 +5,7 @@ namespace StepUpServer.Domains.Achievements;
 
 public interface IAchievementsService
 {
-    public Task<AchievementsProgress> GetByUser(string userId);
+    public Task<AchievementsProgressResponse> GetByUser(string userId);
 }
 
 public class AchievementsService(IAchievementsRepository repository)
@@ -15,19 +15,19 @@ public class AchievementsService(IAchievementsRepository repository)
 {
     private readonly IAchievementsRepository _repository = repository;
 
-    public async Task<AchievementsProgress> GetByUser(string userId)
+    public async Task<AchievementsProgressResponse> GetByUser(string userId)
     {
         var achievements =
             await _repository.GetByUserId(userId)
             ?? throw new ApiException("errors.achievementsNotFound");
 
-        return new AchievementsProgress
+        return new AchievementsProgressResponse
         {
             Id = achievements.Id,
             UserId = achievements.UserId,
             Achievements =
             [
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "TotalDistance",
                     UnitCategory = UnitCategory.Distance,
@@ -43,7 +43,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.TotalDistance.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "TotalDuration",
                     UnitCategory = UnitCategory.Time,
@@ -59,7 +59,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.TotalDuration.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "TotalActivities",
                     UnitCategory = UnitCategory.Count,
@@ -75,7 +75,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.TotalActivities.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "MaxCurrentStreak",
                     UnitCategory = UnitCategory.Count,
@@ -91,7 +91,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.MaxCurrentStreak.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "MaxActivitySpeed",
                     UnitCategory = UnitCategory.Speed,
@@ -107,7 +107,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.MaxActivitySpeed.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "MaxActivityDistance",
                     UnitCategory = UnitCategory.Distance,
@@ -123,7 +123,7 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.MaxActivityDistance.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "MaxActivityDuration",
                     UnitCategory = UnitCategory.Time,
@@ -139,14 +139,14 @@ public class AchievementsService(IAchievementsRepository repository)
                     ),
                     AchievedAt = achievements.MaxActivityDuration.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "Greenhorn",
                     Tier = achievements.Greenhorn.Tier,
                     Progress = achievements.Greenhorn.Progress,
                     AchievedAt = achievements.Greenhorn.AchievedAt,
                 },
-                new AchievementProgress
+                new AchievementDetail
                 {
                     Name = "Marathoner",
                     Tier = achievements.Marathoner.Tier,

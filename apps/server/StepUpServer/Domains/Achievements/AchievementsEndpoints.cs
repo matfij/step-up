@@ -11,7 +11,13 @@ public static class AchievementsEndpoints
                 async (string userId, IAchievementsService achievementsService) =>
                 {
                     var achievements = await achievementsService.GetByUser(userId);
-                    return Results.Ok(achievements);
+                    return Results.Ok(
+                        new AchievementsProgressResponse(
+                            achievements.Id,
+                            achievements.UserId,
+                            achievements.Achievements
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute());

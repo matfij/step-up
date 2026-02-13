@@ -15,14 +15,13 @@ public static class FollowerEndpoints
                     var follower = await followerService.Create(userId, id);
                     return Results.Created(
                         $"/followers/{follower.Id}",
-                        new
-                        {
+                        new FollowerResponse(
                             follower.Id,
                             follower.FollowerId,
                             follower.FollowerUsername,
                             follower.FollowingId,
-                            follower.FollowingUsername,
-                        }
+                            follower.FollowingUsername
+                        )
                     );
                 }
             )
@@ -36,14 +35,13 @@ public static class FollowerEndpoints
                     return Results.Ok(
                         followers.Select(
                             follower =>
-                                new
-                                {
+                                new FollowerResponse(
                                     follower.Id,
                                     follower.FollowerId,
                                     follower.FollowerUsername,
                                     follower.FollowingId,
-                                    follower.FollowingUsername,
-                                }
+                                    follower.FollowingUsername
+                                )
                         )
                     );
                 }
@@ -58,14 +56,13 @@ public static class FollowerEndpoints
                     return Results.Ok(
                         following.Select(
                             follower =>
-                                new
-                                {
+                                new FollowerResponse(
                                     follower.Id,
                                     follower.FollowerId,
                                     follower.FollowerUsername,
                                     follower.FollowingId,
-                                    follower.FollowingUsername,
-                                }
+                                    follower.FollowingUsername
+                                )
                         )
                     );
                 }
@@ -78,7 +75,7 @@ public static class FollowerEndpoints
                 {
                     var userId = context.GetUserId();
                     await followerService.Delete(userId, id);
-                    return Results.Ok();
+                    return Results.Ok(id);
                 }
             )
             .WithMetadata(new RequireAuthAttribute());
