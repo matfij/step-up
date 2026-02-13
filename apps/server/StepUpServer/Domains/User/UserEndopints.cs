@@ -21,13 +21,12 @@ public static class UserEndpoints
             {
                 var user = await userService.CompleteSignUp(request.Email, request.AuthToken);
                 return Results.Ok(
-                    new UserAuthResponse
-                    {
-                        Id = user.Id,
-                        Email = user.Email,
-                        Username = user.Username,
-                        ApiToken = user.ApiToken,
-                    }
+                    new UserAuthResponse(
+                        user.Id,
+                        user.Email,
+                        user.Username,
+                        user.ApiToken
+                    )
                 );
             }
         );
@@ -47,13 +46,12 @@ public static class UserEndpoints
             {
                 var user = await userService.CompleteSignIn(request.Email, request.AuthToken);
                 return Results.Ok(
-                    new UserAuthResponse
-                    {
-                        Id = user.Id,
-                        Email = user.Email,
-                        Username = user.Username,
-                        ApiToken = user.ApiToken,
-                    }
+                    new UserAuthResponse(
+                        user.Id,
+                        user.Email,
+                        user.Username,
+                        user.ApiToken
+                    )
                 );
             }
         );

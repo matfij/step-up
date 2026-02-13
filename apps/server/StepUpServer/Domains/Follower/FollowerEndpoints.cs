@@ -15,14 +15,13 @@ public static class FollowerEndpoints
                     var follower = await followerService.Create(userId, id);
                     return Results.Created(
                         $"/followers/{follower.Id}",
-                        new FollowerResponse
-                        {
-                            Id = follower.Id,
-                            FollowerId = follower.FollowerId,
-                            FollowerUsername = follower.FollowerUsername,
-                            FollowingId = follower.FollowingId,
-                            FollowingUsername = follower.FollowingUsername,
-                        }
+                        new FollowerResponse(
+                            follower.Id,
+                            follower.FollowerId,
+                            follower.FollowerUsername,
+                            follower.FollowingId,
+                            follower.FollowingUsername
+                        )
                     );
                 }
             )
@@ -36,14 +35,13 @@ public static class FollowerEndpoints
                     return Results.Ok(
                         followers.Select(
                             follower =>
-                                new FollowerResponse
-                                {
-                                    Id = follower.Id,
-                                    FollowerId = follower.FollowerId,
-                                    FollowerUsername = follower.FollowerUsername,
-                                    FollowingId = follower.FollowingId,
-                                    FollowingUsername = follower.FollowingUsername,
-                                }
+                                new FollowerResponse(
+                                    follower.Id,
+                                    follower.FollowerId,
+                                    follower.FollowerUsername,
+                                    follower.FollowingId,
+                                    follower.FollowingUsername
+                                )
                         )
                     );
                 }
@@ -58,14 +56,13 @@ public static class FollowerEndpoints
                     return Results.Ok(
                         following.Select(
                             follower =>
-                                new FollowerResponse
-                                {
-                                    Id = follower.Id,
-                                    FollowerId = follower.FollowerId,
-                                    FollowerUsername = follower.FollowerUsername,
-                                    FollowingId = follower.FollowingId,
-                                    FollowingUsername = follower.FollowingUsername,
-                                }
+                                new FollowerResponse(
+                                    follower.Id,
+                                    follower.FollowerId,
+                                    follower.FollowerUsername,
+                                    follower.FollowingId,
+                                    follower.FollowingUsername
+                                )
                         )
                     );
                 }

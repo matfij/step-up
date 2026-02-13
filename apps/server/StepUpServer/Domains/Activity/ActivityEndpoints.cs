@@ -18,20 +18,19 @@ public static class ActivityEndpoints
                     var userId = context.GetUserId();
                     var activity = await activityService.Create(userId, request);
                     return Results.Ok(
-                        new ActivityResponse
-                        {
-                            Id = activity.Id,
-                            UserId = activity.UserId,
-                            Name = activity.Name,
-                            Description = activity.Description,
-                            Duration = activity.Duration,
-                            Distance = activity.Distance,
-                            AverageSpeed = activity.AverageSpeed,
-                            TopSpeed = activity.TopSpeed,
-                            StartTime = activity.StartTime,
-                            RouteLatitudes = activity.RouteLatitudes,
-                            RouteLongitudes = activity.RouteLongitudes,
-                        }
+                        new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
                     );
                 }
             )
@@ -47,20 +46,19 @@ public static class ActivityEndpoints
                         return Results.NotFound();
                     }
                     return Results.Ok(
-                         new ActivityResponse
-                         {
-                             Id = activity.Id,
-                             UserId = activity.UserId,
-                             Name = activity.Name,
-                             Description = activity.Description,
-                             Duration = activity.Duration,
-                             Distance = activity.Distance,
-                             AverageSpeed = activity.AverageSpeed,
-                             TopSpeed = activity.TopSpeed,
-                             StartTime = activity.StartTime,
-                             RouteLatitudes = activity.RouteLatitudes,
-                             RouteLongitudes = activity.RouteLongitudes,
-                         }
+                         new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
                     );
                 }
             )
@@ -79,20 +77,19 @@ public static class ActivityEndpoints
                     return Results.Ok(
                         activities.Select(
                             activity =>
-                                new ActivityResponse
-                                {
-                                    Id = activity.Id,
-                                    UserId = activity.UserId,
-                                    Name = activity.Name,
-                                    Description = activity.Description,
-                                    Duration = activity.Duration,
-                                    Distance = activity.Distance,
-                                    AverageSpeed = activity.AverageSpeed,
-                                    TopSpeed = activity.TopSpeed,
-                                    StartTime = activity.StartTime,
-                                    RouteLatitudes = activity.RouteLatitudes,
-                                    RouteLongitudes = activity.RouteLongitudes,
-                                }
+                                new ActivityResponse(
+                                    activity.Id,
+                                    activity.UserId,
+                                    activity.Name,
+                                    activity.Description,
+                                    activity.Duration,
+                                    activity.Distance,
+                                    activity.AverageSpeed,
+                                    activity.TopSpeed,
+                                    activity.StartTime,
+                                    activity.RouteLatitudes,
+                                    activity.RouteLongitudes
+                                )
                         )
                     );
                 }
@@ -110,20 +107,19 @@ public static class ActivityEndpoints
                     var userId = context.GetUserId();
                     var activity = await activityService.Update(userId, request);
                     return Results.Ok(
-                        new ActivityResponse
-                        {
-                            Id = activity.Id,
-                            UserId = activity.UserId,
-                            Name = activity.Name,
-                            Description = activity.Description,
-                            Duration = activity.Duration,
-                            Distance = activity.Distance,
-                            AverageSpeed = activity.AverageSpeed,
-                            TopSpeed = activity.TopSpeed,
-                            StartTime = activity.StartTime,
-                            RouteLatitudes = activity.RouteLatitudes,
-                            RouteLongitudes = activity.RouteLongitudes,
-                        }
+                        new ActivityResponse(
+                            activity.Id,
+                            activity.UserId,
+                            activity.Name,
+                            activity.Description,
+                            activity.Duration,
+                            activity.Distance,
+                            activity.AverageSpeed,
+                            activity.TopSpeed,
+                            activity.StartTime,
+                            activity.RouteLatitudes,
+                            activity.RouteLongitudes
+                        )
                     );
                 }
             )

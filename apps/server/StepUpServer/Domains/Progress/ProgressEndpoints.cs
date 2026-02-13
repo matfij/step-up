@@ -1,4 +1,6 @@
+using System.Reflection.Emit;
 using StepUpServer.Common;
+using StepUpServer.Domains.User;
 
 namespace StepUpServer.Domains.Progress;
 
@@ -12,21 +14,20 @@ public static class ProgressEndpoints
                 {
                     var progress = await progressService.GetByUser(userId);
                     return Results.Ok(
-                        new ProgressResponse
-                        {
-                            Id = progress.Id,
-                            UserId = progress.UserId,
-                            Username = progress.Username,
-                            Level = progress.Level,
-                            Experience = progress.Experience,
-                            CurrentStreak = progress.CurrentStreak,
-                            BestStreak = progress.BestStreak,
-                            TotalDuration = progress.TotalDuration,
-                            TotalDistance = progress.TotalDistance,
-                            TotalActivities = progress.TotalActivities,
-                            MonthlyDuration = progress.MonthlyDuration,
-                            MonthlyDistance = progress.MonthlyDistance,
-                        }
+                        new ProgressResponse(
+                            progress.Id,
+                            progress.UserId,
+                            progress.Username,
+                            progress.Level,
+                            progress.Experience,
+                            progress.CurrentStreak,
+                            progress.BestStreak,
+                            progress.TotalDuration,
+                            progress.TotalDistance,
+                            progress.TotalActivities,
+                            progress.MonthlyDuration,
+                            progress.MonthlyDistance
+                        )
                     );
                 }
             )
@@ -40,21 +41,20 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new ProgressResponse
-                                {
-                                    Id = progress.Id,
-                                    UserId = progress.UserId,
-                                    Username = progress.Username,
-                                    Level = progress.Level,
-                                    Experience = progress.Experience,
-                                    CurrentStreak = progress.CurrentStreak,
-                                    BestStreak = progress.BestStreak,
-                                    TotalDuration = progress.TotalDuration,
-                                    TotalDistance = progress.TotalDistance,
-                                    TotalActivities = progress.TotalActivities,
-                                    MonthlyDuration = progress.MonthlyDuration,
-                                    MonthlyDistance = progress.MonthlyDistance,
-                                }
+                                new ProgressResponse(
+                                    progress.Id,
+                                    progress.UserId,
+                                    progress.Username,
+                                    progress.Level,
+                                    progress.Experience,
+                                    progress.CurrentStreak,
+                                    progress.BestStreak,
+                                    progress.TotalDuration,
+                                    progress.TotalDistance,
+                                    progress.TotalActivities,
+                                    progress.MonthlyDuration,
+                                    progress.MonthlyDistance
+                                )
                         )
                     );
                 }
@@ -69,21 +69,20 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new ProgressResponse
-                                {
-                                    Id = progress.Id,
-                                    UserId = progress.UserId,
-                                    Username = progress.Username,
-                                    Level = progress.Level,
-                                    Experience = progress.Experience,
-                                    CurrentStreak = progress.CurrentStreak,
-                                    BestStreak = progress.BestStreak,
-                                    TotalDuration = progress.TotalDuration,
-                                    TotalDistance = progress.TotalDistance,
-                                    TotalActivities = progress.TotalActivities,
-                                    MonthlyDuration = progress.MonthlyDuration,
-                                    MonthlyDistance = progress.MonthlyDistance,
-                                }
+                                new ProgressResponse(
+                                    progress.Id,
+                                    progress.UserId,
+                                    progress.Username,
+                                    progress.Level,
+                                    progress.Experience,
+                                    progress.CurrentStreak,
+                                    progress.BestStreak,
+                                    progress.TotalDuration,
+                                    progress.TotalDistance,
+                                    progress.TotalActivities,
+                                    progress.MonthlyDuration,
+                                    progress.MonthlyDistance
+                                )
                         )
                     );
                 }
@@ -98,21 +97,20 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new ProgressResponse
-                                {
-                                    Id = progress.Id,
-                                    UserId = progress.UserId,
-                                    Username = progress.Username,
-                                    Level = progress.Level,
-                                    Experience = progress.Experience,
-                                    CurrentStreak = progress.CurrentStreak,
-                                    BestStreak = progress.BestStreak,
-                                    TotalDuration = progress.TotalDuration,
-                                    TotalDistance = progress.TotalDistance,
-                                    TotalActivities = progress.TotalActivities,
-                                    MonthlyDuration = progress.MonthlyDuration,
-                                    MonthlyDistance = progress.MonthlyDistance,
-                                }
+                                new ProgressResponse(
+                                    progress.Id,
+                                    progress.UserId,
+                                    progress.Username,
+                                    progress.Level,
+                                    progress.Experience,
+                                    progress.CurrentStreak,
+                                    progress.BestStreak,
+                                    progress.TotalDuration,
+                                    progress.TotalDistance,
+                                    progress.TotalActivities,
+                                    progress.MonthlyDuration,
+                                    progress.MonthlyDistance
+                                )
                         )
                     );
                 }
@@ -127,21 +125,20 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new ProgressResponse
-                                {
-                                    Id = progress.Id,
-                                    UserId = progress.UserId,
-                                    Username = progress.Username,
-                                    Level = progress.Level,
-                                    Experience = progress.Experience,
-                                    CurrentStreak = progress.CurrentStreak,
-                                    BestStreak = progress.BestStreak,
-                                    TotalDuration = progress.TotalDuration,
-                                    TotalDistance = progress.TotalDistance,
-                                    TotalActivities = progress.TotalActivities,
-                                    MonthlyDuration = progress.MonthlyDuration,
-                                    MonthlyDistance = progress.MonthlyDistance,
-                                }
+                                new ProgressResponse(
+                                    progress.Id,
+                                    progress.UserId,
+                                    progress.Username,
+                                    progress.Level,
+                                    progress.Experience,
+                                    progress.CurrentStreak,
+                                    progress.BestStreak,
+                                    progress.TotalDuration,
+                                    progress.TotalDistance,
+                                    progress.TotalActivities,
+                                    progress.MonthlyDuration,
+                                    progress.MonthlyDistance
+                                )
                         )
                     );
                 }
