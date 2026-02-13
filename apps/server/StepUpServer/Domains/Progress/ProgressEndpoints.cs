@@ -12,18 +12,18 @@ public static class ProgressEndpoints
                 {
                     var progress = await progressService.GetByUser(userId);
                     return Results.Ok(
-                        new
+                        new ProgressResponse
                         {
-                            progress.Id,
-                            progress.UserId,
-                            progress.Username,
-                            progress.CurrentStreak,
-                            progress.BestStreak,
-                            progress.TotalDuration,
-                            progress.TotalDistance,
-                            progress.TotalActivities,
-                            progress.MonthlyDuration,
-                            progress.MonthlyDistance,
+                            Id = progress.Id,
+                            UserId = progress.UserId,
+                            Username = progress.Username,
+                            CurrentStreak = progress.CurrentStreak,
+                            BestStreak = progress.BestStreak,
+                            TotalDuration = progress.TotalDuration,
+                            TotalDistance = progress.TotalDistance,
+                            TotalActivities = progress.TotalActivities,
+                            MonthlyDuration = progress.MonthlyDuration,
+                            MonthlyDistance = progress.MonthlyDistance,
                         }
                     );
                 }
@@ -38,18 +38,18 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new
+                                new ProgressResponse
                                 {
-                                    progress.Id,
-                                    progress.UserId,
-                                    progress.Username,
-                                    progress.CurrentStreak,
-                                    progress.BestStreak,
-                                    progress.TotalDuration,
-                                    progress.TotalDistance,
-                                    progress.TotalActivities,
-                                    progress.MonthlyDuration,
-                                    progress.MonthlyDistance,
+                                    Id = progress.Id,
+                                    UserId = progress.UserId,
+                                    Username = progress.Username,
+                                    CurrentStreak = progress.CurrentStreak,
+                                    BestStreak = progress.BestStreak,
+                                    TotalDuration = progress.TotalDuration,
+                                    TotalDistance = progress.TotalDistance,
+                                    TotalActivities = progress.TotalActivities,
+                                    MonthlyDuration = progress.MonthlyDuration,
+                                    MonthlyDistance = progress.MonthlyDistance,
                                 }
                         )
                     );
@@ -65,18 +65,18 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new
+                                new ProgressResponse
                                 {
-                                    progress.Id,
-                                    progress.UserId,
-                                    progress.Username,
-                                    progress.CurrentStreak,
-                                    progress.BestStreak,
-                                    progress.TotalDuration,
-                                    progress.TotalDistance,
-                                    progress.TotalActivities,
-                                    progress.MonthlyDuration,
-                                    progress.MonthlyDistance,
+                                    Id = progress.Id,
+                                    UserId = progress.UserId,
+                                    Username = progress.Username,
+                                    CurrentStreak = progress.CurrentStreak,
+                                    BestStreak = progress.BestStreak,
+                                    TotalDuration = progress.TotalDuration,
+                                    TotalDistance = progress.TotalDistance,
+                                    TotalActivities = progress.TotalActivities,
+                                    MonthlyDuration = progress.MonthlyDuration,
+                                    MonthlyDistance = progress.MonthlyDistance,
                                 }
                         )
                     );
@@ -92,18 +92,18 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new
+                                new ProgressResponse
                                 {
-                                    progress.Id,
-                                    progress.UserId,
-                                    progress.Username,
-                                    progress.CurrentStreak,
-                                    progress.BestStreak,
-                                    progress.TotalDuration,
-                                    progress.TotalDistance,
-                                    progress.TotalActivities,
-                                    progress.MonthlyDuration,
-                                    progress.MonthlyDistance,
+                                    Id = progress.Id,
+                                    UserId = progress.UserId,
+                                    Username = progress.Username,
+                                    CurrentStreak = progress.CurrentStreak,
+                                    BestStreak = progress.BestStreak,
+                                    TotalDuration = progress.TotalDuration,
+                                    TotalDistance = progress.TotalDistance,
+                                    TotalActivities = progress.TotalActivities,
+                                    MonthlyDuration = progress.MonthlyDuration,
+                                    MonthlyDistance = progress.MonthlyDistance,
                                 }
                         )
                     );
@@ -119,18 +119,18 @@ public static class ProgressEndpoints
                     return Results.Ok(
                         progresses.Select(
                             progress =>
-                                new
+                                new ProgressResponse
                                 {
-                                    progress.Id,
-                                    progress.UserId,
-                                    progress.Username,
-                                    progress.CurrentStreak,
-                                    progress.BestStreak,
-                                    progress.TotalDuration,
-                                    progress.TotalDistance,
-                                    progress.TotalActivities,
-                                    progress.MonthlyDuration,
-                                    progress.MonthlyDistance,
+                                    Id = progress.Id,
+                                    UserId = progress.UserId,
+                                    Username = progress.Username,
+                                    CurrentStreak = progress.CurrentStreak,
+                                    BestStreak = progress.BestStreak,
+                                    TotalDuration = progress.TotalDuration,
+                                    TotalDistance = progress.TotalDistance,
+                                    TotalActivities = progress.TotalActivities,
+                                    MonthlyDuration = progress.MonthlyDuration,
+                                    MonthlyDistance = progress.MonthlyDistance,
                                 }
                         )
                     );

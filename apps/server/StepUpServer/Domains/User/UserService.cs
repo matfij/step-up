@@ -9,7 +9,6 @@ public interface IUserService
     Task<User> CompleteSignUp(string email, string authCode);
     Task StartSignIn(string email);
     Task<User> CompleteSignIn(string email, string authCode);
-    Task<User> Me(string id);
 }
 
 public partial class UserService(
@@ -72,12 +71,6 @@ public partial class UserService(
         user.ApiToken = GenerateApiToken();
         user.LastSeenAt = Utils.GetCurrentTimestamp();
         await _repository.Update(user);
-        return user;
-    }
-
-    public async Task<User> Me(string id)
-    {
-        var user = await _repository.GetById(id) ?? throw new ApiException("errors.userNotFound");
         return user;
     }
 

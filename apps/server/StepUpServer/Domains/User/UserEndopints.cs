@@ -21,12 +21,12 @@ public static class UserEndpoints
             {
                 var user = await userService.CompleteSignUp(request.Email, request.AuthToken);
                 return Results.Ok(
-                    new
+                    new UserAuthResponse
                     {
-                        user.Id,
-                        user.Email,
-                        user.Username,
-                        user.ApiToken,
+                        Id = user.Id,
+                        Email = user.Email,
+                        Username = user.Username,
+                        ApiToken = user.ApiToken,
                     }
                 );
             }
@@ -47,34 +47,15 @@ public static class UserEndpoints
             {
                 var user = await userService.CompleteSignIn(request.Email, request.AuthToken);
                 return Results.Ok(
-                    new
+                    new UserAuthResponse
                     {
-                        user.Id,
-                        user.Email,
-                        user.Username,
-                        user.ApiToken,
+                        Id = user.Id,
+                        Email = user.Email,
+                        Username = user.Username,
+                        ApiToken = user.ApiToken,
                     }
                 );
             }
         );
-
-        app.MapGet(
-                "/users/me",
-                async (HttpContext context, IUserService userService) =>
-                {
-                    var userId = context.GetUserId();
-                    var user = await userService.Me(userId);
-                    return Results.Ok(
-                        new
-                        {
-                            user.Id,
-                            user.Email,
-                            user.Username,
-                            user.ApiToken,
-                        }
-                    );
-                }
-            )
-            .WithMetadata(new RequireAuthAttribute());
     }
 }

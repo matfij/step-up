@@ -12,11 +12,11 @@ public static class AchievementsEndpoints
                 {
                     var achievements = await achievementsService.GetByUser(userId);
                     return Results.Ok(
-                        new 
+                        new AchievementsProgressResponse
                         {
-                            achievements.Id,
-                            achievements.UserId,
-                            achievements.Achievements,
+                            Id = achievements.Id,
+                            UserId = achievements.UserId,
+                            Achievements = achievements.Achievements,
                         }
                     );
                 }
