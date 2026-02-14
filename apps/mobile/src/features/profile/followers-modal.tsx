@@ -6,6 +6,7 @@ import { useRequest } from "../../common/api/use-request";
 import { followerClient } from "../../common/api/follower-client";
 import { AppButtonSecondary } from "../../common/components/app-button";
 import { useUserStore } from "../../common/state/user-store";
+import { AppApiError } from "../../common/components/app-api-error";
 
 export interface FollowersModalProps {
   userId?: string;
@@ -40,6 +41,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
   return (
     <ModalWrapper visible={props.mode !== "none"} onClose={props.onClose}>
       <View style={styles.modalContent}>
+        <AppApiError error={follow.error || unFollow.error} />
         {showActions && (
           <AppButtonSecondary
             label={canFollow ? t("profile.follow") : t('t("profile.unfollow")')}
