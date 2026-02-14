@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import MapView, { Region } from "react-native-maps";
 import { AppButton } from "../../common/components/app-button";
 import { AppWrapper } from "../../common/components/app-wrapper";
-import { ConfirmModal } from "../../common/components/confim-modal";
+import { ConfirmModal } from "../../common/components/confirm-modal";
 import { theme, themeComposable } from "../../common/theme";
 import { withAlpha } from "../../common/utils";
 import { ActivityReportModal } from "./activity-report-modal";

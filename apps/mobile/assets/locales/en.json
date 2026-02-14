@@ -84,7 +84,11 @@
     "currentStreak": "Current streak",
     "bestStreak": "Best streak",
     "achievements": "Achievements",
-    "viewActivities": "View activities",
+    "viewActivities": "Activities",
+    "viewFollowers": "Followers",
+    "viewFollowing": "Following",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
     "noAchievements": "No achievements",
     "noActivities": "No activities",
     "achievementTier": {
