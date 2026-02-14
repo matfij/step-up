@@ -86,3 +86,11 @@ export enum AchievementTier {
   MasterII = 51,
   MasterIII = 52,
 }
+
+export interface Follower {
+  id: string;
+  followerId: string;
+  followerUsername: string;
+  followingId: string;
+  followingUsername: string;
+}
