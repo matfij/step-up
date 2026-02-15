@@ -26,13 +26,13 @@ export const FollowersModal = (props: FollowersModalProps) => {
     user?.id !== props.userId &&
     user?.id !== undefined;
 
-  const onFollow = async () => {
+  const onFollow = () => {
     if (props.userId) {
       follow.call(props.userId);
     }
   };
 
-  const onUnFollow = async () => {
+  const onUnFollow = () => {
     if (props.userId) {
       unFollow.call(props.userId);
     }
@@ -44,7 +44,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
         <AppApiError error={follow.error || unFollow.error} />
         {showActions && (
           <AppButtonSecondary
-            label={canFollow ? t("profile.follow") : t('t("profile.unfollow")')}
+            label={canFollow ? t("profile.follow") : t("profile.unfollow")}
             disabled={follow.loading || unFollow.loading}
             onClick={canFollow ? onFollow : onUnFollow}
           />
@@ -57,9 +57,5 @@ export const FollowersModal = (props: FollowersModalProps) => {
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: theme.colors.dark[500],
-  },
-  actionsWrapper: {
-    display: "flex",
-    flexDirection: "row",
   },
 });

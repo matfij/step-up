@@ -19,40 +19,42 @@ export const ProfileActionsComponent = (
     useState<FollowersModalProps["mode"]>("none");
 
   return (
-    <View style={styles.actionsWrapper}>
-      <TouchableOpacity
-        style={styles.actionItem}
-        onPress={() => setShowActivities(true)}
-      >
-        <MaterialCommunityIcons
-          name="speedometer"
-          size={20}
-          style={styles.actionIcon}
-        />
-        <Text style={styles.actionLabel}>{t("profile.viewActivities")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.actionItem}
-        onPress={() => setShowFollowers("followers")}
-      >
-        <MaterialCommunityIcons
-          name="account-arrow-left"
-          size={20}
-          style={styles.actionIcon}
-        />
-        <Text style={styles.actionLabel}>{t("profile.viewFollowers")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.actionItem}
-        onPress={() => setShowFollowers("following")}
-      >
-        <MaterialCommunityIcons
-          name="account-arrow-right"
-          size={20}
-          style={styles.actionIcon}
-        />
-        <Text style={styles.actionLabel}>{t("profile.viewFollowing")}</Text>
-      </TouchableOpacity>
+    <>
+      <View style={styles.actionsWrapper}>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => setShowActivities(true)}
+        >
+          <MaterialCommunityIcons
+            name="speedometer"
+            size={20}
+            style={styles.actionIcon}
+          />
+          <Text style={styles.actionLabel}>{t("profile.viewActivities")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => setShowFollowers("followers")}
+        >
+          <MaterialCommunityIcons
+            name="account-arrow-left"
+            size={20}
+            style={styles.actionIcon}
+          />
+          <Text style={styles.actionLabel}>{t("profile.viewFollowers")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.actionItem}
+          onPress={() => setShowFollowers("following")}
+        >
+          <MaterialCommunityIcons
+            name="account-arrow-right"
+            size={20}
+            style={styles.actionIcon}
+          />
+          <Text style={styles.actionLabel}>{t("profile.viewFollowing")}</Text>
+        </TouchableOpacity>
+      </View>
       <ActivitiesModal
         userId={props.userId}
         visible={showActivities}
@@ -63,7 +65,7 @@ export const ProfileActionsComponent = (
         mode={showFollowers}
         onClose={() => setShowFollowers("none")}
       />
-    </View>
+    </>
   );
 };
 
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.sm,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     gap: theme.spacing.sm,
     backgroundColor: theme.colors.dark[200],
     borderRadius: theme.borderRadius.sm,
