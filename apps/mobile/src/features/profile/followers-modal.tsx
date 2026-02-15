@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
 import { theme } from "../../common/theme";
