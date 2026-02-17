@@ -36,7 +36,8 @@ reviews:
         - Protected endpoints must use .WithMetadata(new RequireAuthAttribute())
         - Ensure RESTful conventions (GET/POST/PUT/DELETE with appropriate HTTP verbs)
         - Throw ApiException with translation keys (e.g., "errors.userNotFound")
-        - Ensure proper validation in validators before DB operations
+        - Ensure proper validation in Validators (or Services if validation is simple) before DB operations
+        - Ensure all API responses are mapped in Endpoints
         - Check that cancellation tokens are passed to async methods where appropriate
         - Verify proper null handling with nullable reference types
         - MongoDB Client should be Singleton, Database should be Singleton, Repositories/Services should be Scoped

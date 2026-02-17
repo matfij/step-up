@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
 import { theme } from "../../common/theme";
@@ -7,6 +8,8 @@ import { followerClient } from "../../common/api/follower-client";
 import { AppButtonSecondary } from "../../common/components/app-button";
 import { useUserStore } from "../../common/state/user-store";
 import { AppApiError } from "../../common/components/app-api-error";
+import { Follower } from "../../common/api/api-definitions";
+import { withAlpha } from "../../common/utils";
 
 export interface FollowersModalProps {
   userId?: string;
@@ -19,12 +22,65 @@ export const FollowersModal = (props: FollowersModalProps) => {
   const { user } = useUserStore();
   const follow = useRequest(followerClient.follow);
   const unFollow = useRequest(followerClient.unfollow);
+  const getFollowers = useRequest(followerClient.getFollowers);
+  const getFollowing = useRequest(followerClient.getFollowing);
+  const getCurrentUserFollowing = useRequest(followerClient.getFollowing);
 
-  const canFollow = true; // TODO - adjust when followers available
+  const [existingFollower, setExistingFollower] = useState<Follower>();
+
   const showActions =
+    !(getFollowers.loading || getFollowing.loading) &&
+    !getCurrentUserFollowing.loading &&
     props.mode === "followers" &&
     user?.id !== props.userId &&
     user?.id !== undefined;
+
+  const showEmptyMessage =
+    (props.mode === "followers" &&
+      getFollowers.success &&
+      getFollowers.data?.length === 0) ||
+    (props.mode === "following" &&
+      getFollowing.success &&
+      getFollowing.data?.length === 0);
+
+  useEffect(() => {
+    fetchFollowersFollowing();
+  }, [props.userId, props.mode]);
+
+  useEffect(() => {
+    if (follow.success || unFollow.success) {
+      fetchFollowersFollowing();
+    }
+  }, [follow.success, unFollow.success]);
+
+  const fetchFollowersFollowing = () => {
+    if (props.userId && props.mode === "followers") {
+      getFollowers.call(props.userId);
+    } else if (props.userId && props.mode === "following") {
+      getFollowing.call(props.userId);
+    }
+    if (user?.id && showActions) {
+      getCurrentUserFollowing.call(user.id);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      getCurrentUserFollowing.success &&
+      props.userId !== user?.id &&
+      user?.id !== undefined
+    ) {
+      const followerMatch = getCurrentUserFollowing.data?.find(
+        (f) => f.followingId === props.userId,
+      );
+      setExistingFollower(followerMatch);
+    }
+  }, [
+    getCurrentUserFollowing.success,
+    getCurrentUserFollowing.data,
+    props.userId,
+    user?.id,
+  ]);
 
   const onFollow = () => {
     if (props.userId) {
@@ -33,20 +89,58 @@ export const FollowersModal = (props: FollowersModalProps) => {
   };
 
   const onUnFollow = () => {
-    if (props.userId) {
-      unFollow.call(props.userId);
+    if (existingFollower) {
+      unFollow.call(existingFollower.id);
     }
   };
+
+  const renderFollower = (follower: Follower) => (
+    <View key={follower.id} style={styles.followerItem}>
+      <Image
+        style={styles.followerImage}
+        source={require("@assets/images/avatar.png")}
+      />
+      <Text style={styles.followerLabel}>
+        {props.mode === "followers"
+          ? follower.followerUsername
+          : follower.followingUsername}
+      </Text>
+    </View>
+  );
 
   return (
     <ModalWrapper visible={props.mode !== "none"} onClose={props.onClose}>
       <View style={styles.modalContent}>
-        <AppApiError error={follow.error || unFollow.error} />
+        {props.mode === "followers" && getFollowers.data?.map(renderFollower)}
+        {props.mode === "following" && getFollowing.data?.map(renderFollower)}
+        {showEmptyMessage && (
+          <Text style={styles.emptyLabel}>
+            {props.mode === "followers"
+              ? t("profile.emptyFollowers")
+              : t("profile.emptyFollowing")}
+          </Text>
+        )}
+        {(getFollowers.loading || getFollowing.loading) && (
+          <View style={styles.loadingWrapper}>
+            <ActivityIndicator size={64} color={theme.colors.primary[500]} />
+          </View>
+        )}
+        <AppApiError
+          error={
+            getFollowers.error ||
+            getFollowing.error ||
+            follow.error ||
+            unFollow.error
+          }
+          style={{ marginBottom: theme.spacing.md, textAlign: "center" }}
+        />
         {showActions && (
           <AppButtonSecondary
-            label={canFollow ? t("profile.follow") : t("profile.unfollow")}
+            label={
+              existingFollower ? t("profile.unfollow") : t("profile.follow")
+            }
             disabled={follow.loading || unFollow.loading}
-            onClick={canFollow ? onFollow : onUnFollow}
+            onClick={existingFollower ? onUnFollow : onFollow}
           />
         )}
       </View>
@@ -57,5 +151,36 @@ export const FollowersModal = (props: FollowersModalProps) => {
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: theme.colors.dark[500],
+  },
+  followerItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing.md,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: withAlpha(theme.colors.secondary[400], 0.3),
+  },
+  followerImage: {
+    height: 40,
+    width: 40,
+    borderRadius: theme.borderRadius.lg,
+    overflow: "hidden",
+    backgroundColor: withAlpha(
+      theme.colors.secondary[500],
+      theme.opacity.ether,
+    ),
+  },
+  followerLabel: {
+    color: theme.colors.light[300],
+  },
+  loadingWrapper: {
+    padding: theme.spacing.xl,
+  },
+  emptyLabel: {
+    fontSize: 20,
+    color: theme.colors.light[300],
+    padding: theme.spacing.xl,
+    textAlign: "center",
   },
 });

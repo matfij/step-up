@@ -89,6 +89,8 @@
     "viewFollowing": "Following",
     "follow": "Follow",
     "unfollow": "Unfollow",
+    "emptyFollowers": "This user has no followers, be the first one to follow",
+    "emptyFollowing": "This user is not following anyone",
     "noAchievements": "No achievements",
     "noActivities": "No activities",
     "achievementTier": {
