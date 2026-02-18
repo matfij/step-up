@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { ModalWrapper } from "../../common/components/modal-wrapper";
 import { theme } from "../../common/theme";
@@ -16,6 +24,8 @@ export interface FollowersModalProps {
   mode: "none" | "followers" | "following";
   onClose: () => void;
 }
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export const FollowersModal = (props: FollowersModalProps) => {
   const { t } = useTranslation();
@@ -95,7 +105,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
   };
 
   const renderFollower = (follower: Follower) => (
-    <View key={follower.id} style={styles.followerItem}>
+    <View key={follower.id + `${Math.random()}`} style={styles.followerItem}>
       <Image
         style={styles.followerImage}
         source={require("@assets/images/avatar.png")}
@@ -111,8 +121,10 @@ export const FollowersModal = (props: FollowersModalProps) => {
   return (
     <ModalWrapper visible={props.mode !== "none"} onClose={props.onClose}>
       <View style={styles.modalContent}>
-        {props.mode === "followers" && getFollowers.data?.map(renderFollower)}
-        {props.mode === "following" && getFollowing.data?.map(renderFollower)}
+        <ScrollView style={styles.followersWrapper}>
+          {props.mode === "followers" && getFollowers.data?.map(renderFollower)}
+          {props.mode === "following" && getFollowing.data?.map(renderFollower)}
+        </ScrollView>
         {showEmptyMessage && (
           <Text style={styles.emptyLabel}>
             {props.mode === "followers"
@@ -132,7 +144,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
             follow.error ||
             unFollow.error
           }
-          style={{ marginBottom: theme.spacing.md, textAlign: "center" }}
+          style={styles.errorWrapper}
         />
         {showActions && (
           <AppButtonSecondary
@@ -151,6 +163,9 @@ export const FollowersModal = (props: FollowersModalProps) => {
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: theme.colors.dark[500],
+  },
+  followersWrapper: {
+    maxHeight: 0.6 * SCREEN_HEIGHT,
   },
   followerItem: {
     flexDirection: "row",
@@ -181,6 +196,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: theme.colors.light[300],
     padding: theme.spacing.xl,
+    textAlign: "center",
+  },
+  errorWrapper: {
+    marginBottom: theme.spacing.md,
     textAlign: "center",
   },
 });
