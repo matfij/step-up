@@ -73,7 +73,7 @@
     "description": "Description",
     "confirmFinish": "Are you sure you want to finish activity?",
     "confirmDiscard": "Are you sure you want to discard activity?",
-    "missingPermissions": "Missing permissions, enable location in app settings"
+    "missingPermissions": "Missing permissions, enable location in app settings."
   },
   "profile": {
     "level": "Level",
