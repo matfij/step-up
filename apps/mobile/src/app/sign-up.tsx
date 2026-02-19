@@ -65,7 +65,7 @@ export default function SignUp() {
         t("auth.usernameInvalid", {
           min: appConfig.validation.usernameLengthMin,
           max: appConfig.validation.usernameLengthMax,
-        })
+        }),
       );
       return;
     }
@@ -81,7 +81,7 @@ export default function SignUp() {
         t("auth.usernameInvalid", {
           min: appConfig.validation.usernameLengthMin,
           max: appConfig.validation.usernameLengthMax,
-        })
+        }),
       );
       return;
     } else if (!isValidAuthToken(authToken)) {

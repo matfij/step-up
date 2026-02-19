@@ -7,6 +7,16 @@ export class FollowerClient extends ApiClient {
       method: "POST",
     });
 
+  getFollowers = async (userId: string) =>
+    this.request<Follower[]>(`/followers/followers/${userId}`, {
+      method: "GET",
+    });
+
+  getFollowing = async (userId: string) =>
+    this.request<Follower[]>(`/followers/following/${userId}`, {
+      method: "GET",
+    });
+
   unfollow = async (followerId: string) =>
     this.request<string>(`/followers/unfollow/${followerId}`, {
       method: "DELETE",

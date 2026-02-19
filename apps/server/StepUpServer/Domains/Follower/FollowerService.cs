@@ -8,7 +8,7 @@ public interface IFollowerService
     public Task<Follower> Create(string userId, string followingId);
     public Task<List<Follower>> GetFollowers(string userId);
     public Task<List<Follower>> GetFollowing(string userId);
-    public Task Delete(string userId, string id);
+    public Task Unfollow(string userId, string id);
 }
 
 public class FollowerService(IFollowerRepository followerRepository, IUserValidator userValidator) : IFollowerService
@@ -55,7 +55,7 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
         return await _repository.GetFollowing(userId);
     }
 
-    public async Task Delete(string userId, string id)
+    public async Task Unfollow(string userId, string id)
     {
         var follower = await _repository.GetById(id);
 

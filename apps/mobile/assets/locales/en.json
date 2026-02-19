@@ -73,7 +73,7 @@
     "description": "Description",
     "confirmFinish": "Are you sure you want to finish activity?",
     "confirmDiscard": "Are you sure you want to discard activity?",
-    "missingPermissions": "Missing permissions, enable location in app settings"
+    "missingPermissions": "Missing permissions, enable location in app settings."
   },
   "profile": {
     "level": "Level",
@@ -89,6 +89,8 @@
     "viewFollowing": "Following",
     "follow": "Follow",
     "unfollow": "Unfollow",
+    "emptyFollowers": "This user has no followers, be the first one to follow",
+    "emptyFollowing": "This user is not following anyone",
     "noAchievements": "No achievements",
     "noActivities": "No activities",
     "achievementTier": {

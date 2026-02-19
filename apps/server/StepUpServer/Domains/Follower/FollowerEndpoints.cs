@@ -74,7 +74,7 @@ public static class FollowerEndpoints
                 async (string id, HttpContext context, IFollowerService followerService) =>
                 {
                     var userId = context.GetUserId();
-                    await followerService.Delete(userId, id);
+                    await followerService.Unfollow(userId, id);
                     return Results.Ok(id);
                 }
             )
