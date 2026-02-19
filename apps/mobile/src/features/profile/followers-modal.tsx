@@ -105,7 +105,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
   };
 
   const renderFollower = (follower: Follower) => (
-    <View key={follower.id + `${Math.random()}`} style={styles.followerItem}>
+    <View key={follower.id} style={styles.followerItem}>
       <Image
         style={styles.followerImage}
         source={require("@assets/images/avatar.png")}
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.md,
     paddingHorizontal: theme.spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: withAlpha(theme.colors.secondary[400], 0.3),
+    borderBottomColor: withAlpha(theme.colors.secondary[400], theme.opacity.liquid),
   },
   followerImage: {
     height: 40,
