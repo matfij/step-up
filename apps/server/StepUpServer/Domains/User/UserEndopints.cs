@@ -25,7 +25,8 @@ public static class UserEndpoints
                         user.Id,
                         user.Email,
                         user.Username,
-                        user.ApiToken
+                        user.ApiToken,
+                        user.AvatarUri
                     )
                 );
             }
@@ -50,7 +51,8 @@ public static class UserEndpoints
                         user.Id,
                         user.Email,
                         user.Username,
-                        user.ApiToken
+                        user.ApiToken,
+                        user.AvatarUri
                     )
                 );
             }
@@ -61,7 +63,7 @@ public static class UserEndpoints
             async (HttpContext context, IUserService userService) =>
             {
                 var userId = context.GetUserId();
-                var file = context.Request.Form.Files.First();
+                var file = context.Request.Form.Files.FirstOrDefault();
                 var avatarUri = await userService.UpladteAvatar(userId, file);
                 return Results.Ok(new UserAvatarResponse(avatarUri));
             }

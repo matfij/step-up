@@ -12,7 +12,7 @@ public interface IUserValidator
     void EnsureIsNotConfirmed(User user);
     void EnsureIsConfirmed(User user);
     void EnsureAuthTokenIsValid(User user, string authToken);
-    void ValidateAvatar(IFormFile? file);
+    IFormFile ValidateAvatar(IFormFile? file);
 }
 
 public partial class UserValidator(IUserRepository _repository) : IUserValidator
@@ -97,7 +97,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
         }
     }
 
-    public void ValidateAvatar(IFormFile? file)
+    public IFormFile ValidateAvatar(IFormFile? file)
     {
         if (file is null || file.Length == 0)
         {
@@ -116,5 +116,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
         {
             throw new ApiException("errors.avatarInvalidExtension");
         }
+
+        return file;
     }
 }

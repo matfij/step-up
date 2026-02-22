@@ -8,6 +8,12 @@ public readonly record struct SignInStartRequest(string Email);
 
 public readonly record struct SignInCompleteRequest(string Email, string AuthToken);
 
-public readonly record struct UserAuthResponse(string Id, string Email, string Username, string? ApiToken);
+public readonly record struct UserAuthResponse(
+    string Id,
+    string Email,
+    string Username,
+    string? ApiToken,
+    string AvatarUri
+);
 
 public readonly record struct UserAvatarResponse(string AvatarUri);
