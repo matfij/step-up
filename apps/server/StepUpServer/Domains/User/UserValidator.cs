@@ -6,18 +6,13 @@ namespace StepUpServer.Domains.User;
 public interface IUserValidator
 {
     public Task<User> EnsureIdExists(string id);
-
     public Task<User> EnsureEmailExists(string email);
-
     public Task ValidateEmail(string email);
-
     public Task ValidateUsername(string username);
-
     void EnsureIsNotConfirmed(User user);
-
     void EnsureIsConfirmed(User user);
-
     void EnsureAuthTokenIsValid(User user, string authToken);
+    IFormFile ValidateAvatar(IFormFile? file);
 }
 
 public partial class UserValidator(IUserRepository _repository) : IUserValidator
@@ -27,8 +22,12 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     private static partial Regex EmailPattern();
 
-    public const int UsernameMinLength = 4;
-    public const int UsernameMaxLength = 16;
+    private const int _usernameMinLength = 4;
+    private const int _usernameMaxLength = 16;
+
+    private const int _maxAvatarSize = 5 * 1024 * 1024; // 5 MB
+    private static readonly string[] _allowedAvatarTypes = [ "image/jpeg", "image/png"];
+    private static readonly string[] _allowedAvatarExtensions = [ ".jpg", ".jpeg", ".png" ];
 
     public async Task<User> EnsureIdExists(string id)
     {
@@ -61,7 +60,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
 
     public async Task ValidateUsername(string username)
     {
-        if (username.Length < UsernameMinLength || username.Length > UsernameMaxLength)
+        if (username.Length < _usernameMinLength || username.Length > _usernameMaxLength)
         {
             throw new ApiException("errors.usernameInvalid", nameof(username));
         }
@@ -96,5 +95,28 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
         {
             throw new ApiException("errors.authTokenNotValid", nameof(authToken));
         }
+    }
+
+    public IFormFile ValidateAvatar(IFormFile? file)
+    {
+        if (file is null || file.Length == 0)
+        {
+            throw new ApiException("errors.avatarEmpty");
+        }
+        if (file.Length > _maxAvatarSize)
+        {
+            throw new ApiException("errors.avatarTooLarge");
+        }
+        if (!_allowedAvatarTypes.Contains(file.ContentType))
+        {
+            throw new ApiException("errors.avatarInvalidType");
+        }
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!_allowedAvatarExtensions.Contains(extension))
+        {
+            throw new ApiException("errors.avatarInvalidExtension");
+        }
+
+        return file;
     }
 }

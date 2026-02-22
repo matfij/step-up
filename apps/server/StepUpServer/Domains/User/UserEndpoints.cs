@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using StepUpServer.Common;
 
 namespace StepUpServer.Domains.User;
@@ -25,7 +26,8 @@ public static class UserEndpoints
                         user.Id,
                         user.Email,
                         user.Username,
-                        user.ApiToken
+                        user.ApiToken,
+                        user.AvatarUri
                     )
                 );
             }
@@ -50,10 +52,25 @@ public static class UserEndpoints
                         user.Id,
                         user.Email,
                         user.Username,
-                        user.ApiToken
+                        user.ApiToken,
+                        user.AvatarUri
                     )
                 );
             }
         );
+
+        app.MapPut(
+                "/users/avatar",
+                async (HttpContext context, IFormFile? file, IUserService userService) =>
+                {
+                    var userId = context.GetUserId();
+                    var avatarUri = await userService.UpdateAvatar(userId, file);
+                    return Results.Ok(new UserAvatarResponse(avatarUri));
+                }
+            )
+            .WithMetadata(new RequireAuthAttribute())
+            // 5MB + 1KB for multipart overhead
+            .WithMetadata(new RequestSizeLimitAttribute(5 * 1024 * 1024 + 1024))
+            .DisableAntiforgery();
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization.Metadata;
+using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
@@ -29,6 +30,7 @@ builder.Services.AddSingleton(provider =>
 });
 
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+builder.Services.AddSingleton<IFileService, FileService>(); 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
@@ -61,5 +63,14 @@ app.MapActivityEndpoints();
 app.MapProgressEndpoints();
 app.MapAchievementsEndpoints();
 app.MapFollowerEndpoints();
+
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
+Directory.CreateDirectory(uploadsPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
 
 app.Run();

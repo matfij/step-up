@@ -10,6 +10,7 @@ public class User
     public required string Id { get; set; }
     public required string Email { get; set; }
     public required string Username { get; set; }
+    public string? AvatarUri { get; set; }
     public required bool IsConfirmed { get; set; }
     public string? AuthToken { get; set; }
     public string? ApiToken { get; set; }
