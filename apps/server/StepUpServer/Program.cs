@@ -64,7 +64,7 @@ app.MapProgressEndpoints();
 app.MapAchievementsEndpoints();
 app.MapFollowerEndpoints();
 
-var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadsPath);
 
 app.UseStaticFiles(new StaticFileOptions
