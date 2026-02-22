@@ -29,6 +29,7 @@ builder.Services.AddSingleton(provider =>
 });
 
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+builder.Services.AddSingleton<IFileService, FileService>(); 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
@@ -61,5 +62,7 @@ app.MapActivityEndpoints();
 app.MapProgressEndpoints();
 app.MapAchievementsEndpoints();
 app.MapFollowerEndpoints();
+
+app.UseStaticFiles();
 
 app.Run();

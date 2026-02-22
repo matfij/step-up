@@ -9,17 +9,22 @@ public interface IUserService
     Task<User> CompleteSignUp(string email, string authCode);
     Task StartSignIn(string email);
     Task<User> CompleteSignIn(string email, string authCode);
+    Task<string> UpladteAvatar(string userId, IFormFile file);
 }
 
 public partial class UserService(
     IUserRepository repository,
     IUserValidator validator,
-    IEventPublisher eventPublisher
+    IEventPublisher eventPublisher,
+    IFileService fileService
 ) : IUserService
 {
+    private const string _avatarFolder = "avatars";
+
     private readonly IUserRepository _repository = repository;
     private readonly IUserValidator _validator = validator;
     private readonly IEventPublisher _eventPublisher = eventPublisher;
+    private readonly IFileService _fileService = fileService;
 
     public async Task StartSignUp(string email, string username)
     {
@@ -72,6 +77,28 @@ public partial class UserService(
         user.LastSeenAt = Utils.GetCurrentTimestamp();
         await _repository.Update(user);
         return user;
+    }
+
+    public async Task<string> UpladteAvatar(string userId, IFormFile file)
+    {
+        _validator.ValidateAvatar(file);
+
+        var user = await _validator.EnsureIdExists(userId);
+
+        var fileExtension = Path.GetExtension(file.FileName);
+        var fileName = $"{userId}.${fileExtension}";
+
+        var avatarUri = await _fileService.SaveAsync(
+            _avatarFolder,
+            fileName,
+            file.OpenReadStream(),
+            file.ContentType);
+
+        user.AvatarUri = avatarUri;
+
+        await _repository.Update(user);
+
+        return avatarUri;
     }
 
     private static string GenerateAuthToken() => Random.Shared.Next(100_000, 999_999).ToString();

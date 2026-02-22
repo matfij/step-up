@@ -55,5 +55,16 @@ public static class UserEndpoints
                 );
             }
         );
+
+        app.MapPut(
+            "/users/avatar",
+            async (HttpContext context, IUserService userService) =>
+            {
+                var userId = context.GetUserId();
+                var file = context.Request.Form.Files.First();
+                var avatarUri = await userService.UpladteAvatar(userId, file);
+                return Results.Ok(new UserAvatarResponse(avatarUri));
+            }
+        ).WithMetadata(new RequireAuthAttribute());
     }
 }
