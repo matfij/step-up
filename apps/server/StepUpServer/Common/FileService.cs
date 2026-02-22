@@ -5,9 +5,9 @@ public interface IFileService
     Task<string> SaveAsync(string folder, string fileName, Stream content);
 }
 
-public class FileService : IFileService
+public class FileService(IWebHostEnvironment env) : IFileService
 {
-    private const string _baseFolder = "uploads";
+    private readonly string _baseFolder = Path.Combine(env.ContentRootPath, "uploads");
 
     public async Task<string> SaveAsync(string folder, string fileName, Stream content)
     {
