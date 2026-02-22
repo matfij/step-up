@@ -9,7 +9,7 @@ public interface IUserService
     Task<User> CompleteSignUp(string email, string authCode);
     Task StartSignIn(string email);
     Task<User> CompleteSignIn(string email, string authCode);
-    Task<string> UpladteAvatar(string userId, IFormFile? file);
+    Task<string> UpdateAvatar(string userId, IFormFile? file);
 }
 
 public partial class UserService(
@@ -79,20 +79,17 @@ public partial class UserService(
         return user;
     }
 
-    public async Task<string> UpladteAvatar(string userId, IFormFile? file)
+    public async Task<string> UpdateAvatar(string userId, IFormFile? file)
     {
         var validFile = _validator.ValidateAvatar(file);
 
         var user = await _validator.EnsureIdExists(userId);
 
-        var fileExtension = Path.GetExtension(validFile.FileName);
-        var fileName = $"{userId}.${fileExtension}";
+        var fileName = userId + Path.GetExtension(validFile.FileName);
 
-        var avatarUri = await _fileService.SaveAsync(
-            _avatarFolder,
-            fileName,
-            file.OpenReadStream(),
-            file.ContentType);
+        await using var stream = validFile.OpenReadStream();
+
+        var avatarUri = await _fileService.SaveAsync(_avatarFolder, fileName, stream);
 
         user.AvatarUri = avatarUri;
 

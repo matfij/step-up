@@ -13,7 +13,7 @@ public readonly record struct UserAuthResponse(
     string Email,
     string Username,
     string? ApiToken,
-    string AvatarUri
+    string? AvatarUri
 );
 
 public readonly record struct UserAvatarResponse(string AvatarUri);
