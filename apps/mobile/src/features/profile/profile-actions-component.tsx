@@ -5,6 +5,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { theme } from "../../common/theme";
 import { ActivitiesModal } from "./activities-modal";
 import { FollowersModal, FollowersModalProps } from "./followers-modal";
+import { useUserStore } from "../../common/state/user-store";
+import { ProfileSettingsModal } from "./profile-settings-modal";
 
 interface ProfileActionsComponentProps {
   userId?: string;
@@ -14,9 +16,13 @@ export const ProfileActionsComponent = (
   props: ProfileActionsComponentProps,
 ) => {
   const { t } = useTranslation();
+  const { user } = useUserStore();
   const [showActivities, setShowActivities] = useState(false);
   const [showFollowers, setShowFollowers] =
     useState<FollowersModalProps["mode"]>("none");
+  const [showSettings, setShowSettings] = useState(false);
+
+  const canEdit = props.userId === user?.id && props.userId !== undefined;
 
   return (
     <>
@@ -54,6 +60,19 @@ export const ProfileActionsComponent = (
           />
           <Text style={styles.actionLabel}>{t("profile.viewFollowing")}</Text>
         </TouchableOpacity>
+        {canEdit && (
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => setShowSettings(true)}
+          >
+            <MaterialCommunityIcons
+              name="account-settings"
+              size={20}
+              style={styles.actionIcon}
+            />
+            <Text style={styles.actionLabel}>{t("profile.settings")}</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ActivitiesModal
         userId={props.userId}
@@ -65,6 +84,10 @@ export const ProfileActionsComponent = (
         mode={showFollowers}
         onClose={() => setShowFollowers("none")}
       />
+      <ProfileSettingsModal
+        visible={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
     </>
   );
 };
@@ -74,10 +97,12 @@ const styles = StyleSheet.create({
     width: "90%",
     display: "flex",
     flexDirection: "row",
-    gap: theme.spacing.xs,
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: theme.spacing.sm,
   },
   actionItem: {
-    flex: 1,
+    width: "32%",
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.sm,
     display: "flex",
