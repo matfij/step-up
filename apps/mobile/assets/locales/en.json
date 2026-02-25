@@ -93,6 +93,10 @@
     "emptyFollowing": "This user is not following anyone",
     "noAchievements": "No achievements",
     "noActivities": "No activities",
+    "settings": "Settings",
+    "username": "Username",
+    "avatar": "Avatar",
+    "chooseAvatar": "Choose avatar",
     "achievementTier": {
       "none": "None",
       "achieved": "Achieved",
