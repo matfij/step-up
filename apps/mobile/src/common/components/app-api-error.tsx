@@ -5,24 +5,29 @@ import { useTranslation } from "react-i18next";
 
 type AppApiErrorProps = {
   error?: ApiError;
+  message?: string;
   style?: StyleProp<TextStyle>;
 };
 
 export const AppApiError = (props: AppApiErrorProps) => {
   const { t } = useTranslation();
 
-  return (
-    <>
-      {props.error && (
-        <Text style={[styles.error, props.style]}>
-          {t(
-            props.error.key,
-            props.error.field ? { field: props.error.field } : {}
-          )}
-        </Text>
-      )}
-    </>
-  );
+  if (props.error) {
+    return (
+      <Text style={[styles.error, props.style]}>
+        {t(
+          props.error.key,
+          props.error.field ? { field: props.error.field } : {},
+        )}
+      </Text>
+    );
+  }
+
+  if (props.message) {
+    return <Text style={[styles.error, props.style]}>{t(props.message)}</Text>;
+  }
+
+  return <></>;
 };
 
 const styles = StyleSheet.create({

@@ -12,6 +12,8 @@ export const appConfig = {
     emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     usernameLengthMin: 4,
     usernameLengthMax: 16,
+    avatarMaxSize: 5 * 1024 * 1024,
+    avatarExtensions: ["image/jpeg", "image/png"],
     authTokenLength: 6,
     activityNameLengthMin: 1,
     activityNameLengthMax: 100,
