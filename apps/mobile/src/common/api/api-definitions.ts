@@ -94,3 +94,9 @@ export interface Follower {
   followingId: string;
   followingUsername: string;
 }
+
+export interface ApiFile {
+  uri: string;
+  fileName: string;
+  mimeType: string;
+}

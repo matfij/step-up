@@ -20,7 +20,6 @@ export abstract class ApiClient {
         const token = useUserStore.getState().user?.apiToken;
 
         const headers: HeadersInit = {
-          "Content-Type": "application/json",
           ...(token && { Authorization: token }),
           ...options?.headers,
         };

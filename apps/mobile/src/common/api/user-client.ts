@@ -1,5 +1,5 @@
 import { ApiClient } from "./api-client";
-import { ApiError, User } from "./api-definitions";
+import { ApiError, ApiFile, User } from "./api-definitions";
 
 export class UserClient extends ApiClient {
   startSignUp = async (params: {
@@ -42,6 +42,19 @@ export class UserClient extends ApiClient {
       method: "POST",
       body: JSON.stringify(params),
     });
+
+  uploadAvatar = async (image: ApiFile): Promise<{ error?: ApiError }> => {
+    const formData = new FormData();
+    formData.append("avatar", {
+      uri: image.uri,
+      type: image.mimeType,
+      name: image.fileName,
+    } as unknown as Blob);
+    return this.request("/users/avatar", {
+      method: "PUT",
+      body: formData,
+    });
+  };
 }
 
 export const userClient = new UserClient();
