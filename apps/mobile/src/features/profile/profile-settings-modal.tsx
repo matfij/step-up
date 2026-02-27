@@ -39,9 +39,10 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
 
   const onConfirm = () => {
     console.log("TODO (M#104) - full profile update");
-    if (pickAvatar.avatar) {
-      updateAvatar.call(pickAvatar.avatar);
+    if (!pickAvatar.avatar || pickAvatar.error) {
+      return;
     }
+    updateAvatar.call(pickAvatar.avatar);
   };
 
   return (
