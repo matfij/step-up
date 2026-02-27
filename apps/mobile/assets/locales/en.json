@@ -99,7 +99,7 @@
     "chooseAvatar": "Choose avatar",
     "mediaPermissionRequired": "Permission to access the media library is required.",
     "avatarTooLarge": "Avatar size must be up to 5 MB",
-    "avatarFileInvalid": "Avatar must ba an image",
+    "avatarFileInvalid": "Avatar must be an image",
     "achievementTier": {
       "none": "None",
       "achieved": "Achieved",

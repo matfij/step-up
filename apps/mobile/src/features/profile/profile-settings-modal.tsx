@@ -15,6 +15,7 @@ import { AppApiError } from "../../common/components/app-api-error";
 import { appConfig } from "../../common/config";
 import { useRequest } from "../../common/api/use-request";
 import { userClient } from "../../common/api/user-client";
+import { usePickAvatar } from "./use-pick-avatar";
 
 interface ProfileSettingsModalProps {
   visible: boolean;
@@ -25,63 +26,21 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
   const { t } = useTranslation();
   const { user } = useUserStore();
   const [username, setUsername] = useState(user?.username ?? "");
-  const [avatar, setAvatar] = useState<ApiFile>();
-  const [error, setError] = useState<string>();
+  const pickAvatar = usePickAvatar();
   const updateAvatar = useRequest(userClient.uploadAvatar);
 
   useEffect(() => {
     if (updateAvatar.success) {
       console.log("TODO (M#122) - success notification");
+      pickAvatar.reset();
       props.onClose();
     }
   }, [updateAvatar.success]);
 
-  const onUploadAvatar = async () => {
-    setError(undefined);
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
-      setError("profile.mediaPermissionRequired");
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-    });
-
-    if (result.canceled) {
-      return;
-    }
-
-    const newAvatar = result.assets[0];
-
-    if (
-      newAvatar.fileSize &&
-      newAvatar.fileSize > appConfig.validation.avatarMaxSize
-    ) {
-      setError("profile.avatarTooLarge");
-      return;
-    } else if (
-      !newAvatar.fileName ||
-      !newAvatar.mimeType ||
-      !appConfig.validation.avatarExtensions.includes(
-        newAvatar.mimeType as "image/jpeg" | "image/png",
-      )
-    ) {
-      setError("profile.avatarFileInvalid");
-      return;
-    }
-
-    setAvatar({
-      uri: newAvatar.uri,
-      fileName: newAvatar.fileName,
-      mimeType: newAvatar.mimeType,
-    });
-  };
-
   const onConfirm = () => {
     console.log("TODO (M#104) - full profile update");
-    if (avatar) {
-      updateAvatar.call(avatar);
+    if (pickAvatar.avatar) {
+      updateAvatar.call(pickAvatar.avatar);
     }
   };
 
@@ -96,10 +55,12 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
         />
         <View>
           <Text style={styles.avatarLabel}>{t("profile.avatar")}</Text>
-          {avatar && <Image src={avatar.uri} style={styles.avatarImage} />}
+          {pickAvatar.avatar && (
+            <Image src={pickAvatar.avatar.uri} style={styles.avatarImage} />
+          )}
           <AppButton
             label={t("profile.chooseAvatar")}
-            onClick={onUploadAvatar}
+            onClick={pickAvatar.pick}
             style={styles.smallButton}
             textStyle={styles.smallButtonText}
           />
@@ -107,7 +68,7 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
 
         <View style={styles.actionsWrapper}>
           <AppApiError
-            message={error}
+            message={pickAvatar.error}
             error={updateAvatar.error}
             style={styles.errorWrapper}
           />

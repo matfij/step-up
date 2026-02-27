@@ -46,7 +46,6 @@ export abstract class ApiClient {
         const data = await this.safeParse(response);
         return { data };
       } catch (error) {
-        console.error("Fatal API error", error);
         apiError = {
           name: "Unknown Error",
           key: "errors.unknown",
