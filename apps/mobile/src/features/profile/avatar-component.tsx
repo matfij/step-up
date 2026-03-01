@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { theme, themeComposable } from "../../common/theme";
-import { getApiUrl } from "../../common/api/api-client";
+import { getApiUrl } from "../../common/config";
 
 interface AvatarComponentProps {
   avatarUri?: string;
