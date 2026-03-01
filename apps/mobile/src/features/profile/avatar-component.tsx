@@ -13,8 +13,6 @@ export const AvatarComponent = (props: AvatarComponentProps) => {
     ? `${getApiUrl()}${props.avatarUri}`
     : undefined;
 
-  console.log({ avatarUri });
-
   return (
     <View style={styles.avatarWrapper}>
       <View style={styles.avatarContainer}>
