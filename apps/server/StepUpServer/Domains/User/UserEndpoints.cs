@@ -61,10 +61,10 @@ public static class UserEndpoints
 
         app.MapPut(
                 "/users/avatar",
-                async (HttpContext context, IFormFile? file, IUserService userService) =>
+                async (HttpContext context, IFormFile? avatar, IUserService userService) =>
                 {
                     var userId = context.GetUserId();
-                    var avatarUri = await userService.UpdateAvatar(userId, file);
+                    var avatarUri = await userService.UpdateAvatar(userId, avatar);
                     return Results.Ok(new UserAvatarResponse(avatarUri));
                 }
             )
