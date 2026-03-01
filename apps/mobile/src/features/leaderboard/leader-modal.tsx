@@ -20,6 +20,7 @@ export const LeaderModal = (props: LeaderModalProps) => {
     >
       <View style={styles.modalContent}>
         <AvatarComponent
+          avatarUri={props.progress?.avatarUri}
           username={props.progress?.username}
           level={props.progress?.level}
         />

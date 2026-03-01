@@ -12,6 +12,7 @@ export interface User {
   id: string;
   email: string;
   username: string;
+  avatarUri?: string;
   apiToken: string;
 }
 
@@ -33,6 +34,7 @@ export interface Progress {
   id: string;
   userId: string;
   username: string;
+  avatarUri?: string;
   level: number;
   experience: number;
   totalActivities: number;

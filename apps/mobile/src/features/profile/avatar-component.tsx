@@ -1,18 +1,28 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { theme, themeComposable } from "../../common/theme";
+import { getApiUrl } from "../../common/config";
 
 interface AvatarComponentProps {
+  avatarUri?: string;
   username?: string;
   level?: number;
 }
 
 export const AvatarComponent = (props: AvatarComponentProps) => {
+  const avatarUri = props.avatarUri
+    ? `${getApiUrl()}${props.avatarUri}`
+    : undefined;
+
   return (
     <View style={styles.avatarWrapper}>
       <View style={styles.avatarContainer}>
         <Image
           style={styles.avatarImage}
-          source={require("@assets/images/avatar.png")}
+          source={
+            avatarUri
+              ? { uri: avatarUri }
+              : require("@assets/images/avatar.png")
+          }
         />
         <View style={styles.levelBadge}>
           <Text style={styles.levelText}>{props.level}</Text>
@@ -34,6 +44,8 @@ const styles = StyleSheet.create({
   avatarContainer: {
     position: "relative",
     marginBottom: theme.spacing.md,
+    borderRadius: theme.borderRadius.lg,
+    backgroundColor: theme.colors.light[700],
   },
   avatarImage: {
     width: 128,
