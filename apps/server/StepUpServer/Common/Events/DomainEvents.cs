@@ -12,6 +12,14 @@ public record UserCreatedEvent : IDomainEvent
     public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
 }
 
+public record class UserUpdatedEvent : IDomainEvent
+{
+    public required string UserId { get; init; }
+    public required string Username { get; init; }
+    public required string AvatarUri { get; init; }
+    public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
+}
+
 public record ActivityCreatedEvent : IDomainEvent
 {
     public required string ActivityId { get; init; }

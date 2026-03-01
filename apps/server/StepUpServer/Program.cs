@@ -42,8 +42,9 @@ builder.Services.AddScoped<IActivityService, ActivityService>();
 
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<IProgressService, ProgressService>();
-builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
-builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressService>();
+builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressReactor>();
+builder.Services.AddScoped<IEventHandler<UserUpdatedEvent>, ProgressReactor>();
+builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressReactor>();
 
 builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
 builder.Services.AddScoped<IAchievementsService, AchievementsService>();

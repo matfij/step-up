@@ -386,3 +386,5 @@ temp
 /src/Templates/.tempTemplateOutput
 
 **/*appsettings*.json
+
+**/uploads/*
