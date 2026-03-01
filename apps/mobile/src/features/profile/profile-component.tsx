@@ -24,6 +24,7 @@ export const ProfileComponent = () => {
   return (
     <AppWrapper>
       <AvatarComponent
+        avatarUri={user?.avatarUri}
         username={user?.username}
         level={getProgress.data?.level}
       />

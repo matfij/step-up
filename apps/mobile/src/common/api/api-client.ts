@@ -72,7 +72,7 @@ export abstract class ApiClient {
   };
 }
 
-const getApiUrl = () => {
+export const getApiUrl = () => {
   if (__DEV__) {
     return Constants.platform?.android
       ? "http://10.0.2.2:8080"
