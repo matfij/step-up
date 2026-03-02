@@ -11,7 +11,7 @@ export abstract class ApiClient {
 
   protected request = async <T>(
     endpoint: string,
-    options?: RequestInit,
+    options?: RequestInit & { skipContentTypeHeader?: boolean },
   ): Promise<{ data?: T; error?: ApiError }> => {
     let apiError = { name: "", message: "", key: "" };
 
@@ -20,6 +20,9 @@ export abstract class ApiClient {
         const token = useUserStore.getState().user?.apiToken;
 
         const headers: HeadersInit = {
+          ...(options?.skipContentTypeHeader
+            ? {}
+            : { "Content-Type": "application/json" }),
           ...(token && { Authorization: token }),
           ...options?.headers,
         };

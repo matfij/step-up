@@ -53,6 +53,7 @@ export class UserClient extends ApiClient {
     return this.request("/users/avatar", {
       method: "PUT",
       body: formData,
+      skipContentTypeHeader: true,
     });
   };
 }

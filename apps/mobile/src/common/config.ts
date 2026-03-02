@@ -1,3 +1,5 @@
+import Constants from "expo-constants";
+
 export const appConfig = {
   taskNames: {
     backgroundLocation: "sup-background-location-task",
@@ -20,3 +22,16 @@ export const appConfig = {
     activityDescriptionLengthMax: 800,
   },
 } as const;
+
+export const getApiUrl = () => {
+  if (__DEV__) {
+    return Constants.platform?.android
+      ? "http://10.0.2.2:8080"
+      : "http://127.0.0.1:8080";
+  }
+  const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+  if (!apiUrl) {
+    throw new Error("Provide apiUrl in app.json extra config.");
+  }
+  return apiUrl;
+};
