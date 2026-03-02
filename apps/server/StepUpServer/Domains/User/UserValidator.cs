@@ -26,7 +26,7 @@ public partial class UserValidator(IUserRepository _repository) : IUserValidator
     private const int _usernameMaxLength = 16;
 
     private const int _maxAvatarSize = 5 * 1024 * 1024; // 5 MB
-    private static readonly string[] _allowedAvatarTypes = [ "image/jpeg", "image/png"];
+    private static readonly string[] _allowedAvatarTypes = ["image/jpeg", "image/png"];
     private static readonly string[] _allowedAvatarExtensions = [ ".jpg", ".jpeg", ".png" ];
 
     public async Task<User> EnsureIdExists(string id)

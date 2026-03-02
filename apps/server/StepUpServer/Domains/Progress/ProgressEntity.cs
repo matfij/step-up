@@ -10,6 +10,7 @@ public class Progress
     public required string Id { get; set; }
     public required string UserId { get; set; }
     public required string Username { get; set; }
+    public string? AvatarUri { get; set; }
 
     public uint Level { get; set; } = 1;
     public ulong Experience { get; set; } = 0;
