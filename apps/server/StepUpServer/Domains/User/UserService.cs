@@ -30,7 +30,7 @@ public partial class UserService(
     {
         await _validator.ValidateEmail(email);
         await _validator.ValidateUsername(username);
-        var authToken = GenerateAuthToken();
+        var authToken = GenerateNumberString();
         var user = new User
         {
             Id = Utils.GenerateId(),
@@ -62,7 +62,7 @@ public partial class UserService(
     {
         var user = await _validator.EnsureEmailExists(email);
         _validator.EnsureIsConfirmed(user);
-        var authToken = GenerateAuthToken();
+        var authToken = GenerateNumberString();
         user.AuthToken = authToken;
         await _repository.Update(user);
     }
@@ -85,7 +85,7 @@ public partial class UserService(
 
         var user = await _validator.EnsureIdExists(userId);
 
-        var fileName = userId + Path.GetExtension(validFile.FileName);
+        var fileName = userId + GenerateNumberString() + Path.GetExtension(validFile.FileName);
 
         await using var stream = validFile.OpenReadStream();
 
@@ -106,7 +106,19 @@ public partial class UserService(
         return avatarUri;
     }
 
-    private static string GenerateAuthToken() => Random.Shared.Next(100_000, 999_999).ToString();
+    private static string GenerateNumberString(int length = 6)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(length);
+
+        var result = new char[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = (char)('0' + Random.Shared.Next(0, 10));
+        }
+
+        return new string(result);
+    }
 
     private static string GenerateApiToken() =>
         Convert.ToBase64String(Guid.NewGuid().ToByteArray());

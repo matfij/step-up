@@ -43,7 +43,9 @@ export class UserClient extends ApiClient {
       body: JSON.stringify(params),
     });
 
-  uploadAvatar = async (image: ApiFile): Promise<{ error?: ApiError }> => {
+  uploadAvatar = async (
+    image: ApiFile,
+  ): Promise<{ data?: { avatarUri: string }; error?: ApiError }> => {
     const formData = new FormData();
     formData.append("avatar", {
       uri: image.uri,
