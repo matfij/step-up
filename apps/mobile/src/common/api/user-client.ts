@@ -1,5 +1,10 @@
 import { ApiClient } from "./api-client";
-import { ApiError, ApiFile, User } from "./api-definitions";
+import {
+  ApiError,
+  ApiFile,
+  UploadAvatarResponse,
+  User,
+} from "./api-definitions";
 
 export class UserClient extends ApiClient {
   startSignUp = async (params: {
@@ -45,7 +50,7 @@ export class UserClient extends ApiClient {
 
   uploadAvatar = async (
     image: ApiFile,
-  ): Promise<{ data?: { avatarUri: string }; error?: ApiError }> => {
+  ): Promise<{ data?: UploadAvatarResponse; error?: ApiError }> => {
     const formData = new FormData();
     formData.append("avatar", {
       uri: image.uri,
