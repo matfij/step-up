@@ -1,5 +1,4 @@
 using StepUpServer.Common;
-using StepUpServer.Domains.User;
 
 namespace StepUpServer.Domains.Follower;
 
@@ -19,8 +18,10 @@ public static class FollowerEndpoints
                             follower.Id,
                             follower.FollowerId,
                             follower.FollowerUsername,
+                            follower.FollowerAvatarUri,
                             follower.FollowingId,
-                            follower.FollowingUsername
+                            follower.FollowingUsername,
+                            follower.FollowingAvatarUri
                         )
                     );
                 }
@@ -39,8 +40,10 @@ public static class FollowerEndpoints
                                     follower.Id,
                                     follower.FollowerId,
                                     follower.FollowerUsername,
+                                    follower.FollowerAvatarUri,
                                     follower.FollowingId,
-                                    follower.FollowingUsername
+                                    follower.FollowingUsername,
+                                    follower.FollowingAvatarUri
                                 )
                         )
                     );
@@ -60,8 +63,10 @@ public static class FollowerEndpoints
                                     follower.Id,
                                     follower.FollowerId,
                                     follower.FollowerUsername,
+                                    follower.FollowerAvatarUri,
                                     follower.FollowingId,
-                                    follower.FollowingUsername
+                                    follower.FollowingUsername,
+                                    follower.FollowingAvatarUri
                                 )
                         )
                     );

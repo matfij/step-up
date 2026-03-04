@@ -16,7 +16,7 @@ export const ProfileActionsComponent = (
   props: ProfileActionsComponentProps,
 ) => {
   const { t } = useTranslation();
-  const { user } = useUserStore();
+  const { user, signOut } = useUserStore();
   const [showActivities, setShowActivities] = useState(false);
   const [showFollowers, setShowFollowers] =
     useState<FollowersModalProps["mode"]>("none");
@@ -61,17 +61,30 @@ export const ProfileActionsComponent = (
           <Text style={styles.actionLabel}>{t("profile.viewFollowing")}</Text>
         </TouchableOpacity>
         {canEdit && (
-          <TouchableOpacity
-            style={styles.actionItem}
-            onPress={() => setShowSettings(true)}
-          >
-            <MaterialCommunityIcons
-              name="account-settings"
-              size={20}
-              style={styles.actionIcon}
-            />
-            <Text style={styles.actionLabel}>{t("profile.settings")}</Text>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              style={styles.actionItem}
+              onPress={() => setShowSettings(true)}
+            >
+              <MaterialCommunityIcons
+                name="account-wrench"
+                size={20}
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionLabel}>{t("profile.settings")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.actionItem}
+              onPress={signOut}
+            >
+              <MaterialCommunityIcons
+                name="exit-to-app"
+                size={20}
+                style={styles.actionIcon}
+              />
+              <Text style={styles.actionLabel}>{t("auth.signOut")}</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
       <ActivitiesModal

@@ -53,6 +53,7 @@ builder.Services.AddScoped<IEventHandler<ProgressUpdatedEvent>, AchievementsServ
 
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<IFollowerService, FollowerService>();
+builder.Services.AddScoped<IEventHandler<UserUpdatedEvent>, FollowerReactor>();
 
 var app = builder.Build();
 

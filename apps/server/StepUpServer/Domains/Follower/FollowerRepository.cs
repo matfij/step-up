@@ -9,6 +9,7 @@ public interface IFollowerRepository
     Task<Follower?> GetByFollowerAndFollowing(string followerId, string followingId);
     Task<List<Follower>> GetFollowers(string userId);
     Task<List<Follower>> GetFollowing(string userId);
+    Task<Follower> Update(Follower follower);
     Task Delete(string id);
 }
 
@@ -61,6 +62,12 @@ public class FollowerRepository : IFollowerRepository
     public async Task<List<Follower>> GetFollowing(string userId)
     {
         return await _collection.Find(f => f.FollowerId == userId).ToListAsync();
+    }
+
+    public async Task<Follower> Update(Follower follower)
+    {
+        await _collection.ReplaceOneAsync(f => f.Id == follower.Id, follower);
+        return follower;
     }
 
     public async Task Delete(string id)

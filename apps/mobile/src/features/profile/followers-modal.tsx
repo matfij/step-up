@@ -17,7 +17,7 @@ import { AppButtonSecondary } from "../../common/components/app-button";
 import { useUserStore } from "../../common/state/user-store";
 import { AppApiError } from "../../common/components/app-api-error";
 import { Follower } from "../../common/api/api-definitions";
-import { withAlpha } from "../../common/utils";
+import { getAvatarUri, withAlpha } from "../../common/utils";
 
 export interface FollowersModalProps {
   userId?: string;
@@ -35,7 +35,6 @@ export const FollowersModal = (props: FollowersModalProps) => {
   const getFollowers = useRequest(followerClient.getFollowers);
   const getFollowing = useRequest(followerClient.getFollowing);
   const getCurrentUserFollowing = useRequest(followerClient.getFollowing);
-
   const [existingFollower, setExistingFollower] = useState<Follower>();
 
   const showActions =
@@ -104,19 +103,26 @@ export const FollowersModal = (props: FollowersModalProps) => {
     }
   };
 
-  const renderFollower = (follower: Follower) => (
-    <View key={follower.id} style={styles.followerItem}>
-      <Image
-        style={styles.followerImage}
-        source={require("@assets/images/avatar.png")}
-      />
-      <Text style={styles.followerLabel}>
-        {props.mode === "followers"
-          ? follower.followerUsername
-          : follower.followingUsername}
-      </Text>
-    </View>
-  );
+  const renderFollower = (follower: Follower) => {
+    const username =
+      props.mode === "followers"
+        ? follower.followerUsername
+        : follower.followingUsername;
+
+    const avatarUri =
+      props.mode === "followers" && follower.followerAvatarUri
+        ? { uri: getAvatarUri(follower.followerAvatarUri) }
+        : props.mode === "following" && follower.followingAvatarUri
+          ? { uri: getAvatarUri(follower.followingAvatarUri) }
+          : require("@assets/images/avatar.png");
+
+    return (
+      <View key={follower.id} style={styles.followerItem}>
+        <Image style={styles.followerImage} source={avatarUri} />
+        <Text style={styles.followerLabel}>{username}</Text>
+      </View>
+    );
+  };
 
   return (
     <ModalWrapper visible={props.mode !== "none"} onClose={props.onClose}>
@@ -174,7 +180,10 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.md,
     paddingHorizontal: theme.spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: withAlpha(theme.colors.secondary[400], theme.opacity.liquid),
+    borderBottomColor: withAlpha(
+      theme.colors.secondary[400],
+      theme.opacity.liquid,
+    ),
   },
   followerImage: {
     height: 40,

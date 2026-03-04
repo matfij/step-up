@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { theme, themeComposable } from "../../common/theme";
 import { getApiUrl } from "../../common/config";
+import { getAvatarUri } from "../../common/utils";
 
 interface AvatarComponentProps {
   avatarUri?: string;
@@ -9,18 +10,14 @@ interface AvatarComponentProps {
 }
 
 export const AvatarComponent = (props: AvatarComponentProps) => {
-  const avatarUri = props.avatarUri
-    ? `${getApiUrl()}${props.avatarUri}`
-    : undefined;
-
   return (
     <View style={styles.avatarWrapper}>
       <View style={styles.avatarContainer}>
         <Image
           style={styles.avatarImage}
           source={
-            avatarUri
-              ? { uri: avatarUri }
+            props.avatarUri
+              ? { uri: getAvatarUri(props.avatarUri) }
               : require("@assets/images/avatar.png")
           }
         />
