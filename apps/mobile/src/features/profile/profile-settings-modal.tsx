@@ -24,14 +24,15 @@ interface ProfileSettingsModalProps {
 
 export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
   const { t } = useTranslation();
-  const { user } = useUserStore();
+  const { user, update } = useUserStore();
   const [username, setUsername] = useState(user?.username ?? "");
   const pickAvatar = usePickAvatar();
   const updateAvatar = useRequest(userClient.uploadAvatar);
 
   useEffect(() => {
-    if (updateAvatar.success) {
+    if (updateAvatar.success && updateAvatar.data) {
       console.log("TODO (M#122) - success notification");
+      update({ avatarUri: updateAvatar.data.avatarUri });
       pickAvatar.reset();
       props.onClose();
     }
