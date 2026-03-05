@@ -6,23 +6,15 @@ public class FollowerReactor(IFollowerRepository repository) : IEventHandler<Use
 {
     private readonly IFollowerRepository _repository = repository;
 
-    public async Task HandleAsync(UserUpdatedEvent userUpdatedEveny)
+    public async Task HandleAsync(UserUpdatedEvent userUpdatedEvent)
     {
-        var followers = await _repository.GetFollowers(userUpdatedEveny.UserId);
-        foreach (var follower in followers)
-        {
-            follower.FollowingUsername = userUpdatedEveny.Username;
-            follower.FollowingAvatarUri = userUpdatedEveny.AvatarUri;
-            
-            await _repository.Update(follower);
-        }
-
-        var followings = await _repository.GetFollowing(userUpdatedEveny.UserId);
-        foreach (var following in followings)
-        {
-            following.FollowerUsername = userUpdatedEveny.Username;
-            following.FollowerAvatarUri = userUpdatedEveny.AvatarUri;
-            await _repository.Update(following);
-        }
+        await _repository.SyncFollowingSnapshot(
+            userUpdatedEvent.UserId,
+            userUpdatedEvent.Username,
+            userUpdatedEvent.AvatarUri);
+        await _repository.SyncFollowerSnapshot(
+            userUpdatedEvent.UserId,
+            userUpdatedEvent.Username,
+            userUpdatedEvent.AvatarUri);
     }
 }

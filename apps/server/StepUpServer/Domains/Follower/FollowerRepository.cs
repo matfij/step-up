@@ -10,6 +10,8 @@ public interface IFollowerRepository
     Task<List<Follower>> GetFollowers(string userId);
     Task<List<Follower>> GetFollowing(string userId);
     Task<Follower> Update(Follower follower);
+    Task SyncFollowerSnapshot(string userId, string username, string? avatarUri);
+    Task SyncFollowingSnapshot(string userId, string username, string? avatarUri);
     Task Delete(string id);
 }
 
@@ -68,6 +70,24 @@ public class FollowerRepository : IFollowerRepository
     {
         await _collection.ReplaceOneAsync(f => f.Id == follower.Id, follower);
         return follower;
+    }
+
+    public async Task SyncFollowingSnapshot(string userId, string username, string? avatarUri)
+    {
+        var filter = Builders<Follower>.Filter.Eq(follower =>follower.FollowingId, userId);
+        var update = Builders<Follower>.Update
+            .Set(follower => follower.FollowingUsername, username)
+            .Set(follower => follower.FollowingAvatarUri, avatarUri);
+        await _collection.UpdateManyAsync(filter, update);
+    }
+
+    public async Task SyncFollowerSnapshot(string userId, string username, string? avatarUri)
+    {
+        var filter = Builders<Follower>.Filter.Eq(f => f.FollowerId, userId);
+        var update = Builders<Follower>.Update
+            .Set(f => f.FollowerUsername, username)
+            .Set(f => f.FollowerAvatarUri, avatarUri);
+        await _collection.UpdateManyAsync(filter, update);
     }
 
     public async Task Delete(string id)
