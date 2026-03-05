@@ -74,7 +74,7 @@ public class FollowerRepository : IFollowerRepository
 
     public async Task SyncFollowingSnapshot(string userId, string username, string? avatarUri)
     {
-        var filter = Builders<Follower>.Filter.Eq(follower =>follower.FollowingId, userId);
+        var filter = Builders<Follower>.Filter.Eq(follower => follower.FollowingId, userId);
         var update = Builders<Follower>.Update
             .Set(follower => follower.FollowingUsername, username)
             .Set(follower => follower.FollowingAvatarUri, avatarUri);
