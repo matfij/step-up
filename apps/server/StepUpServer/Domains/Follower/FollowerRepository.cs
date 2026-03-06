@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using StepUpServer.Common;
 
 namespace StepUpServer.Domains.Follower;
 
@@ -68,7 +69,11 @@ public class FollowerRepository : IFollowerRepository
 
     public async Task<Follower> Update(Follower follower)
     {
-        await _collection.ReplaceOneAsync(f => f.Id == follower.Id, follower);
+        var result = await _collection.ReplaceOneAsync(f => f.Id == follower.Id, follower);
+        if (result.MatchedCount == 0)
+        {
+            throw new ApiException("errors.followerNotFound");
+        }
         return follower;
     }
 
