@@ -93,8 +93,10 @@ export interface Follower {
   id: string;
   followerId: string;
   followerUsername: string;
+  followerAvatarUri?: string;
   followingId: string;
   followingUsername: string;
+  followingAvatarUri?: string;
 }
 
 export interface ApiFile {

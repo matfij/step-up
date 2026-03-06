@@ -37,8 +37,10 @@ public class FollowerService(IFollowerRepository followerRepository, IUserValida
             Id = Utils.GenerateId(),
             FollowerId = user.Id,
             FollowerUsername = user.Username,
+            FollowerAvatarUri = user.AvatarUri,
             FollowingId = following.Id,
             FollowingUsername = following.Username,
+            FollowingAvatarUri = following.AvatarUri,
             FollowedAt = Utils.GetCurrentTimestamp()
         };
 

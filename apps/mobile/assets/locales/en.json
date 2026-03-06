@@ -25,6 +25,7 @@
     "authCodeCheckInbox": "Auth code (check you email inbox)",
     "signIn": "Sign in",
     "signUp": "Sign up",
+    "signOut": "Sign out",
     "newAccount": "Don't have an account? Sign up.",
     "existingAccount": "Already have an account? Sign in.",
     "signUpTitle": "Create a new account",

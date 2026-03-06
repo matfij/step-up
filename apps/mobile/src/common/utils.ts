@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { appConfig } from "./config";
+import { appConfig, getApiUrl } from "./config";
 
 export type Argument<T extends (...args: any) => any> = Parameters<T>[number];
 
@@ -34,3 +34,5 @@ export const withAlpha = (hexColor: string, alpha: number) => {
 export const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+export const getAvatarUri = (baseUri: string) => `${getApiUrl()}${baseUri}`;

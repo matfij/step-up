@@ -4,6 +4,8 @@ public record struct FollowerResponse(
     string Id,
     string FollowerId,
     string FollowerUsername,
+    string? FollowerAvatarUri,
     string FollowingId,
-    string FollowingUsername
+    string FollowingUsername,
+    string? FollowingAvatarUri
 );

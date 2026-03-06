@@ -15,7 +15,7 @@ import { Progress } from "../../common/api/api-definitions";
 import { theme, themeComposable } from "../../common/theme";
 import { BoardKey, BoardToggle } from "./board-toggle";
 import { formatDistance, formatDuration } from "../../common/formatters";
-import { withAlpha } from "../../common/utils";
+import { getAvatarUri, withAlpha } from "../../common/utils";
 import { SkeletonItem } from "../../common/components/skeleton-item";
 import { LeaderModal } from "./leader-modal";
 
@@ -164,7 +164,11 @@ export const LeaderboardComponent = () => {
                     </View>
                     <Image
                       style={styles.leaderImage}
-                      source={require("@assets/images/avatar.png")}
+                      source={
+                        leader.avatarUri
+                          ? { uri: getAvatarUri(leader.avatarUri) }
+                          : require("@assets/images/avatar.png")
+                      }
                     />
                     <Text style={styles.leaderLabel}>{leader.username}</Text>
                   </View>
