@@ -9,7 +9,7 @@ public interface IUserService
     Task<User> CompleteSignUp(string email, string authCode);
     Task StartSignIn(string email);
     Task<User> CompleteSignIn(string email, string authCode);
-    Task<string> UpdateAvatar(string userId, IFormFile? file);
+    Task<User> Update(string userId, string? username, IFormFile? file);
 }
 
 public partial class UserService(
@@ -79,31 +79,43 @@ public partial class UserService(
         return user;
     }
 
-    public async Task<string> UpdateAvatar(string userId, IFormFile? file)
+    public async Task<User> Update(string userId, string? username, IFormFile? file)
     {
-        var validFile = _validator.ValidateAvatar(file);
-
         var user = await _validator.EnsureIdExists(userId);
+        var updated = false;
 
-        var fileName = userId + GenerateNumberString() + Path.GetExtension(validFile.FileName);
+        if (file is not null)
+        {
+            var validFile = _validator.ValidateAvatar(file);
+            var fileName = userId + GenerateNumberString() + Path.GetExtension(validFile.FileName);
+            await using var stream = validFile.OpenReadStream();
+            var avatarUri = await _fileService.SaveAsync(_avatarFolder, fileName, stream);
+            user.AvatarUri = avatarUri;
+            updated = true;
+        }
 
-        await using var stream = validFile.OpenReadStream();
-
-        var avatarUri = await _fileService.SaveAsync(_avatarFolder, fileName, stream);
-
-        user.AvatarUri = avatarUri;
+        if (username is not null && username != user.Username)
+        {
+            await _validator.ValidateUsername(username);
+            user.Username = username;
+            updated = true;
+        }
 
         await _repository.Update(user);
 
-        await _eventPublisher.PublishAsync(
-            new UserUpdatedEvent
-            {
-                UserId = user.Id,
-                Username = user.Username,
-                AvatarUri = avatarUri
-            });
+        if (updated)
+        {
+            await _eventPublisher.PublishAsync(
+                new UserUpdatedEvent
+                {
+                    UserId = user.Id,
+                    Username = user.Username,
+                    AvatarUri = user.AvatarUri ?? string.Empty,
+                }
+            );
+        }
 
-        return avatarUri;
+        return user;
     }
 
     private static string GenerateNumberString(int length = 6)

@@ -16,6 +16,7 @@ import { appConfig } from "../../common/config";
 import { useRequest } from "../../common/api/use-request";
 import { userClient } from "../../common/api/user-client";
 import { usePickAvatar } from "./use-pick-avatar";
+import { isValidUsername } from "../../common/validation";
 
 interface ProfileSettingsModalProps {
   visible: boolean;
@@ -26,24 +27,40 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
   const { t } = useTranslation();
   const { user, update } = useUserStore();
   const [username, setUsername] = useState(user?.username ?? "");
+  const [usernameError, setUsernameError] = useState("");
   const pickAvatar = usePickAvatar();
-  const updateAvatar = useRequest(userClient.uploadAvatar);
+  const updateUser = useRequest(userClient.update);
 
   useEffect(() => {
-    if (updateAvatar.success && updateAvatar.data) {
+    if (updateUser.success && updateUser.data) {
       console.log("TODO (M#122) - success notification");
-      update({ avatarUri: updateAvatar.data.avatarUri });
+      update({
+        username: updateUser.data.username,
+        avatarUri: updateUser.data.avatarUri,
+      });
       pickAvatar.reset();
       props.onClose();
     }
-  }, [updateAvatar.success]);
+  }, [updateUser.success]);
 
   const onConfirm = () => {
-    console.log("TODO (M#104) - full profile update");
-    if (!pickAvatar.avatar || pickAvatar.error) {
+    setUsernameError("");
+
+    if (!isValidUsername(username)) {
+      setUsernameError(
+        t("auth.usernameInvalid", {
+          min: appConfig.validation.usernameLengthMin,
+          max: appConfig.validation.usernameLengthMax,
+        }),
+      );
       return;
     }
-    updateAvatar.call(pickAvatar.avatar);
+
+    if (pickAvatar.error) {
+      return;
+    }
+
+    updateUser.call({ username, avatar: pickAvatar.avatar });
   };
 
   return (
@@ -70,8 +87,8 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
 
         <View style={styles.actionsWrapper}>
           <AppApiError
-            message={pickAvatar.error}
-            error={updateAvatar.error}
+            message={usernameError ?? pickAvatar.error}
+            error={updateUser.error}
             style={styles.errorWrapper}
           />
           <AppButton label={t("common.confirm")} onClick={onConfirm} />
