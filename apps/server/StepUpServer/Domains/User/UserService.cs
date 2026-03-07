@@ -101,16 +101,16 @@ public partial class UserService(
             updated = true;
         }
 
-        await _repository.Update(user);
 
         if (updated)
         {
+            await _repository.Update(user);
             await _eventPublisher.PublishAsync(
                 new UserUpdatedEvent
                 {
                     UserId = user.Id,
                     Username = user.Username,
-                    AvatarUri = user.AvatarUri ?? string.Empty,
+                    AvatarUri = user.AvatarUri,
                 }
             );
         }

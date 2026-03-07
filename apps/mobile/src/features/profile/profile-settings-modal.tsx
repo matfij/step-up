@@ -87,7 +87,7 @@ export const ProfileSettingsModal = (props: ProfileSettingsModalProps) => {
 
         <View style={styles.actionsWrapper}>
           <AppApiError
-            message={usernameError ?? pickAvatar.error}
+            message={usernameError || pickAvatar.error}
             error={updateUser.error}
             style={styles.errorWrapper}
           />
