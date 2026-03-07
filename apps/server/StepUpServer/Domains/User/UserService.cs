@@ -84,6 +84,13 @@ public partial class UserService(
         var user = await _validator.EnsureIdExists(userId);
         var updated = false;
 
+        if (username is not null && username != user.Username)
+        {
+            await _validator.ValidateUsername(username);
+            user.Username = username;
+            updated = true;
+        }
+
         if (file is not null)
         {
             var validFile = _validator.ValidateAvatar(file);
@@ -93,14 +100,6 @@ public partial class UserService(
             user.AvatarUri = avatarUri;
             updated = true;
         }
-
-        if (username is not null && username != user.Username)
-        {
-            await _validator.ValidateUsername(username);
-            user.Username = username;
-            updated = true;
-        }
-
 
         if (updated)
         {
