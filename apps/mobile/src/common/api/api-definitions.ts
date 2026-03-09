@@ -104,7 +104,3 @@ export interface ApiFile {
   fileName: string;
   mimeType: string;
 }
-
-export interface UploadAvatarResponse {
-  avatarUri: string;
-}

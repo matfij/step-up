@@ -60,12 +60,20 @@ public static class UserEndpoints
         );
 
         app.MapPut(
-                "/users/avatar",
-                async (HttpContext context, IFormFile? avatar, IUserService userService) =>
+                "/users/update",
+                async (HttpContext context, [FromForm] string? username, IFormFile? avatar, IUserService userService) =>
                 {
                     var userId = context.GetUserId();
-                    var avatarUri = await userService.UpdateAvatar(userId, avatar);
-                    return Results.Ok(new UserAvatarResponse(avatarUri));
+                    var user = await userService.Update(userId, username, avatar);
+                    return Results.Ok(
+                        new UserAuthResponse(
+                            user.Id,
+                            user.Email,
+                            user.Username,
+                            user.ApiToken,
+                            user.AvatarUri
+                        )
+                    );
                 }
             )
             .WithMetadata(new RequireAuthAttribute())
