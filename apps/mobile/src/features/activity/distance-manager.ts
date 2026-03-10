@@ -1,7 +1,7 @@
 import { LocationObject } from "expo-location";
 import { Coordinate } from "./activity-definitions";
 
-const EARTH_RADIUS_M = 6_371_000;
+export const EARTH_RADIUS_M = 6_371_000;
 
 export const calculateRouteLength = (locations: LocationObject[]): number => {
   const points = locations.map((location) => location.coords);
@@ -15,9 +15,9 @@ export const calculateRouteLength = (locations: LocationObject[]): number => {
   return total;
 };
 
-const calculateDistanceBetweenPoints = (
+export const calculateDistanceBetweenPoints = (
   a: Coordinate,
-  b: Coordinate
+  b: Coordinate,
 ): number => {
   const aLat = degToRad(a.latitude);
   const bLat = degToRad(b.latitude);
@@ -37,4 +37,4 @@ const calculateDistanceBetweenPoints = (
   );
 };
 
-const degToRad = (deg: number) => (deg * Math.PI) / 180;
+export const degToRad = (deg: number) => (deg * Math.PI) / 180;

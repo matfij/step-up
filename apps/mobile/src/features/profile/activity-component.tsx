@@ -21,7 +21,7 @@ export const ActivityComponent = (props: ActivityComponentProps) => {
         latitude: lat,
         longitude: props.activity.routeLongitudes[index],
       })),
-    [props.activity.routeLatitudes, props.activity.routeLongitudes]
+    [props.activity.routeLatitudes, props.activity.routeLongitudes],
   );
 
   useEffect(() => {
