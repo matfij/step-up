@@ -45,19 +45,27 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
         "activityLocation",
         [],
       );
-      const lastLocation = locations.at(-1);
-      const newLocation = data.locations.at(-1);
-      if (!newLocation) {
-        return;
+
+      let lastLocation = locations.at(-1);
+      const initialLength = locations.length;
+
+      for (let i = 0; i < data.locations.length; i++) {
+        const currentLocation = data.locations[i];
+        if (!lastLocation) {
+          lastLocation = currentLocation;
+          continue;
+        }
+
+        const distanceDiff = calculateDistanceBetweenPoints(
+          lastLocation.coords,
+          currentLocation.coords,
+        );
+        if (distanceDiff > appConfig.activity.minDistanceDiff) {
+          locations.push(currentLocation);
+        }
       }
-      const distance = lastLocation
-        ? calculateDistanceBetweenPoints(
-            lastLocation.coords,
-            newLocation.coords,
-          )
-        : Infinity;
-      if (distance > appConfig.activity.minDistanceDiff) {
-        locations.push(newLocation);
+
+      if (locations.length > initialLength) {
         await setAsyncStorageItem("activityLocation", locations);
       }
     }

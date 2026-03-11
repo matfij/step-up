@@ -13,32 +13,47 @@ export const rdpCompress = (
   locations: LocationObject[],
   epsilon = appConfig.activity.RDPEpsilon,
 ): LocationObject[] => {
-  if (locations.length < 2) {
+  const length = locations.length;
+  if (length < 2) {
     return locations;
   }
 
-  let maxDistance = 0;
-  let maxIndex = 0;
+  const keepMask = new Uint8Array(length);
+  keepMask[0] = 1;
+  keepMask[length - 1] = 1;
 
-  for (let i = 1; i < locations.length - 1; i++) {
-    const distance = getPerpendicularDistance(
-      locations[i],
-      locations[0],
-      locations[locations.length - 1],
-    );
-    if (distance > maxDistance) {
-      maxDistance = distance;
-      maxIndex = i;
+  const stack: [number, number][] = [[0, length - 1]];
+
+  while (stack.length > 0) {
+    const [start, end] = stack.pop()!;
+
+    if (end - start < 2) {
+      continue;
+    }
+
+    let maxDistance = 0;
+    let maxIndex = 0;
+
+    for (let i = start + 1; i < end; i++) {
+      const distance = getPerpendicularDistance(
+        locations[i],
+        locations[start],
+        locations[end],
+      );
+      if (distance > maxDistance) {
+        maxDistance = distance;
+        maxIndex = i;
+      }
+    }
+
+    if (maxDistance > epsilon) {
+      keepMask[maxIndex] = 1;
+      stack.push([start, maxIndex]);
+      stack.push([maxIndex, end]);
     }
   }
 
-  if (maxDistance > epsilon) {
-    const left = rdpCompress(locations.slice(0, maxIndex + 1), epsilon);
-    const right = rdpCompress(locations.slice(maxIndex), epsilon);
-    return [...left.slice(0, -1), ...right];
-  }
-
-  return [locations[0], locations[locations.length - 1]];
+  return locations.filter((_, i) => keepMask[i]);
 };
 
 /**
