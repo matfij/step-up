@@ -23,11 +23,11 @@ public static class ActivityEndpoints
                             activity.UserId,
                             activity.Name,
                             activity.Description,
+                            activity.StartTime,
                             activity.Duration,
                             activity.Distance,
                             activity.AverageSpeed,
                             activity.TopSpeed,
-                            activity.StartTime,
                             activity.RouteLatitudes,
                             activity.RouteLongitudes
                         )
@@ -51,11 +51,11 @@ public static class ActivityEndpoints
                             activity.UserId,
                             activity.Name,
                             activity.Description,
+                            activity.StartTime,
                             activity.Duration,
                             activity.Distance,
                             activity.AverageSpeed,
                             activity.TopSpeed,
-                            activity.StartTime,
                             activity.RouteLatitudes,
                             activity.RouteLongitudes
                         )
@@ -82,11 +82,11 @@ public static class ActivityEndpoints
                                     activity.UserId,
                                     activity.Name,
                                     activity.Description,
+                                    activity.StartTime,
                                     activity.Duration,
                                     activity.Distance,
                                     activity.AverageSpeed,
                                     activity.TopSpeed,
-                                    activity.StartTime,
                                     activity.RouteLatitudes,
                                     activity.RouteLongitudes
                                 )
@@ -112,11 +112,11 @@ public static class ActivityEndpoints
                             activity.UserId,
                             activity.Name,
                             activity.Description,
+                            activity.StartTime,
                             activity.Duration,
                             activity.Distance,
                             activity.AverageSpeed,
                             activity.TopSpeed,
-                            activity.StartTime,
                             activity.RouteLatitudes,
                             activity.RouteLongitudes
                         )

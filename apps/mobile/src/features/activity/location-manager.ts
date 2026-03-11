@@ -9,6 +9,7 @@ import {
 import * as TaskManager from "expo-task-manager";
 import { appConfig } from "../../common/config";
 import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
+import { calculateDistanceBetweenPoints } from "./distance-manager";
 
 export const startLocationTracking = async () => {
   const foregroundPermission = await requestForegroundPermissionsAsync();
@@ -44,8 +45,29 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
         "activityLocation",
         [],
       );
-      locations.push(...data.locations);
-      await setAsyncStorageItem("activityLocation", locations);
+
+      let lastLocation = locations.at(-1);
+      const initialLength = locations.length;
+
+      for (let i = 0; i < data.locations.length; i++) {
+        const currentLocation = data.locations[i];
+        if (!lastLocation) {
+          lastLocation = currentLocation;
+          continue;
+        }
+
+        const distanceDiff = calculateDistanceBetweenPoints(
+          lastLocation.coords,
+          currentLocation.coords,
+        );
+        if (distanceDiff > appConfig.activity.minDistanceDiff) {
+          locations.push(currentLocation);
+        }
+      }
+
+      if (locations.length > initialLength) {
+        await setAsyncStorageItem("activityLocation", locations);
+      }
     }
   },
 );

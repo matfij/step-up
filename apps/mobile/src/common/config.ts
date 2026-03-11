@@ -4,6 +4,10 @@ export const appConfig = {
   taskNames: {
     backgroundLocation: "sup-background-location-task",
   },
+  activity: {
+    minDistanceDiff: 1,
+    RDPEpsilon: 5,
+  },
   storageKeys: {
     apiToken: "sup-api-key",
     activityStartTime: "sup-activity-start-time",

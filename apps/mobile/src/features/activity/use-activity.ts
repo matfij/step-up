@@ -7,6 +7,7 @@ import { ActivityReport } from "./activity-definitions";
 import { calculateRouteLength } from "./distance-manager";
 import { startLocationTracking } from "./location-manager";
 import { getAverageSpeed, getCurrentSpeed, getTopSpeed } from "./speed-manager";
+import { rdpCompress } from "./route-compressor";
 
 const REFRESH_TIME_MS = 1000;
 
@@ -176,6 +177,7 @@ export const useActivity = () => {
     }
 
     const locations = locationsRef.current;
+    const compressedLocations = rdpCompress(locations);
 
     const newActivityReport: ActivityReport = {
       startTime: startTimeRef.current,
@@ -183,8 +185,12 @@ export const useActivity = () => {
       distance: Math.round(calculateRouteLength(locations)),
       averageSpeed: Math.round(getAverageSpeed(locations)),
       topSpeed: Math.round(getTopSpeed(locations)),
-      routeLatitudes: locations.map((location) => location.coords.latitude),
-      routeLongitudes: locations.map((location) => location.coords.longitude),
+      routeLatitudes: compressedLocations.map(
+        (location) => location.coords.latitude,
+      ),
+      routeLongitudes: compressedLocations.map(
+        (location) => location.coords.longitude,
+      ),
     };
 
     setActivityReport(newActivityReport);
