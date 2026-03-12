@@ -52,6 +52,7 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
       for (let i = 0; i < data.locations.length; i++) {
         const currentLocation = data.locations[i];
         if (!lastLocation) {
+          locations.push(currentLocation);
           lastLocation = currentLocation;
           continue;
         }
@@ -63,6 +64,8 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
         if (distanceDiff > appConfig.activity.minDistanceDiff) {
           locations.push(currentLocation);
         }
+
+        lastLocation = currentLocation;
       }
 
       if (locations.length > initialLength) {
