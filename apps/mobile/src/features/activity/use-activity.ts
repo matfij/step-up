@@ -162,9 +162,15 @@ export const useActivity = () => {
   };
 
   const resume = async () => {
-    await startLocationTracking();
+    const started = await startLocationTracking();
+    if (!started) {
+      setError("activity.missingPermissions");
+      return;
+    }
+    const nextSegments = [...segmentsRef.current, []];
+    segmentsRef.current = nextSegments;
+    await setAsyncStorageItem("activitySegments", nextSegments);
     await setAsyncStorageItem("activityIsPaused", false);
-    await setAsyncStorageItem("activitySegments", [...segmentsRef.current, []]);
     setIsPaused(false);
   };
 
