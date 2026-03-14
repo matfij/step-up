@@ -56,7 +56,7 @@ export const useActivity = () => {
         Location.LocationObject[][]
       >("activitySegments", [[]]);
 
-      if (savedStartTime > 0 && savedLocations.length > 0) {
+      if (savedStartTime > 0 && savedLocations[0]?.length > 0) {
         startTimeRef.current = savedStartTime;
         segmentsRef.current = savedLocations;
         setIsTracking(true);
