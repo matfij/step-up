@@ -14,7 +14,7 @@ const REFRESH_TIME_MS = 1000;
 export const useActivity = () => {
   const appState = useRef(AppState.currentState);
   const startTimeRef = useRef<number>(0);
-  const locationsRef = useRef<Location.LocationObject[]>([]);
+  const segmentsRef = useRef<Location.LocationObject[][]>([[]]);
   const intervalRef = useRef<number | null>(null);
   const [isTracking, setIsTracking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -24,6 +24,8 @@ export const useActivity = () => {
   const [activityReport, setActivityReport] = useState<ActivityReport>();
   const [error, setError] = useState("");
 
+  const getAllLocations = () => segmentsRef.current.flat();
+
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       if (
@@ -32,11 +34,10 @@ export const useActivity = () => {
         isTracking &&
         !isPaused
       ) {
-        getAsyncStorageItem<Location.LocationObject[]>(
-          "activityLocation",
+        getAsyncStorageItem<Location.LocationObject[][]>("activitySegments", [
           [],
-        ).then((locations) => {
-          locationsRef.current = locations;
+        ]).then((locations) => {
+          segmentsRef.current = locations;
         });
       }
       appState.current = nextAppState;
@@ -52,12 +53,12 @@ export const useActivity = () => {
         0,
       );
       const savedLocations = await getAsyncStorageItem<
-        Location.LocationObject[]
-      >("activityLocation", []);
+        Location.LocationObject[][]
+      >("activitySegments", [[]]);
 
-      if (savedStartTime > 0 && savedLocations.length > 0) {
+      if (savedStartTime > 0 && savedLocations[0]?.length > 0) {
         startTimeRef.current = savedStartTime;
-        locationsRef.current = savedLocations;
+        segmentsRef.current = savedLocations;
         setIsTracking(true);
         setIsPaused(true);
       }
@@ -71,11 +72,11 @@ export const useActivity = () => {
       return;
     }
     const locationSubscription = setInterval(async () => {
-      const locations = await getAsyncStorageItem<Location.LocationObject[]>(
-        "activityLocation",
-        [],
+      const locations = await getAsyncStorageItem<Location.LocationObject[][]>(
+        "activitySegments",
+        [[]],
       );
-      locationsRef.current = locations;
+      segmentsRef.current = locations;
     }, REFRESH_TIME_MS);
 
     return () => clearInterval(locationSubscription);
@@ -103,10 +104,10 @@ export const useActivity = () => {
   }, [isTracking, isPaused]);
 
   const updateMetrics = () => {
-    const locations = locationsRef.current;
+    const locations = getAllLocations();
 
     if (locations.length > 0) {
-      const newDistance = Math.round(calculateRouteLength(locations));
+      const newDistance = Math.round(calculateRouteLength(segmentsRef.current));
       setDistance(newDistance);
 
       const newSpeed = Math.round(getCurrentSpeed(locations));
@@ -134,10 +135,10 @@ export const useActivity = () => {
 
     const now = Date.now();
     startTimeRef.current = now;
-    locationsRef.current = [];
+    segmentsRef.current = [[]];
 
     await setAsyncStorageItem("activityStartTime", now);
-    await setAsyncStorageItem("activityLocation", []);
+    await setAsyncStorageItem("activitySegments", [[]]);
     await setAsyncStorageItem("activityIsPaused", false);
 
     setIsTracking(true);
@@ -161,7 +162,14 @@ export const useActivity = () => {
   };
 
   const resume = async () => {
-    await startLocationTracking();
+    const started = await startLocationTracking();
+    if (!started) {
+      setError("activity.missingPermissions");
+      return;
+    }
+    const nextSegments = [...segmentsRef.current, []];
+    segmentsRef.current = nextSegments;
+    await setAsyncStorageItem("activitySegments", nextSegments);
     await setAsyncStorageItem("activityIsPaused", false);
     setIsPaused(false);
   };
@@ -176,15 +184,16 @@ export const useActivity = () => {
       );
     }
 
-    const locations = locationsRef.current;
+    const segments = segmentsRef.current;
+    const locations = getAllLocations();
     const compressedLocations = rdpCompress(locations);
 
     const newActivityReport: ActivityReport = {
       startTime: startTimeRef.current,
       duration: duration,
-      distance: Math.round(calculateRouteLength(locations)),
-      averageSpeed: Math.round(getAverageSpeed(locations)),
-      topSpeed: Math.round(getTopSpeed(locations)),
+      distance: Math.round(calculateRouteLength(segments)),
+      averageSpeed: Math.round(getAverageSpeed(segments)),
+      topSpeed: Math.round(getTopSpeed(segments)),
       routeLatitudes: compressedLocations.map(
         (location) => location.coords.latitude,
       ),
@@ -201,9 +210,9 @@ export const useActivity = () => {
     setDuration(0);
 
     startTimeRef.current = 0;
-    locationsRef.current = [];
+    segmentsRef.current = [[]];
     await setAsyncStorageItem("activityStartTime", 0);
-    await setAsyncStorageItem("activityLocation", []);
+    await setAsyncStorageItem("activitySegments", [[]]);
   };
 
   const discard = async () => {
@@ -224,9 +233,9 @@ export const useActivity = () => {
     setActivityReport(undefined);
 
     startTimeRef.current = 0;
-    locationsRef.current = [];
+    segmentsRef.current = [[]];
     await setAsyncStorageItem("activityStartTime", 0);
-    await setAsyncStorageItem("activityLocation", []);
+    await setAsyncStorageItem("activitySegments", [[]]);
   };
 
   return {

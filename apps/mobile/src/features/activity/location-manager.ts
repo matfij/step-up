@@ -31,7 +31,6 @@ export const startLocationTracking = async () => {
   }
   return false;
 };
-
 TaskManager.defineTask<{ locations: LocationObject[] }>(
   appConfig.taskNames.backgroundLocation,
   async ({ data, error }) => {
@@ -39,38 +38,42 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
       console.error("Location task error:", error);
       return;
     }
+    
     const isPaused = await getAsyncStorageItem("activityIsPaused", false);
-    if (!isPaused) {
-      const locations = await getAsyncStorageItem<LocationObject[]>(
-        "activityLocation",
-        [],
-      );
+    if (isPaused) {
+      return;
+    }
 
-      let lastLocation = locations.at(-1);
-      const initialLength = locations.length;
+    const segments = await getAsyncStorageItem<LocationObject[][]>(
+      "activitySegments",
+      [[]],
+    );
 
-      for (let i = 0; i < data.locations.length; i++) {
-        const currentLocation = data.locations[i];
-        if (!lastLocation) {
-          locations.push(currentLocation);
-          lastLocation = currentLocation;
-          continue;
-        }
+    const currentSegment = segments[segments.length - 1];
+    let lastLocation = currentSegment.at(-1);
+    const initialLength = currentSegment.length;
 
-        const distanceDiff = calculateDistanceBetweenPoints(
-          lastLocation.coords,
-          currentLocation.coords,
-        );
-        if (distanceDiff > appConfig.activity.minDistanceDiff) {
-          locations.push(currentLocation);
-        }
-
+    for (const currentLocation of data.locations) {
+      if (!lastLocation) {
+        currentSegment.push(currentLocation);
         lastLocation = currentLocation;
+        continue;
       }
 
-      if (locations.length > initialLength) {
-        await setAsyncStorageItem("activityLocation", locations);
+      const distanceDiff = calculateDistanceBetweenPoints(
+        lastLocation.coords,
+        currentLocation.coords,
+      );
+      if (distanceDiff > appConfig.activity.minDistanceDiff) {
+        currentSegment.push(currentLocation);
       }
+
+      lastLocation = currentLocation;
+    }
+
+    if (currentSegment.length > initialLength) {
+      segments[segments.length - 1] = currentSegment;
+      await setAsyncStorageItem("activitySegments", segments);
     }
   },
 );
