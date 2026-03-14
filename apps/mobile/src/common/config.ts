@@ -12,7 +12,7 @@ export const appConfig = {
     apiToken: "sup-api-key",
     activityStartTime: "sup-activity-start-time",
     activityIsPaused: "sup-activity-is-paused",
-    activityLocation: "sup-activity-location",
+    activitySegments: "sup-activity-segments",
   },
   validation: {
     emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,

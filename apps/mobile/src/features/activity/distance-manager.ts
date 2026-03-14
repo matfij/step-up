@@ -3,13 +3,15 @@ import { Coordinate } from "./activity-definitions";
 
 export const EARTH_RADIUS_M = 6_371_000;
 
-export const calculateRouteLength = (locations: LocationObject[]): number => {
-  const points = locations.map((location) => location.coords);
-
+export const calculateRouteLength = (segments: LocationObject[][]): number => {
   let total = 0;
 
-  for (let i = 1; i < points.length; i++) {
-    total += calculateDistanceBetweenPoints(points[i - 1], points[i]);
+  for (const segment of segments) {
+    const points = segment.map((location) => location.coords);
+
+    for (let i = 1; i < points.length; i++) {
+      total += calculateDistanceBetweenPoints(points[i - 1], points[i]);
+    }
   }
 
   return total;
