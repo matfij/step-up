@@ -10,7 +10,7 @@ import { ProfileActionsComponent } from "./profile-actions-component";
 import { AvatarComponent } from "./avatar-component";
 
 export const ProfileComponent = () => {
-  const { user, signOut } = useUserStore();
+  const { user } = useUserStore();
   const getProgress = useRequest(progressClient.getByUserId);
 
   useFocusEffect(

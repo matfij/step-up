@@ -36,3 +36,14 @@ export const delay = (ms: number) => {
 };
 
 export const getAvatarUri = (baseUri: string) => `${getApiUrl()}${baseUri}`;
+
+export const generateRandomString = (length = 8) => {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const result = [];
+  const charsLength = chars.length;
+  for (let i = 0; i < length; i += 1) {
+    result.push(chars[Math.floor(Math.random() * charsLength)]);
+  }
+  return result.join("");
+};
