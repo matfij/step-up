@@ -83,18 +83,24 @@ export const LeaderboardComponent = () => {
   const fetchLeaderboard = (force = false) => {
     switch (currentBoard) {
       case "duration":
-        if (force || (!getBestDuration.data && !getBestDuration.loading)) {
+        if (
+          (force && !getBestDuration.loading) ||
+          (!getBestDuration.data && !getBestDuration.loading)
+        ) {
           getBestDuration.call(undefined);
         }
         break;
       case "distance":
-        if (force || (!getBestDistance.data && !getBestDistance.loading)) {
+        if (
+          (force && !getBestDistance.loading) ||
+          (!getBestDistance.data && !getBestDistance.loading)
+        ) {
           getBestDistance.call(undefined);
         }
         break;
       case "monthlyDuration":
         if (
-          force ||
+          (force && !getBestMonthlyDuration.loading) ||
           (!getBestMonthlyDuration.data && !getBestMonthlyDuration.loading)
         ) {
           getBestMonthlyDuration.call(undefined);
@@ -102,7 +108,7 @@ export const LeaderboardComponent = () => {
         break;
       case "monthlyDistance":
         if (
-          force ||
+          (force && !getBestMonthlyDistance.loading) ||
           (!getBestMonthlyDistance.data && !getBestMonthlyDistance.loading)
         ) {
           getBestMonthlyDistance.call(undefined);
