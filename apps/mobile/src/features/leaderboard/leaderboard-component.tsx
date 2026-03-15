@@ -1,5 +1,6 @@
 import {
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -45,28 +46,7 @@ export const LeaderboardComponent = () => {
     getBestMonthlyDistance.loading;
 
   useEffect(() => {
-    switch (currentBoard) {
-      case "duration":
-        if (!getBestDuration.data && !getBestDuration.loading) {
-          getBestDuration.call(undefined);
-        }
-        break;
-      case "distance":
-        if (!getBestDistance.data && !getBestDistance.loading) {
-          getBestDistance.call(undefined);
-        }
-        break;
-      case "monthlyDuration":
-        if (!getBestMonthlyDuration.data && !getBestMonthlyDuration.loading) {
-          getBestMonthlyDuration.call(undefined);
-        }
-        break;
-      case "monthlyDistance":
-        if (!getBestMonthlyDistance.data && !getBestMonthlyDistance.loading) {
-          getBestMonthlyDistance.call(undefined);
-        }
-        break;
-    }
+    fetchLeaderboard();
   }, [currentBoard]);
 
   useEffect(() => {
@@ -100,6 +80,43 @@ export const LeaderboardComponent = () => {
     getBestMonthlyDistance.data,
   ]);
 
+  const fetchLeaderboard = (force = false) => {
+    switch (currentBoard) {
+      case "duration":
+        if (
+          (force && !getBestDuration.loading) ||
+          (!getBestDuration.data && !getBestDuration.loading)
+        ) {
+          getBestDuration.call(undefined);
+        }
+        break;
+      case "distance":
+        if (
+          (force && !getBestDistance.loading) ||
+          (!getBestDistance.data && !getBestDistance.loading)
+        ) {
+          getBestDistance.call(undefined);
+        }
+        break;
+      case "monthlyDuration":
+        if (
+          (force && !getBestMonthlyDuration.loading) ||
+          (!getBestMonthlyDuration.data && !getBestMonthlyDuration.loading)
+        ) {
+          getBestMonthlyDuration.call(undefined);
+        }
+        break;
+      case "monthlyDistance":
+        if (
+          (force && !getBestMonthlyDistance.loading) ||
+          (!getBestMonthlyDistance.data && !getBestMonthlyDistance.loading)
+        ) {
+          getBestMonthlyDistance.call(undefined);
+        }
+        break;
+    }
+  };
+
   const getScore = (progress: Progress) => {
     switch (currentBoard) {
       case "duration":
@@ -125,7 +142,14 @@ export const LeaderboardComponent = () => {
               {t("leaderboard.score")}
             </Text>
           </View>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => fetchLeaderboard(true)}
+              />
+            }
+          >
             {leaderboardLoading &&
               Array.from({ length: 10 }).map((_, index) => (
                 <View key={`skeleton-${index}`} style={styles.leaderItem}>
