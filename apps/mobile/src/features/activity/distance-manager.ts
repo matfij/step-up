@@ -1,13 +1,13 @@
 import { LocationObject } from "expo-location";
-import { Coordinate } from "./activity-definitions";
+import { ActivitySegment, Coordinate } from "./activity-definitions";
 
 export const EARTH_RADIUS_M = 6_371_000;
 
-export const calculateRouteLength = (segments: LocationObject[][]): number => {
+export const calculateRouteLength = (segments: ActivitySegment[]): number => {
   let total = 0;
 
   for (const segment of segments) {
-    const points = segment.map((location) => location.coords);
+    const points = segment.locations.map((location) => location.coords);
 
     for (let i = 1; i < points.length; i++) {
       total += calculateDistanceBetweenPoints(points[i - 1], points[i]);

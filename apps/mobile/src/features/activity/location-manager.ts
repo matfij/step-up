@@ -10,6 +10,7 @@ import * as TaskManager from "expo-task-manager";
 import { appConfig } from "../../common/config";
 import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
 import { calculateDistanceBetweenPoints } from "./distance-manager";
+import { ActivitySegment } from "./activity-definitions";
 
 export const startLocationTracking = async () => {
   const foregroundPermission = await requestForegroundPermissionsAsync();
@@ -38,24 +39,22 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
       console.error("Location task error:", error);
       return;
     }
-    
+
     const isPaused = await getAsyncStorageItem("activityIsPaused", false);
     if (isPaused) {
       return;
     }
 
-    const segments = await getAsyncStorageItem<LocationObject[][]>(
-      "activitySegments",
-      [[]],
-    );
+    const segments =
+      await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
 
     const currentSegment = segments[segments.length - 1];
-    let lastLocation = currentSegment.at(-1);
-    const initialLength = currentSegment.length;
+    let lastLocation = currentSegment.locations.at(-1);
+    const initialLength = currentSegment.locations.length;
 
     for (const currentLocation of data.locations) {
       if (!lastLocation) {
-        currentSegment.push(currentLocation);
+        currentSegment.locations.push(currentLocation);
         lastLocation = currentLocation;
         continue;
       }
@@ -65,13 +64,13 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
         currentLocation.coords,
       );
       if (distanceDiff > appConfig.activity.minDistanceDiff) {
-        currentSegment.push(currentLocation);
+        currentSegment.locations.push(currentLocation);
       }
 
       lastLocation = currentLocation;
     }
 
-    if (currentSegment.length > initialLength) {
+    if (currentSegment.locations.length > initialLength) {
       segments[segments.length - 1] = currentSegment;
       await setAsyncStorageItem("activitySegments", segments);
     }

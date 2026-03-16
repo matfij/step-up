@@ -7,11 +7,11 @@ export const noOp = () => {};
 
 export const getAsyncStorageItem = async <T>(
   key: keyof typeof appConfig.storageKeys,
-  defaultValue: T,
+  defaultValue?: T,
 ) => {
   const data = await AsyncStorage.getItem(appConfig.storageKeys[key]);
-  if (data === null || data === undefined) {
-    return defaultValue;
+  if (data === null || data === undefined && defaultValue) {
+    return defaultValue as T;
   }
   return JSON.parse(data) as T;
 };
