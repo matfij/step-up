@@ -2,7 +2,11 @@ import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { appConfig } from "../../common/config";
-import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
+import {
+  getAsyncStorageItem,
+  isNumber,
+  setAsyncStorageItem,
+} from "../../common/utils";
 import { ActivityReport, ActivitySegment } from "./activity-definitions";
 import { calculateRouteLength } from "./distance-manager";
 import { startLocationTracking } from "./location-manager";
@@ -38,7 +42,9 @@ export const useActivity = () => {
       ) {
         getAsyncStorageItem<ActivitySegment[]>("activitySegments").then(
           (segments) => {
-            segmentsRef.current = segments;
+            if (segments) {
+              segmentsRef.current = segments;
+            }
           },
         );
       }
@@ -50,14 +56,16 @@ export const useActivity = () => {
 
   useEffect(() => {
     const loadPersistedActivity = async () => {
-      const savedStartTime = await getAsyncStorageItem<number>(
-        "activityStartTime",
-        0,
-      );
+      const savedStartTime =
+        await getAsyncStorageItem<number>("activityStartTime");
       const savedSegments =
         await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
 
-      if (savedStartTime > 0 && savedSegments[0]) {
+      if (
+        isNumber(savedStartTime) &&
+        savedStartTime > 0 &&
+        savedSegments?.[0]
+      ) {
         startTimeRef.current = savedStartTime;
         segmentsRef.current = savedSegments;
         setIsTracking(true);
@@ -75,7 +83,9 @@ export const useActivity = () => {
     const locationSubscription = setInterval(async () => {
       const segments =
         await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
-      segmentsRef.current = segments;
+      if (segments) {
+        segmentsRef.current = segments;
+      }
     }, REFRESH_TIME_MS);
 
     return () => clearInterval(locationSubscription);
@@ -104,6 +114,8 @@ export const useActivity = () => {
 
   const updateMetrics = () => {
     const locations = getAllLocations();
+
+    console.log("locations", locations);
 
     if (locations.length > 0) {
       const newDistance = Math.round(calculateRouteLength(segmentsRef.current));

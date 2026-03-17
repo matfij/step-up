@@ -40,13 +40,17 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
       return;
     }
 
-    const isPaused = await getAsyncStorageItem("activityIsPaused", false);
+    const isPaused = await getAsyncStorageItem("activityIsPaused");
     if (isPaused) {
       return;
     }
 
     const segments =
       await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
+
+    if (!segments || segments.length === 0) {
+      return;
+    }
 
     const currentSegment = segments[segments.length - 1];
     let lastLocation = currentSegment.locations.at(-1);
