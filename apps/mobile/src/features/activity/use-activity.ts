@@ -144,13 +144,13 @@ export const useActivity = () => {
     }
 
     const now = Date.now();
+    const initialSegments = [{ startTime: now, locations: [] }];
+
     startTimeRef.current = now;
-    segmentsRef.current = [];
+    segmentsRef.current = initialSegments;
 
     await setAsyncStorageItem("activityStartTime", now);
-    await setAsyncStorageItem("activitySegments", [
-      { startTime: now, locations: [] },
-    ]);
+    await setAsyncStorageItem("activitySegments", initialSegments);
     await setAsyncStorageItem("activityIsPaused", false);
 
     setIsTracking(true);
