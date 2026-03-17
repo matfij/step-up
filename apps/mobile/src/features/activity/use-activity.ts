@@ -115,8 +115,6 @@ export const useActivity = () => {
   const updateMetrics = () => {
     const locations = getAllLocations();
 
-    console.log("locations", locations);
-
     if (locations.length > 0) {
       const newDistance = Math.round(calculateRouteLength(segmentsRef.current));
       setDistance(newDistance);

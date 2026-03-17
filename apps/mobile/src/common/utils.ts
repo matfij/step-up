@@ -14,7 +14,7 @@ export const getAsyncStorageItem = async <T>(
       return undefined;
     }
     return JSON.parse(data) as T;
-  } finally {
+  } catch {
     return undefined;
   }
 };
