@@ -30,6 +30,8 @@ import {
   getAchievementTierColor,
   getAchievementTierName,
 } from "./achievements-utils";
+import { SkeletonItem } from "../../common/components/skeleton-item";
+import { withAlpha } from "../../common/utils";
 
 interface AchievementsComponentProps {
   userId?: string;
@@ -42,6 +44,11 @@ interface Achievement extends AchievementProgress {
   color: string;
   unitCategory: UnitCategory;
 }
+
+const skeletonColor = withAlpha(
+  theme.colors.dark[300],
+  theme.opacity.mist,
+);
 
 export const AchievementsComponent = (props: AchievementsComponentProps) => {
   const { t } = useTranslation();
@@ -117,19 +124,33 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
     <View style={styles.achievementsWrapper}>
       <Text style={styles.achievementsLabel}>{t("profile.achievements")}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {achievements.map((achievement) => (
-          <Pressable
-            key={achievement.label}
-            onPress={() => setSelectedAchievement(achievement)}
-            style={({ pressed }) => [
-              styles.achievementItem,
-              { borderColor: achievement.color },
-              pressed && { opacity: theme.opacity.glass },
-            ]}
-          >
-            <Image style={styles.achievementImage} source={achievement.image} />
-          </Pressable>
-        ))}
+        {getAchievements.loading &&
+          Array.from({ length: 10 }).map((_, index) => (
+            <SkeletonItem
+              key={`skeleton-${index}`}
+              width={54}
+              height={54}
+              color={skeletonColor}
+              style={styles.achievementItem}
+            />
+          ))}
+        {!getAchievements.loading &&
+          achievements.map((achievement) => (
+            <Pressable
+              key={achievement.label}
+              onPress={() => setSelectedAchievement(achievement)}
+              style={({ pressed }) => [
+                styles.achievementItem,
+                { borderColor: achievement.color },
+                pressed && { opacity: theme.opacity.glass },
+              ]}
+            >
+              <Image
+                style={styles.achievementImage}
+                source={achievement.image}
+              />
+            </Pressable>
+          ))}
       </ScrollView>
 
       {emptyAchievements && (

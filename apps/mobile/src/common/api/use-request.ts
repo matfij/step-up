@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ApiError } from "./api-definitions";
+import { watchPositionAsync } from "expo-location";
 
 export const useRequest = <TArgs, TData>(
   apiCall: (args: TArgs) => Promise<{ data?: TData; error?: ApiError }>,
