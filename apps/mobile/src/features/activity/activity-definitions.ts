@@ -1,3 +1,5 @@
+import { LocationObject } from "expo-location";
+
 export type ActivityReport = {
   startTime: number;
   duration: number;
@@ -11,4 +13,10 @@ export type ActivityReport = {
 export type Coordinate = {
   latitude: number;
   longitude: number;
-}
+};
+
+export type ActivitySegment = {
+  startTime: number;
+  endTime?: number;
+  locations: LocationObject[];
+};

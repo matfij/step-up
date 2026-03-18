@@ -7,13 +7,16 @@ export const noOp = () => {};
 
 export const getAsyncStorageItem = async <T>(
   key: keyof typeof appConfig.storageKeys,
-  defaultValue: T,
 ) => {
-  const data = await AsyncStorage.getItem(appConfig.storageKeys[key]);
-  if (data === null || data === undefined) {
-    return defaultValue;
+  try {
+    const data = await AsyncStorage.getItem(appConfig.storageKeys[key]);
+    if (data == null) {
+      return undefined;
+    }
+    return JSON.parse(data) as T;
+  } catch {
+    return undefined;
   }
-  return JSON.parse(data) as T;
 };
 
 export const setAsyncStorageItem = async (
@@ -46,4 +49,8 @@ export const generateRandomString = (length = 8) => {
     result.push(chars[Math.floor(Math.random() * charsLength)]);
   }
   return result.join("");
+};
+
+export const isNumber = (value: unknown): value is number => {
+  return typeof value === "number" && !Number.isNaN(value);
 };
