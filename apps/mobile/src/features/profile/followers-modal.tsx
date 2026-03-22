@@ -133,6 +133,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
           <TouchableOpacity
             onPress={() => onUnFollow(follower.id)}
             style={styles.followerAction}
+            disabled={unFollow.loading}
           >
             <MaterialCommunityIcons
               name="delete-sweep-outline"
