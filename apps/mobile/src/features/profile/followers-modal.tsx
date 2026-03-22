@@ -99,9 +99,9 @@ export const FollowersModal = (props: FollowersModalProps) => {
     }
   };
 
-  const onUnFollow = (followingId?: string) => {
-    if (followingId) {
-      unFollow.call(followingId);
+  const onUnFollow = (followerRecordId?: string) => {
+    if (followerRecordId) {
+      unFollow.call(followerRecordId);
     } else if (existingFollower) {
       unFollow.call(existingFollower.id);
     }
@@ -179,7 +179,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
               existingFollower ? t("profile.unfollow") : t("profile.follow")
             }
             disabled={follow.loading || unFollow.loading}
-            onClick={existingFollower ? onUnFollow : onFollow}
+            onClick={existingFollower ? () => onUnFollow() : onFollow}
           />
         )}
       </View>
