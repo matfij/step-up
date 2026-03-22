@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ import { useUserStore } from "../../common/state/user-store";
 import { AppApiError } from "../../common/components/app-api-error";
 import { Follower } from "../../common/api/api-definitions";
 import { getAvatarUri, withAlpha } from "../../common/utils";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export interface FollowersModalProps {
   userId?: string;
@@ -97,8 +99,10 @@ export const FollowersModal = (props: FollowersModalProps) => {
     }
   };
 
-  const onUnFollow = () => {
-    if (existingFollower) {
+  const onUnFollow = (followerRecordId?: string) => {
+    if (followerRecordId) {
+      unFollow.call(followerRecordId);
+    } else if (existingFollower) {
       unFollow.call(existingFollower.id);
     }
   };
@@ -116,10 +120,28 @@ export const FollowersModal = (props: FollowersModalProps) => {
           ? { uri: getAvatarUri(follower.followingAvatarUri) }
           : require("@assets/images/avatar.png");
 
+    const showUnfollow =
+      props.mode === "following" &&
+      user?.id === props.userId &&
+      user?.id !== undefined;
+
     return (
       <View key={follower.id} style={styles.followerItem}>
         <Image style={styles.followerImage} source={avatarUri} />
         <Text style={styles.followerLabel}>{username}</Text>
+        {showUnfollow && (
+          <TouchableOpacity
+            onPress={() => onUnFollow(follower.id)}
+            style={styles.followerAction}
+            disabled={unFollow.loading}
+          >
+            <MaterialCommunityIcons
+              name="delete-sweep-outline"
+              size={22}
+              style={styles.followerActionIcon}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -158,7 +180,7 @@ export const FollowersModal = (props: FollowersModalProps) => {
               existingFollower ? t("profile.unfollow") : t("profile.follow")
             }
             disabled={follow.loading || unFollow.loading}
-            onClick={existingFollower ? onUnFollow : onFollow}
+            onClick={existingFollower ? () => onUnFollow() : onFollow}
           />
         )}
       </View>
@@ -197,6 +219,12 @@ const styles = StyleSheet.create({
   },
   followerLabel: {
     color: theme.colors.light[300],
+  },
+  followerAction: {
+    marginLeft: "auto",
+  },
+  followerActionIcon: {
+    color: theme.colors.light[100],
   },
   loadingWrapper: {
     padding: theme.spacing.xl,
