@@ -16,7 +16,8 @@ public partial class UserService(
     IUserRepository repository,
     IUserValidator validator,
     IEventPublisher eventPublisher,
-    IFileService fileService
+    IFileService fileService,
+    IEmailService emailService
 ) : IUserService
 {
     private const string _avatarFolder = "avatars";
@@ -42,7 +43,11 @@ public partial class UserService(
             LastSeenAt = 0,
         };
         await _repository.Create(user);
-        // TODO: Send authToken to user's email
+        await emailService.SendEmailAsync(
+            email,
+            "Finish your StepUp signup",
+            $"Your authentication code is: <strong>{authToken}</strong>"
+        );
     }
 
     public async Task<User> CompleteSignUp(string email, string authToken)
@@ -65,6 +70,11 @@ public partial class UserService(
         var authToken = GenerateNumberString();
         user.AuthToken = authToken;
         await _repository.Update(user);
+        await emailService.SendEmailAsync(
+            email,
+            "Finish your StepUp login",
+            $"Your authentication code is: <strong>{authToken}</strong>"
+        );
     }
 
     public async Task<User> CompleteSignIn(string email, string authToken)
