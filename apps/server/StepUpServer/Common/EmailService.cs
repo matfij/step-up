@@ -1,4 +1,3 @@
-using System.Net.Mail;
 using Resend;
 
 namespace StepUpServer.Common;
@@ -10,8 +9,10 @@ public interface IEmailService
 
 public class EmailService(IConfiguration configuration, IResend resend) : IEmailService
 {
-    private readonly string _fromAddress = configuration["Email:FromAddress"]!;
-    private readonly string _fromName = configuration["Email:FromName"]!;
+    private readonly string _fromAddress = configuration["Email:FromAddress"]
+        ?? throw new InvalidOperationException("Email:FromAddress configuration is required");
+    private readonly string _fromName = configuration["Email:FromName"]
+        ?? throw new InvalidOperationException("Email:FromName configuration is required");
 
     public async Task SendEmailAsync(string to, string subject, string htmlBody)
     {

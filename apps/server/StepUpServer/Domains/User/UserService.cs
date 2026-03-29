@@ -17,7 +17,8 @@ public partial class UserService(
     IUserValidator validator,
     IEventPublisher eventPublisher,
     IFileService fileService,
-    IEmailService emailService
+    IEmailService emailService,
+    IUserEmailService userEmailService
 ) : IUserService
 {
     private const string _avatarFolder = "avatars";
@@ -26,6 +27,8 @@ public partial class UserService(
     private readonly IUserValidator _validator = validator;
     private readonly IEventPublisher _eventPublisher = eventPublisher;
     private readonly IFileService _fileService = fileService;
+    private readonly IEmailService _emailService = emailService;
+    private readonly IUserEmailService _userEmailService = userEmailService;
 
     public async Task StartSignUp(string email, string username)
     {
@@ -43,11 +46,16 @@ public partial class UserService(
             LastSeenAt = 0,
         };
         await _repository.Create(user);
-        await emailService.SendEmailAsync(
-            email,
-            "Finish your StepUp signup",
-            $"Your authentication code is: <strong>{authToken}</strong>"
-        );
+        try
+        {
+            var emailContent = _userEmailService.GetSignUpEmailContent(username, authToken);
+            await _emailService.SendEmailAsync(email, "Welcome to Step Up", emailContent);
+        }
+        catch (Exception ex)
+        {
+            await _repository.Delete(user.Id);
+            throw new ApiException("errors.serviceUnavailable");
+        }
     }
 
     public async Task<User> CompleteSignUp(string email, string authToken)
@@ -70,11 +78,15 @@ public partial class UserService(
         var authToken = GenerateNumberString();
         user.AuthToken = authToken;
         await _repository.Update(user);
-        await emailService.SendEmailAsync(
-            email,
-            "Finish your StepUp login",
-            $"Your authentication code is: <strong>{authToken}</strong>"
-        );
+        try
+        {
+            var emailContent = _userEmailService.GetSignInEmailContent(user.Username, authToken);
+            await _emailService.SendEmailAsync(email, "Log in to Step Up", emailContent);
+        }
+        catch
+        {
+            throw new ApiException("errors.serviceUnavailable");
+        }
     }
 
     public async Task<User> CompleteSignIn(string email, string authToken)

@@ -33,16 +33,20 @@ builder.Services.AddSingleton(provider =>
 builder.Services.AddOptions();
 builder.Services.AddHttpClient<ResendClient>();
 builder.Services.Configure<ResendClientOptions>(options =>
-    options.ApiToken = builder.Configuration["Email:ApiKey"]!
-);
+{
+    var apiKey = builder.Configuration["Email:ApiKey"]
+        ?? throw new InvalidOperationException("Email:ApiKey configuration is required");
+    options.ApiToken = apiKey;
+});
 builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
-builder.Services.AddSingleton<IFileService, FileService>(); 
+builder.Services.AddSingleton<IFileService, FileService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
+builder.Services.AddScoped<IUserEmailService, UserEmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
