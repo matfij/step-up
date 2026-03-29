@@ -11,6 +11,7 @@ public interface IUserRepository
     Task<User?> GetByUsername(string username);
     Task<User?> GetByApiToken(string apiToken);
     Task<User> Update(User user);
+    Task<string> Delete(string id);
 }
 
 public class UserRepository : IUserRepository
@@ -86,5 +87,15 @@ public class UserRepository : IUserRepository
             throw new ApiException("errors.userNotFound");
         }
         return user;
+    }
+
+    public async Task<string> Delete(string id)
+    {
+        var result = await _users.DeleteOneAsync(u => u.Id == id);
+        if (result.DeletedCount == 0)
+        {
+            throw new ApiException("errors.userNotFound");
+        }
+        return id;
     }
 }

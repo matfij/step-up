@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization.Metadata;
 using Microsoft.Extensions.FileProviders;
 using MongoDB.Driver;
+using Resend;
 using StepUpServer.Common;
 using StepUpServer.Common.Events;
 using StepUpServer.Domains.Achievements;
@@ -29,11 +30,23 @@ builder.Services.AddSingleton(provider =>
     return client.GetDatabase(databaseName);
 });
 
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(options =>
+{
+    var apiKey = builder.Configuration["Email:ApiKey"]
+        ?? throw new InvalidOperationException("Email:ApiKey configuration is required");
+    options.ApiToken = apiKey;
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
-builder.Services.AddSingleton<IFileService, FileService>(); 
+builder.Services.AddSingleton<IFileService, FileService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
+builder.Services.AddSingleton<IUserEmailService, UserEmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
