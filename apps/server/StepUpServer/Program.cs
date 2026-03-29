@@ -46,7 +46,7 @@ builder.Services.AddSingleton<IFileService, FileService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
-builder.Services.AddScoped<IUserEmailService, UserEmailService>();
+builder.Services.AddSingleton<IUserEmailService, UserEmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();

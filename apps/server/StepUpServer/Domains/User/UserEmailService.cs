@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace StepUpServer.Domains.User;
 
 public interface IUserEmailService
@@ -24,7 +26,8 @@ $"""
 
     <div style="color: #fff3e6">
         <div>
-            Hey there <b>{username}</b>! Thank you for joining, in order to activate your account use following code:
+            Hey there <b>{WebUtility.HtmlEncode(username)}</b>!
+            Thank you for joining, in order to activate your account use following code:
         </div>
 
         <div
@@ -62,7 +65,7 @@ $"""
     "
 >
     <h2 class="title" style="color: #00ff41; padding-top: 24px; padding-bottom: 12px">
-        Welcome back, {username}
+        Welcome back, {WebUtility.HtmlEncode(username)}
     </h2>
 
     <div style="color: #fff3e6">
