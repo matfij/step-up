@@ -24,9 +24,14 @@ public class ProgressMonthlyResetJob(
                 await Task.Delay(delay, token);
                 await ResetMonthlyProgressAsync();
             }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
             catch (Exception ex)
             {
                 logger.LogInformation(ex, "Monthly progress reset failed");
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
             }
         }
 
