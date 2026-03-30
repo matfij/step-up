@@ -54,7 +54,9 @@ public class FollowerRepository : IFollowerRepository
 
     public async Task<Follower?> GetByFollowerAndFollowing(string followerId, string followingId)
     {
-        return await _collection.Find(f => f.FollowerId == followerId && f.FollowingId == followingId).FirstOrDefaultAsync();
+        return await _collection
+            .Find(f => f.FollowerId == followerId && f.FollowingId == followingId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<Follower>> GetFollowers(string userId)
