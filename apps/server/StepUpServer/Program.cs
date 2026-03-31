@@ -58,6 +58,7 @@ builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressReactor>();
 builder.Services.AddScoped<IEventHandler<UserUpdatedEvent>, ProgressReactor>();
 builder.Services.AddScoped<IEventHandler<ActivityCreatedEvent>, ProgressReactor>();
+builder.Services.AddHostedService<ProgressMonthlyResetJob>();
 
 builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
 builder.Services.AddScoped<IAchievementsService, AchievementsService>();

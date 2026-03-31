@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using MongoDB.Driver;
+using StepUpServer.Domains.User;
 
 namespace StepUpServer.Domains.Progress;
 
@@ -10,6 +11,7 @@ public interface IProgressRepository
     Task<Progress?> GetByUserId(string userId);
     Task<List<Progress>> GetBestBy(Expression<Func<Progress, object>> keySelector);
     Task<Progress> Update(Progress progress);
+    Task ResetMonthlyProgress();
 }
 
 public class ProgressRepository : IProgressRepository
@@ -60,5 +62,14 @@ public class ProgressRepository : IProgressRepository
     {
         await _collection.ReplaceOneAsync(p => p.Id == progress.Id, progress);
         return progress;
+    }
+
+    public async Task ResetMonthlyProgress()
+    {
+        var filter = Builders<Progress>.Filter.Empty;
+        var update = Builders<Progress>.Update
+            .Set(p => p.MonthlyDuration, 0ul)
+            .Set(p => p.MonthlyDistance, 0ul);
+        await _collection.UpdateManyAsync(filter, update);
     }
 }
