@@ -1,5 +1,3 @@
-using static System.Net.Mime.MediaTypeNames;
-
 namespace StepUpServer.Domains.Progress;
 
 public class ProgressMonthlyResetJob(
@@ -30,7 +28,7 @@ public class ProgressMonthlyResetJob(
             }
             catch (Exception ex)
             {
-                logger.LogInformation(ex, "Monthly progress reset failed");
+                logger.LogError(ex, "Monthly progress reset failed");
                 await Task.Delay(TimeSpan.FromSeconds(10), token);
             }
         }
@@ -51,7 +49,7 @@ public class ProgressMonthlyResetJob(
             try
             {
                 await progressRepository.ResetMonthlyProgress();
-                logger.LogInformation("Monthly progress reset success");
+                logger.LogError("Monthly progress reset success");
                 return;
             }
             catch (Exception ex)
