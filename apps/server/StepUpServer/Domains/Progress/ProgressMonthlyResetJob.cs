@@ -15,14 +15,14 @@ public class ProgressMonthlyResetJob(
             {
                 var now = DateTime.UtcNow;
                 var next = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-                while (now <= next)
+                while (next < now)
                 {
                     next = next.AddMonths(1);
                 }
                 var delay = next - now;
                 logger.LogInformation($"Next monthly reset scheduled at {next} (in {delay})");
                 await Task.Delay(delay, token);
-                await ResetMonthlyProgressAsync();
+                await ResetMonthlyProgressAsync(token);
             }
             catch (OperationCanceledException)
             {
@@ -37,13 +37,17 @@ public class ProgressMonthlyResetJob(
 
     }
 
-    private async Task ResetMonthlyProgressAsync()
+    private async Task ResetMonthlyProgressAsync(CancellationToken token)
     {
         using var scope = serviceScopeFactory.CreateScope();
         var progressRepository = scope.ServiceProvider.GetRequiredService<IProgressRepository>();
 
         for (int i = 1; i <= 3; i++)
         {
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
             try
             {
                 await progressRepository.ResetMonthlyProgress();
@@ -53,7 +57,7 @@ public class ProgressMonthlyResetJob(
             catch (Exception ex)
             {
                 logger.LogInformation(ex, "Monthly progress reset failed");
-                await Task.Delay(TimeSpan.FromSeconds(i * 10));
+                await Task.Delay(TimeSpan.FromSeconds(i * 10), token);
             }
         }
 
