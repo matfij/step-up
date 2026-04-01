@@ -56,6 +56,25 @@ sudo nano /etc/systemd/system/stepup.service
     # WantedBy=multi-user.target
     # ```
 
+# Setup server certification
+sudo apt-get install -y nginx certbot python3-certbot-nginx
+
+sudo nano /etc/nginx/sites-available/stepup
+    # ```
+    # server {
+    #     server_name errant-tower.online www.errant-tower.online;
+    #     location / {
+    #         proxy_pass http://localhost:8080;
+    #         proxy_http_version 1.1;
+    #         proxy_set_header Host $host;
+    #         proxy_set_header X-Real-IP $remote_addr;
+    #     }
+    # }
+    # ```
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d errant-tower.online -d www.errant-tower.online
+
 # Start service
 sudo systemctl daemon-reload
 sudo systemctl enable stepup
