@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useTransition } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MapView, { Polyline, Region } from "react-native-maps";
+import MapView, { Polyline } from "react-native-maps";
 import { Activity } from "../../common/api/api-definitions";
 import { theme, themeComposable } from "../../common/theme";
 import { formatActivityDuration } from "../activity/time-manager";

@@ -32,6 +32,7 @@ export const startLocationTracking = async () => {
   }
   return false;
 };
+
 TaskManager.defineTask<{ locations: LocationObject[] }>(
   appConfig.taskNames.backgroundLocation,
   async ({ data, error }) => {
