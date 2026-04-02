@@ -11,6 +11,7 @@ sudo apt-get install -y git
 wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
+sudo apt-get update
 
 sudo apt-get install -y aspnetcore-runtime-10.0
 dotnet --list-runtimes
@@ -71,6 +72,7 @@ sudo nano /etc/nginx/sites-available/stepup
     #     }
     # }
     # ```
+sudo ln -sf /etc/nginx/sites-available/stepup /etc/nginx/sites-enabled/stepup
 sudo nginx -t
 sudo systemctl reload nginx
 sudo certbot --nginx -d errant-tower.online -d www.errant-tower.online
