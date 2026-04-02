@@ -4,5 +4,5 @@
 
 1. `npm run prebuild`
 2. `cd android`
-3. `./gradlew assembleReleas`
+3. `./gradlew assembleRelease`
 4. `mv app\build\outputs\apk\release\app-release.apk ..`
