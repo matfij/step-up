@@ -7,6 +7,7 @@ using StepUpServer.Common.Events;
 using StepUpServer.Domains.Achievements;
 using StepUpServer.Domains.Activity;
 using StepUpServer.Domains.Follower;
+using StepUpServer.Domains.Log;
 using StepUpServer.Domains.Progress;
 using StepUpServer.Domains.User;
 
@@ -68,6 +69,8 @@ builder.Services.AddScoped<IEventHandler<ProgressUpdatedEvent>, AchievementsServ
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<IFollowerService, FollowerService>();
 builder.Services.AddScoped<IEventHandler<UserUpdatedEvent>, FollowerReactor>();
+
+builder.Services.AddScoped<ILogRepository, LogRepository>();
 
 var app = builder.Build();
 
