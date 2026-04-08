@@ -6,3 +6,8 @@
 2. `cd android`
 3. `./gradlew assembleRelease`
 4. `mv app\build\outputs\apk\release\app-release.apk ..`
+
+## Signing report
+
+1. `cd android`
+2. `./gradlew signingReport`

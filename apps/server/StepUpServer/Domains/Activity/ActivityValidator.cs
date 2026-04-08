@@ -20,7 +20,7 @@ public class ActivityValidator : IActivityValidator
     private const ulong _distanceMin = 1;
     private const ulong _distanceMax = 1_000_000; // meters
 
-    private const float _averageSpeedMin = 1;
+    private const float _averageSpeedMin = 0;
     private const float _averageSpeedMax = 10_000;
 
     private const float _topSpeedMin = 1;

@@ -4,10 +4,9 @@
     "slug": "step-up",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "stepup",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "icon": "./assets/images/icon.png",
     "extra": {
       "apiUrl": "https://errant-tower.online"
     },
@@ -15,11 +14,7 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#141B22",
-        "foregroundImage": "./assets/images/icon.png"
-      },
-      "edgeToEdgeEnabled": true,
+      "package": "com.matfij.stepup",
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.ACTIVITY_RECOGNITION",
@@ -29,7 +24,15 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION"
       ],
-      "package": "com.matfij.stepup"
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
+      "adaptiveIcon": {
+        "backgroundColor": "#000000",
+        "foregroundImage": "./assets/images/icon.png"
+      }
     },
     "web": {
       "output": "static",
@@ -41,9 +44,9 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "imageWidth": 220,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#000000",
           "dark": {
             "backgroundColor": "#000000"
           }

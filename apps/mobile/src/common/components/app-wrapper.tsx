@@ -1,4 +1,10 @@
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from "react-native";
 import { theme } from "../theme";
 import { ReactNode } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,9 +18,12 @@ export const AppWrapper = (props: AppWrapperProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.wrapper, props.style, { marginTop: insets.top }]}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.wrapper, props.style, { marginTop: insets.top }]}
+    >
       {props.children}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

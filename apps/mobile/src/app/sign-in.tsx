@@ -71,7 +71,7 @@ export default function Index() {
       <View style={styles.brandWrapper}>
         <Image
           style={styles.brandImage}
-          source={require("@assets/images/icon.png")}
+          source={require("@assets/images/icon-transparent.png")}
         />
         <Text style={styles.title}>{t("brand.title")}</Text>
       </View>
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary[300],
   },
   brandImage: {
-    height: 200,
-    width: 200,
+    height: 220,
+    width: 220,
   },
 });
