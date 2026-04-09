@@ -71,6 +71,7 @@ builder.Services.AddScoped<IFollowerService, FollowerService>();
 builder.Services.AddScoped<IEventHandler<UserUpdatedEvent>, FollowerReactor>();
 
 builder.Services.AddScoped<ILogRepository, LogRepository>();
+builder.Services.AddScoped<ILogService, LogService>();
 
 var app = builder.Build();
 
@@ -82,6 +83,7 @@ app.MapActivityEndpoints();
 app.MapProgressEndpoints();
 app.MapAchievementsEndpoints();
 app.MapFollowerEndpoints();
+app.MapLogEndpoints();
 
 var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadsPath);

@@ -5,8 +5,8 @@ namespace StepUpServer.Domains.Log;
 public interface ILogRepository
 {
     Task<Log> Create(Log log);
-    Task<IEnumerable<Log>> ReadByUserId(string id);
-    Task<IEnumerable<Log>> ReadAll();
+    Task<IEnumerable<Log>> ReadByUserId(string id, int skip, int take);
+    Task<IEnumerable<Log>> ReadAll(int skip, int take);
 }
 
 public class LogRepository : ILogRepository
@@ -33,13 +33,21 @@ public class LogRepository : ILogRepository
         return log;
     }
 
-    public async Task<IEnumerable<Log>> ReadByUserId(string id)
+    public async Task<IEnumerable<Log>> ReadByUserId(string id, int skip, int take)
     {
-        return await _collection.Find(log => log.UserId == id).ToListAsync();
+        return await _collection
+            .Find(log => log.UserId == id)
+            .Skip(skip)
+            .Limit(take)
+            .ToListAsync();
     }
 
-    public Task<IEnumerable<Log>> ReadAll()
+    public async Task<IEnumerable<Log>> ReadAll(int skip, int take)
     {
-        return _collection.Find(_ => true).ToListAsync().ContinueWith(t => t.Result.AsEnumerable());
+        return await _collection
+            .Find(_ => true)
+            .Skip(skip)
+            .Limit(take)
+            .ToListAsync();
     }
 }
