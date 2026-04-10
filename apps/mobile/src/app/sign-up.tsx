@@ -31,8 +31,6 @@ export default function SignUp() {
   const [authToken, setAuthToken] = useState("");
   const [authTokenError, setAuthTokenError] = useState("");
 
-  throw new Error("no soup for you!");
-
   useEffect(() => setEmailError(""), [email]);
 
   useEffect(() => setUsernameError(""), [username]);

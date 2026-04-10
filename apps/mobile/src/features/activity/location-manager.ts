@@ -42,7 +42,6 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
   async ({ data, error }) => {
     try {
       if (error) {
-        console.error("Location task error:", error);
         return;
       }
 
