@@ -54,3 +54,10 @@ export const generateRandomString = (length = 8) => {
 export const isNumber = (value: unknown): value is number => {
   return typeof value === "number" && !Number.isNaN(value);
 };
+
+export const trimStack = (stack: string | null | undefined, maxLines = 5) => {
+  if (!stack) {
+    return stack;
+  }
+  return stack.split("\n").slice(0, maxLines).join("\n");
+};
