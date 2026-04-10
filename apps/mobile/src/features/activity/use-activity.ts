@@ -210,7 +210,7 @@ export const useActivity = () => {
       await setAsyncStorageItem("activitySegments", nextSegments);
       await setAsyncStorageItem("activityIsPaused", false);
       setIsPaused(false);
-    } catch {
+    } catch (error) {
       setError("errors.unknown");
       void handleBackgroundError(error, "use-activity-pause");
     }

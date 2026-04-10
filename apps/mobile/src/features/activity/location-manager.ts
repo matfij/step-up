@@ -74,9 +74,8 @@ TaskManager.defineTask<{ locations: LocationObject[] }>(
         );
         if (distanceDiff > appConfig.activity.minDistanceDiff) {
           currentSegment.locations.push(currentLocation);
+          lastLocation = currentLocation;
         }
-
-        lastLocation = currentLocation;
       }
 
       if (currentSegment.locations.length > initialLength) {

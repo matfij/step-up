@@ -1,6 +1,6 @@
 import { ApiError } from "./api-definitions";
 import { useUserStore } from "../state/user-store";
-import { delay } from "../utils";
+import { delay, handleBackgroundError } from "../utils";
 import { getApiUrl } from "../config";
 
 export abstract class ApiClient {
@@ -59,6 +59,8 @@ export abstract class ApiClient {
         };
         if (attempt < this.retryCount) {
           await delay(this.retryDelay);
+        } else {
+          handleBackgroundError(error, "api-client");
         }
       }
     }
