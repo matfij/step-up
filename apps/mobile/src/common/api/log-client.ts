@@ -7,7 +7,11 @@ export class LogClient extends ApiClient {
     userId?: string;
     details?: string;
   }): Promise<{ error?: ApiError }> =>
-    this.request("/logs", { method: "POST", body: JSON.stringify(params) });
+    this.request("/logs", {
+      method: "POST",
+      body: JSON.stringify(params),
+      skipErrorLog: true,
+    });
 }
 
 export const logClient = new LogClient();

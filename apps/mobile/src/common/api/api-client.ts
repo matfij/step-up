@@ -11,7 +11,10 @@ export abstract class ApiClient {
 
   protected request = async <T>(
     endpoint: string,
-    options?: RequestInit & { skipContentTypeHeader?: boolean },
+    options?: RequestInit & {
+      skipContentTypeHeader?: boolean;
+      skipErrorLog?: boolean;
+    },
   ): Promise<{ data?: T; error?: ApiError }> => {
     let apiError = { name: "", message: "", key: "" };
 
@@ -59,7 +62,7 @@ export abstract class ApiClient {
         };
         if (attempt < this.retryCount) {
           await delay(this.retryDelay);
-        } else {
+        } else if (!options?.skipErrorLog) {
           handleBackgroundError(error, "api-client");
         }
       }

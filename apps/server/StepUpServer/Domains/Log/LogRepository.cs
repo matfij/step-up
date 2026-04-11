@@ -22,7 +22,7 @@ public class LogRepository : ILogRepository
         _collection.Indexes.CreateOneAsync(
             new CreateIndexModel<Log>(
                 userIdIndex,
-                new CreateIndexOptions { Unique = true, Background = true }
+                new CreateIndexOptions { Background = true }
             )
         );
     }
