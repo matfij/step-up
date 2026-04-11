@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { appConfig, getApiUrl } from "./config";
+import { logClient } from "./api/log-client";
+import { LogType } from "./api/api-definitions";
 
 export type Argument<T extends (...args: any) => any> = Parameters<T>[number];
 
@@ -53,4 +55,29 @@ export const generateRandomString = (length = 8) => {
 
 export const isNumber = (value: unknown): value is number => {
   return typeof value === "number" && !Number.isNaN(value);
+};
+
+export const trimStack = (stack: string | null | undefined, maxLines = 5) => {
+  if (!stack) {
+    return stack;
+  }
+  return stack.split("\n").slice(0, maxLines).join("\n");
+};
+
+export const handleBackgroundError = (error: unknown, context?: string) => {
+  try {
+    const err = error instanceof Error ? error : new Error(String(error));
+
+    const details = JSON.stringify({
+      name: err.name,
+      message: err.message,
+      stack: trimStack(err.stack),
+      context,
+    });
+
+    void logClient.log({
+      type: LogType.Error,
+      details,
+    });
+  } catch {}
 };

@@ -104,3 +104,8 @@ export interface ApiFile {
   fileName: string;
   mimeType: string;
 }
+
+export enum LogType {
+  Info = 0,
+  Error = 1,
+}

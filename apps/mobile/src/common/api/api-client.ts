@@ -1,6 +1,6 @@
 import { ApiError } from "./api-definitions";
 import { useUserStore } from "../state/user-store";
-import { delay } from "../utils";
+import { delay, handleBackgroundError } from "../utils";
 import { getApiUrl } from "../config";
 
 export abstract class ApiClient {
@@ -11,7 +11,10 @@ export abstract class ApiClient {
 
   protected request = async <T>(
     endpoint: string,
-    options?: RequestInit & { skipContentTypeHeader?: boolean },
+    options?: RequestInit & {
+      skipContentTypeHeader?: boolean;
+      skipErrorLog?: boolean;
+    },
   ): Promise<{ data?: T; error?: ApiError }> => {
     let apiError = { name: "", message: "", key: "" };
 
@@ -59,6 +62,8 @@ export abstract class ApiClient {
         };
         if (attempt < this.retryCount) {
           await delay(this.retryDelay);
+        } else if (!options?.skipErrorLog) {
+          handleBackgroundError(error, "api-client");
         }
       }
     }

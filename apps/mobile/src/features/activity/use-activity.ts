@@ -4,6 +4,7 @@ import { AppState } from "react-native";
 import { appConfig } from "../../common/config";
 import {
   getAsyncStorageItem,
+  handleBackgroundError,
   isNumber,
   setAsyncStorageItem,
 } from "../../common/utils";
@@ -80,12 +81,20 @@ export const useActivity = () => {
     if (!isTracking || isPaused) {
       return;
     }
-    const locationSubscription = setInterval(async () => {
-      const segments =
-        await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
-      if (segments) {
-        segmentsRef.current = segments;
-      }
+
+    const locationSubscription = setInterval(() => {
+      (async () => {
+        try {
+          const segments =
+            await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
+
+          if (segments) {
+            segmentsRef.current = segments;
+          }
+        } catch (error) {
+          handleBackgroundError(error, "use-activity-location-interval");
+        }
+      })();
     }, REFRESH_TIME_MS);
 
     return () => clearInterval(locationSubscription);
@@ -130,66 +139,81 @@ export const useActivity = () => {
   };
 
   const start = async () => {
-    if (isTracking) {
-      return;
+    try {
+      if (isTracking) {
+        return;
+      }
+
+      setError("");
+
+      const started = await startLocationTracking();
+
+      if (!started) {
+        setError("activity.missingPermissions");
+        return;
+      }
+
+      const now = Date.now();
+      const initialSegments = [{ startTime: now, locations: [] }];
+
+      startTimeRef.current = now;
+      segmentsRef.current = initialSegments;
+
+      await setAsyncStorageItem("activityStartTime", now);
+      await setAsyncStorageItem("activitySegments", initialSegments);
+      await setAsyncStorageItem("activityIsPaused", false);
+
+      setIsTracking(true);
+      setIsPaused(false);
+      setDistance(0);
+      setSpeed(0);
+      setDuration(0);
+    } catch (error) {
+      setError("errors.unknown");
+      void handleBackgroundError(error, "use-activity-start");
     }
-
-    setError("");
-
-    const started = await startLocationTracking();
-
-    if (!started) {
-      setError("activity.missingPermissions");
-      return;
-    }
-
-    const now = Date.now();
-    const initialSegments = [{ startTime: now, locations: [] }];
-
-    startTimeRef.current = now;
-    segmentsRef.current = initialSegments;
-
-    await setAsyncStorageItem("activityStartTime", now);
-    await setAsyncStorageItem("activitySegments", initialSegments);
-    await setAsyncStorageItem("activityIsPaused", false);
-
-    setIsTracking(true);
-    setIsPaused(false);
-    setDistance(0);
-    setSpeed(0);
-    setDuration(0);
   };
 
   const pause = async () => {
-    const isLocationTracked = await Location.hasStartedLocationUpdatesAsync(
-      appConfig.taskNames.backgroundLocation,
-    );
-    if (isLocationTracked) {
-      await Location.stopLocationUpdatesAsync(
+    try {
+      const isLocationTracked = await Location.hasStartedLocationUpdatesAsync(
         appConfig.taskNames.backgroundLocation,
       );
+      if (isLocationTracked) {
+        await Location.stopLocationUpdatesAsync(
+          appConfig.taskNames.backgroundLocation,
+        );
+      }
+      await setAsyncStorageItem("activityIsPaused", true);
+      const segments = segmentsRef.current;
+      segments[segments.length - 1].endTime = Date.now();
+      await setAsyncStorageItem("activitySegments", segments);
+      setIsPaused(true);
+    } catch (error) {
+      setError("errors.unknown");
+      void handleBackgroundError(error, "use-activity-pause");
     }
-    await setAsyncStorageItem("activityIsPaused", true);
-    const segments = segmentsRef.current;
-    segments[segments.length - 1].endTime = Date.now();
-    await setAsyncStorageItem("activitySegments", segments);
-    setIsPaused(true);
   };
 
   const resume = async () => {
-    const started = await startLocationTracking();
-    if (!started) {
-      setError("activity.missingPermissions");
-      return;
+    try {
+      const started = await startLocationTracking();
+      if (!started) {
+        setError("activity.missingPermissions");
+        return;
+      }
+      const nextSegments = [
+        ...segmentsRef.current,
+        { startTime: Date.now(), locations: [] },
+      ];
+      segmentsRef.current = nextSegments;
+      await setAsyncStorageItem("activitySegments", nextSegments);
+      await setAsyncStorageItem("activityIsPaused", false);
+      setIsPaused(false);
+    } catch (error) {
+      setError("errors.unknown");
+      void handleBackgroundError(error, "use-activity-pause");
     }
-    const nextSegments = [
-      ...segmentsRef.current,
-      { startTime: Date.now(), locations: [] },
-    ];
-    segmentsRef.current = nextSegments;
-    await setAsyncStorageItem("activitySegments", nextSegments);
-    await setAsyncStorageItem("activityIsPaused", false);
-    setIsPaused(false);
   };
 
   const complete = async () => {

@@ -8,7 +8,11 @@ import {
 } from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { appConfig } from "../../common/config";
-import { getAsyncStorageItem, setAsyncStorageItem } from "../../common/utils";
+import {
+  getAsyncStorageItem,
+  handleBackgroundError,
+  setAsyncStorageItem,
+} from "../../common/utils";
 import { calculateDistanceBetweenPoints } from "./distance-manager";
 import { ActivitySegment } from "./activity-definitions";
 
@@ -36,48 +40,50 @@ export const startLocationTracking = async () => {
 TaskManager.defineTask<{ locations: LocationObject[] }>(
   appConfig.taskNames.backgroundLocation,
   async ({ data, error }) => {
-    if (error) {
-      console.error("Location task error:", error);
-      return;
-    }
-
-    const isPaused = await getAsyncStorageItem("activityIsPaused");
-    if (isPaused) {
-      return;
-    }
-
-    const segments =
-      await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
-
-    if (!segments || segments.length === 0) {
-      return;
-    }
-
-    const currentSegment = segments[segments.length - 1];
-    let lastLocation = currentSegment.locations.at(-1);
-    const initialLength = currentSegment.locations.length;
-
-    for (const currentLocation of data.locations) {
-      if (!lastLocation) {
-        currentSegment.locations.push(currentLocation);
-        lastLocation = currentLocation;
-        continue;
+    try {
+      if (error) {
+        return;
       }
 
-      const distanceDiff = calculateDistanceBetweenPoints(
-        lastLocation.coords,
-        currentLocation.coords,
-      );
-      if (distanceDiff > appConfig.activity.minDistanceDiff) {
-        currentSegment.locations.push(currentLocation);
+      const isPaused = await getAsyncStorageItem("activityIsPaused");
+      if (isPaused) {
+        return;
       }
 
-      lastLocation = currentLocation;
-    }
+      const segments =
+        await getAsyncStorageItem<ActivitySegment[]>("activitySegments");
 
-    if (currentSegment.locations.length > initialLength) {
-      segments[segments.length - 1] = currentSegment;
-      await setAsyncStorageItem("activitySegments", segments);
+      if (!segments || segments.length === 0) {
+        return;
+      }
+
+      const currentSegment = segments[segments.length - 1];
+      let lastLocation = currentSegment.locations.at(-1);
+      const initialLength = currentSegment.locations.length;
+
+      for (const currentLocation of data.locations) {
+        if (!lastLocation) {
+          currentSegment.locations.push(currentLocation);
+          lastLocation = currentLocation;
+          continue;
+        }
+
+        const distanceDiff = calculateDistanceBetweenPoints(
+          lastLocation.coords,
+          currentLocation.coords,
+        );
+        if (distanceDiff > appConfig.activity.minDistanceDiff) {
+          currentSegment.locations.push(currentLocation);
+          lastLocation = currentLocation;
+        }
+      }
+
+      if (currentSegment.locations.length > initialLength) {
+        segments[segments.length - 1] = currentSegment;
+        await setAsyncStorageItem("activitySegments", segments);
+      }
+    } catch (error) {
+      handleBackgroundError(error, "location-manager");
     }
   },
 );

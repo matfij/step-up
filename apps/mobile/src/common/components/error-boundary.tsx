@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { theme } from "../theme";
 import { AppButtonSecondary } from "./app-button";
+import { logClient } from "../api/log-client";
+import { LogType } from "../api/api-definitions";
+import { useUserStore } from "../state/user-store";
+import { trimStack } from "../utils";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -35,8 +39,19 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Error caught by boundary:", error);
-    console.error("Component stack:", errorInfo.componentStack);
+    const userId = useUserStore.getState().user?.id;
+    const errorCause =
+      typeof error.cause === "object" ? String(error.cause) : error.cause;
+    const errorStack = trimStack(errorInfo.componentStack);
+
+    const details = JSON.stringify({
+      name: error.name,
+      message: error.message,
+      cause: errorCause,
+      stack: errorStack,
+    });
+
+    void logClient.log({ type: LogType.Error, userId, details });
   }
 
   onReset = () => {
