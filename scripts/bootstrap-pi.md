@@ -9,27 +9,36 @@ Setup C# Minimal API on Raspberry PI using Ngrok.
 3. `./dotnet-install.sh --channel 10.0`
 4. `export PATH=$PATH:$HOME/.dotnet`
 
-## Build app
-
-1. `git clone https://github.com/matfij/step-up.git`
-2. `cd /step-up/apps/server`
-3. `dotnet publish -c Release -o publish`
-
 ## Setup environment
 
-1. `sudo nano /etc/stepup.env`
+1. `git clone https://github.com/matfij/step-up.git`
+2. `cd ./step-up/apps/server/StepUpServer`
+3. `nano appsettings.Production.json`
 
-```ini
-ASPNETCORE_ENVIRONMENT=Production
-ASPNETCORE_URLS=http://0.0.0.0:5000
-ConnectionStrings__DefaultConnection=<YOUR_ATLAS_CONNECTION_STRING>
-DatabaseName=<DATABASE_NAME>
-Email__ApiKey=<EMAIL_API_KEY>
-Email__FromAddress=<EMAIL_FROM_ADDRESS>
-Email__FromName=<EMAIL_FROM_NAME>
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "<CONNECTION_STRING>"
+  },
+  "Email": {
+    "ApiKey": "<API_KEY>",
+    "FromAddress": "step-up@errant-tower.online",
+    "FromName": "Step Up"
+  },
+  "DatabaseName": "StepUpDB"
+}
 ```
 
-2. `sudo chmod 600 /etc/stepup.env`
+## Build app
+
+1. `cd ..`
+2. `dotnet publish -c Release -o publish`
 
 ## Setup Ngrok
 
@@ -40,5 +49,6 @@ Email__FromName=<EMAIL_FROM_NAME>
 
 ## Start server
 
-1. `dotnet StepUpServer.dll`
-2. `ngrok http 5000`
+1. `cd ./publish`
+2. `dotnet StepUpServer.dll`
+3. `ngrok http 5000`
