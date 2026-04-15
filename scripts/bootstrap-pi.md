@@ -40,15 +40,52 @@ Setup C# Minimal API on Raspberry PI using Ngrok.
 1. `cd ..`
 2. `dotnet publish -c Release -o publish`
 
-## Setup Ngrok
+## Setup Cloudflare tunnel
 
-1. `sudo apt-get install snapd`
-2. `sudo snap install ngrok`
-3. `export PATH=$PATH:/snap/bin`
-4. `ngrok config add-authtoken <SECRET_TOKEN>`
+1. Download and install cloudflared:
 
-## Start server
+```bash
+   wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64 -O cloudflared
+   chmod +x cloudflared
+   sudo mv cloudflared /usr/local/bin/
+```
 
-1. `cd ./publish`
-2. `dotnet StepUpServer.dll`
-3. `ngrok http 5000`
+2. Copy certificate from a machine with a browser (run on your PC):
+
+```bash
+   cloudflared tunnel login
+   scp C:\Users\\.cloudflared\cert.pem pi@:~/.cloudflared/cert.pem
+```
+
+3. Create the tunnel (on the Pi):
+
+```bash
+   cloudflared tunnel create errant-tower
+```
+
+4. Create config file at `~/.cloudflared/config.yml`:
+
+```yaml
+tunnel:
+credentials-file: /home/pi/.cloudflared/.json
+
+ingress:
+  - hostname: errant-tower.online
+    service: http://localhost:5000
+  - service: http_status:404
+```
+
+> Get your `<TUNNEL_ID>` by running `cloudflared tunnel list`
+
+5. Add DNS record in Cloudflare:
+
+```bash
+   cloudflared tunnel route dns errant-tower errant-tower.online
+```
+
+Or manually add a CNAME record in Cloudflare dashboard:
+
+- Type: `CNAME`
+- Name: `@`
+- Target: `<TUNNEL_ID>.cfargotunnel.com`
+- Proxy: enabled (orange cloud)

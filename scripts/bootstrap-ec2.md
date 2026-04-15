@@ -1,4 +1,4 @@
-# Setup C# Server on AWC EC2
+# Setup C# Server on AWS EC2
 
 Setup C# Minimal API on AWS EC2 Linux using Python3 Certbot and Nginx.
 
@@ -39,7 +39,7 @@ Email__FromName=<EMAIL_FROM_NAME>
 
 2. `sudo chmod 600 /etc/stepup.env`
 3. `git clone https://github.com/matfij/step-up.git`
-4. `cd /step-up/apps/server`
+4. `cd step-up/apps/server`
 5. `dotnet publish -c Release -o ~/publish`
 
 ## Setup app service
@@ -57,7 +57,7 @@ WorkingDirectory=/home/ubuntu/publish
 EnvironmentFile=/etc/stepup.env
 ExecStart=/usr/bin/dotnet /home/ubuntu/publish/StepUpServer.dll
 Restart=always
-RestartSec=
+RestartSec=15s
 [Install]
 WantedBy=multi-user.target
 ```
@@ -68,7 +68,7 @@ WantedBy=multi-user.target
 
 2. `sudo nano /etc/nginx/sites-available/stepup`
 
-```
+```conf
 server {
     server_name errant-tower.online www.errant-tower.online;
         location / {
