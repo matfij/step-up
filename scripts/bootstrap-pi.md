@@ -1,13 +1,13 @@
 # Setup C# Server on Raspberry PI
 
-Setup C# Minimal API on Raspberry PI using Ngrok.
+Setup C# Minimal API on Raspberry PI using Cloudflare tunnel.
 
 ## Install .Net 10
 
 1. `wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh`
 2. `chmod +x dotnet-install.sh`
 3. `./dotnet-install.sh --channel 10.0`
-4. `export PATH=$PATH:$HOME/.dotnet`
+4. `export PATH=$PATH:$HOME/.dotnet` (add to `~/.bashrc` or `~/.profile` for persistence)
 
 ## Setup environment
 
@@ -54,7 +54,7 @@ Setup C# Minimal API on Raspberry PI using Ngrok.
 
 ```bash
    cloudflared tunnel login
-   scp C:\Users\\.cloudflared\cert.pem pi@:~/.cloudflared/cert.pem
+   scp C:\Users\<YOUR_USER>\.cloudflared\cert.pem pi@<PI_IP>:~/.cloudflared/cert.pem
 ```
 
 3. Create the tunnel (on the Pi):
@@ -65,17 +65,17 @@ Setup C# Minimal API on Raspberry PI using Ngrok.
 
 4. Create config file at `~/.cloudflared/config.yml`:
 
+> Get your `<TUNNEL_ID>` by running `cloudflared tunnel list`
+
 ```yaml
-tunnel:
-credentials-file: /home/pi/.cloudflared/.json
+tunnel: <TUNNEL_ID>
+credentials-file: /home/pi/.cloudflared/<TUNNEL_ID>.json
 
 ingress:
   - hostname: errant-tower.online
     service: http://localhost:5000
   - service: http_status:404
 ```
-
-> Get your `<TUNNEL_ID>` by running `cloudflared tunnel list`
 
 5. Add DNS record in Cloudflare:
 
@@ -89,3 +89,9 @@ Or manually add a CNAME record in Cloudflare dashboard:
 - Name: `@`
 - Target: `<TUNNEL_ID>.cfargotunnel.com`
 - Proxy: enabled (orange cloud)
+
+6. Run the tunnel (on the Pi):
+
+```bash
+   cloudflared tunnel run errant-tower
+```

@@ -71,13 +71,13 @@ WantedBy=multi-user.target
 ```conf
 server {
     server_name errant-tower.online www.errant-tower.online;
-        location / {
-            proxy_pass http://localhost:8080;
-            proxy_http_version 1.1;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-        }
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
+}
 ```
 
 3. `sudo ln -sf /etc/nginx/sites-available/stepup /etc/nginx/sites-enabled/stepup`
