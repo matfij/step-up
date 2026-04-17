@@ -54,6 +54,7 @@ export interface Achievements {
 
 export interface AchievementProgress {
   name: string;
+  type: AchievementType;
   unitCategory: UnitCategory;
   tier: AchievementTier;
   progress: number;
@@ -67,6 +68,11 @@ export enum UnitCategory {
   Time = 1,
   Distance = 2,
   Speed = 3,
+}
+
+export enum AchievementType {
+  OneOff = 0,
+  Cumulative = 1,
 }
 
 export enum AchievementTier {

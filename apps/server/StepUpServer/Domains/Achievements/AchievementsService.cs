@@ -31,6 +31,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "TotalDistance",
                     UnitCategory = UnitCategory.Distance,
+                    Type = AchievementType.Cumulative,
                     Tier = achievements.TotalDistance.Tier,
                     Progress = achievements.TotalDistance.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -47,6 +48,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "TotalDuration",
                     UnitCategory = UnitCategory.Time,
+                    Type = AchievementType.Cumulative,
                     Tier = achievements.TotalDuration.Tier,
                     Progress = achievements.TotalDuration.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -63,6 +65,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "TotalActivities",
                     UnitCategory = UnitCategory.Count,
+                    Type = AchievementType.Cumulative,
                     Tier = achievements.TotalActivities.Tier,
                     Progress = achievements.TotalActivities.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -79,6 +82,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "MaxCurrentStreak",
                     UnitCategory = UnitCategory.Count,
+                    Type = AchievementType.OneOff,
                     Tier = achievements.MaxCurrentStreak.Tier,
                     Progress = achievements.MaxCurrentStreak.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -95,6 +99,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "MaxActivitySpeed",
                     UnitCategory = UnitCategory.Speed,
+                    Type = AchievementType.OneOff,
                     Tier = achievements.MaxActivitySpeed.Tier,
                     Progress = achievements.MaxActivitySpeed.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -111,6 +116,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "MaxActivityDistance",
                     UnitCategory = UnitCategory.Distance,
+                    Type = AchievementType.OneOff,
                     Tier = achievements.MaxActivityDistance.Tier,
                     Progress = achievements.MaxActivityDistance.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -127,6 +133,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 {
                     Name = "MaxActivityDuration",
                     UnitCategory = UnitCategory.Time,
+                    Type = AchievementType.OneOff,
                     Tier = achievements.MaxActivityDuration.Tier,
                     Progress = achievements.MaxActivityDuration.Progress,
                     CurrentTierProgress = AchievementsData.GetCurrentTierThreshold(
@@ -142,6 +149,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 new AchievementDetail
                 {
                     Name = "Greenhorn",
+                    Type = AchievementType.OneOff,
                     Tier = achievements.Greenhorn.Tier,
                     Progress = achievements.Greenhorn.Progress,
                     AchievedAt = achievements.Greenhorn.AchievedAt,
@@ -149,6 +157,7 @@ public class AchievementsService(IAchievementsRepository repository)
                 new AchievementDetail
                 {
                     Name = "Marathoner",
+                    Type = AchievementType.OneOff,
                     Tier = achievements.Marathoner.Tier,
                     Progress = achievements.Marathoner.Progress,
                     AchievedAt = achievements.Marathoner.AchievedAt,
