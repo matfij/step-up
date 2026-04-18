@@ -9,6 +9,7 @@ public readonly record struct AchievementsProgressResponse(
 public record struct AchievementDetail(
     string Name,
     UnitCategory UnitCategory,
+    AchievementType Type,
     AchievementTier Tier,
     ulong Progress,
     ulong CurrentTierProgress,
@@ -22,4 +23,10 @@ public enum UnitCategory
     Time = 1,
     Distance = 2,
     Speed = 3,
+}
+
+public enum AchievementType
+{
+    OneOff = 0,
+    Cumulative = 1,
 }
