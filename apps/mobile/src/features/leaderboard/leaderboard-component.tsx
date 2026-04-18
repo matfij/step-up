@@ -176,7 +176,7 @@ export const LeaderboardComponent = () => {
                 </View>
               ))}
             {!leaderboardLoading &&
-              leaderboardData.map((leader, index) => (
+              leaderboardData?.map((leader, index) => (
                 <TouchableOpacity
                   key={leader.id}
                   style={styles.leaderItem}

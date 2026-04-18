@@ -78,7 +78,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
             />
           ))}
         {!getAchievements.loading &&
-          achievements.map((achievement) => (
+          achievements?.map((achievement) => (
             <Pressable
               key={achievement.label}
               onPress={() => setSelectedAchievement(achievement)}
