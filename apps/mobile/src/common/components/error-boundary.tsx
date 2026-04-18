@@ -7,7 +7,7 @@ import { AppButtonSecondary } from "./app-button";
 import { logClient } from "../api/log-client";
 import { LogType } from "../api/api-definitions";
 import { useUserStore } from "../state/user-store";
-import { trimStack } from "../utils";
+import { clearAsyncStorage, trimStack } from "../utils";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -39,22 +39,29 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const userId = useUserStore.getState().user?.id;
-    const errorCause =
-      typeof error.cause === "object" ? String(error.cause) : error.cause;
-    const errorStack = trimStack(errorInfo.componentStack);
+    try {
+      const userId = useUserStore.getState().user?.id;
+      const errorCause =
+        typeof error.cause === "object" ? String(error.cause) : error.cause;
+      const errorStack = trimStack(errorInfo.componentStack);
 
-    const details = JSON.stringify({
-      name: error.name,
-      message: error.message,
-      cause: errorCause,
-      stack: errorStack,
-    });
+      const details = JSON.stringify({
+        name: error.name,
+        message: error.message,
+        cause: errorCause,
+        stack: errorStack,
+      });
 
-    void logClient.log({ type: LogType.Error, userId, details });
+      void logClient.log({ type: LogType.Error, userId, details });
+    } catch {}
   }
 
-  onReset = () => {
+  onReset = async () => {
+    try {
+      useUserStore.getState().signOut();
+      await clearAsyncStorage();
+    } catch {}
+
     this.setState({ hasError: false, error: undefined });
   };
 

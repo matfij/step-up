@@ -28,6 +28,10 @@ export const setAsyncStorageItem = async (
   await AsyncStorage.setItem(appConfig.storageKeys[key], JSON.stringify(item));
 };
 
+export const clearAsyncStorage = async () => {
+  await AsyncStorage.multiRemove([...Object.values(appConfig.storageKeys)]);
+};
+
 export const withAlpha = (hexColor: string, alpha: number) => {
   const hex = hexColor.replace("#", "");
   const alphaHex = Math.round(alpha * 255)
