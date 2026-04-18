@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import {
   Image,
   ImageSourcePropType,
@@ -21,6 +20,7 @@ import {
 } from "../../common/formatters";
 import { getAchievementTierName } from "./achievements-utils";
 import { theme, themeComposable } from "../../common/theme";
+import { useTranslation } from "react-i18next";
 
 export interface AchievementModalProps {
   achievement?: Achievement;
@@ -37,6 +37,8 @@ export interface Achievement extends AchievementProgress {
 }
 
 export const AchievementModal = (props: AchievementModalProps) => {
+  const { t } = useTranslation();
+
   const getCurrentProgressLabel = (achievement: Achievement) => {
     const current = achievement.progress;
     let currentFormatted = "";
@@ -64,7 +66,7 @@ export const AchievementModal = (props: AchievementModalProps) => {
   const getRemainingProgressLabel = (achievement: Achievement) => {
     const remaining =
       achievement.type === AchievementType.Cumulative
-        ? achievement.nextTierProgress - achievement.progress
+        ? Math.max(0, achievement.nextTierProgress - achievement.progress)
         : achievement.nextTierProgress;
     let remainingFormatted = "";
 
@@ -95,9 +97,11 @@ export const AchievementModal = (props: AchievementModalProps) => {
     return achievement.type === AchievementType.Cumulative
       ? Math.min(
           100,
-          ((achievement.progress - achievement.currentTierProgress) /
-            (achievement.nextTierProgress - achievement.currentTierProgress)) *
-            100,
+          (100 * (achievement.progress - achievement.currentTierProgress)) /
+            Math.max(
+              1,
+              achievement.nextTierProgress - achievement.currentTierProgress,
+            ),
         )
       : Math.min(
           100,

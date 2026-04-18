@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Image,
-  ImageSourcePropType,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,31 +10,16 @@ import {
   View,
 } from "react-native";
 import { achievementsClient } from "../../common/api/achievements-client";
-import {
-  AchievementProgress,
-  AchievementTier,
-  AchievementType,
-  UnitCategory,
-} from "../../common/api/api-definitions";
+import { AchievementTier } from "../../common/api/api-definitions";
 import { useRequest } from "../../common/api/use-request";
-import { ModalWrapper } from "../../common/components/modal-wrapper";
-import {
-  formatDate,
-  formatDistance,
-  formatDuration,
-  formatSpeed,
-} from "../../common/formatters";
 import { theme, themeComposable } from "../../common/theme";
 import {
   achievementImages,
   getAchievementTierColor,
-  getAchievementTierName,
 } from "./achievements-utils";
 import { SkeletonItem } from "../../common/components/skeleton-item";
 import { withAlpha } from "../../common/utils";
-import { ActivityType } from "expo-location";
 import { Achievement, AchievementModal } from "./achievement-modal";
-import { ActivitiesModal } from "./activities-modal";
 
 interface AchievementsComponentProps {
   userId?: string;
@@ -51,7 +35,7 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
 
   const emptyAchievements =
     getAchievements.success &&
-    getAchievements.data?.achievements.filter(
+    getAchievements.data?.achievements?.filter(
       (achievement) => achievement.tier !== AchievementTier.None,
     ).length === 0;
 
@@ -66,15 +50,15 @@ export const AchievementsComponent = (props: AchievementsComponentProps) => {
   useEffect(() => {
     if (getAchievements.data && getAchievements.success) {
       const newAchievements = getAchievements.data.achievements
-        .filter((achievement) => achievement.tier !== AchievementTier.None)
-        .map((achievement) => ({
+        ?.filter((achievement) => achievement.tier !== AchievementTier.None)
+        ?.map((achievement) => ({
           label: t(`profile.achievementName.${achievement.name}`),
           description: t(`profile.achievementDescription.${achievement.name}`),
           image: achievementImages[achievement.name],
           color: getAchievementTierColor(achievement.tier),
           ...achievement,
         }))
-        .sort((a, b) => b.tier - a.tier);
+        ?.sort((a, b) => b.tier - a.tier);
       setAchievements(newAchievements);
     }
   }, [getAchievements.data, getAchievements.success, t]);
