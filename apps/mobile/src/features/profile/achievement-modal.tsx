@@ -95,13 +95,16 @@ export const AchievementModal = (props: AchievementModalProps) => {
       return 100;
     }
     return achievement.type === AchievementType.Cumulative
-      ? Math.min(
-          100,
-          (100 * (achievement.progress - achievement.currentTierProgress)) /
-            Math.max(
-              1,
-              achievement.nextTierProgress - achievement.currentTierProgress,
-            ),
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            (100 * (achievement.progress - achievement.currentTierProgress)) /
+              Math.max(
+                1,
+                achievement.nextTierProgress - achievement.currentTierProgress,
+              ),
+          ),
         )
       : Math.min(
           100,
